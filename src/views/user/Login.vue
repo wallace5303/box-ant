@@ -194,7 +194,7 @@ export default {
           const loginParams = { ...values }
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
-          loginParams.password = md5(values.password)
+          loginParams.password = values.password
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
@@ -252,7 +252,10 @@ export default {
       })
     },
     loginSuccess (res) {
-      console.log(res)
+      if (res === 'error') {
+        this.isLoginError = true
+        return
+      }
       // check res.homePage define, set $router.push name res.homePage
       // Why not enter onComplete
       /*
