@@ -50,7 +50,7 @@ export default {
       // base
       menus: [],
       // 侧栏收起状态
-      collapsed: false,
+      collapsed: true,
       title: defaultSettings.title,
       settings: {
         // 布局类型
@@ -86,6 +86,9 @@ export default {
     this.menus = (routes && routes.children) || []
     // 处理侧栏收起状态
     this.$watch('collapsed', () => {
+      // this.collapsed = true
+      // console.log('1 this.collapsed:', this.collapsed)
+      this.collapsed = true
       this.$store.commit(SIDEBAR_TYPE, this.collapsed)
     })
     this.$watch('isMobile', () => {
