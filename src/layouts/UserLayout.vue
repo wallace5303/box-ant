@@ -9,7 +9,7 @@
           </a>
         </div>
         <div class="desc">
-          可能是东半球最好的ppt软件
+          分享你收藏的网站
         </div>
       </div>
 
