@@ -12,6 +12,7 @@
           <article-page v-if="noTitleKey === 'article'"></article-page>
           <app-page v-else-if="noTitleKey === 'app'"></app-page>
           <project-page v-else-if="noTitleKey === 'project'"></project-page>
+          <web-page v-else-if="noTitleKey === 'web'"></web-page>
         </a-card>
       </a-col>
     </a-row>
@@ -20,7 +21,7 @@
 
 <script>
 import { PageView, RouteView } from '@/layouts'
-import { AppPage, ArticlePage, ProjectPage } from './page'
+import { AppPage, ArticlePage, ProjectPage, WebPage } from './page'
 
 import { mapGetters } from 'vuex'
 
@@ -30,13 +31,11 @@ export default {
     PageView,
     AppPage,
     ArticlePage,
-    ProjectPage
+    ProjectPage,
+    WebPage
   },
   data () {
     return {
-      tagInputVisible: false,
-      tagInputValue: '',
-
       tabListNoTitle: [
         {
           key: 'article',
@@ -49,6 +48,10 @@ export default {
         {
           key: 'project',
           tab: '项目'
+        },
+        {
+          key: 'web',
+          tab: '网站'
         }
       ],
       noTitleKey: 'app'

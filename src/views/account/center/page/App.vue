@@ -5,7 +5,7 @@
       :dataSource="dataSource">
       <a-list-item slot="renderItem" slot-scope="item">
         <a-card :hoverable="true">
-          <a-card-meta>
+          <a-card-meta >
             <div style="margin-bottom: 3px" slot="title">{{ item.title }}</div>
             <a-avatar class="card-avatar" slot="avatar" :src="item.avatar" size="small"/>
           </a-card-meta>
