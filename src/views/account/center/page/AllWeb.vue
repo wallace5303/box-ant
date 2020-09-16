@@ -41,7 +41,7 @@ import { getRoleList, getServiceList } from '@/api/manage'
 const DataSet = require('@antv/data-set')
 
 export default {
-  name: 'Web',
+  name: 'AllWeb',
   components: {
     PageHeaderWrapper,
     Radar

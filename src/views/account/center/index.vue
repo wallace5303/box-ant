@@ -10,9 +10,9 @@
           @tabChange="key => handleTabChange(key, 'noTitleKey')"
         >
           <article-page v-if="noTitleKey === 'article'"></article-page>
-          <app-page v-else-if="noTitleKey === 'app'"></app-page>
-          <project-page v-else-if="noTitleKey === 'project'"></project-page>
+          <feed-page v-else-if="noTitleKey === 'feed'"></feed-page>
           <web-page v-else-if="noTitleKey === 'web'"></web-page>
+          <all-web-page v-else-if="noTitleKey === 'all_web'"></all-web-page>
         </a-card>
       </a-col>
     </a-row>
@@ -21,7 +21,7 @@
 
 <script>
 import { PageView, RouteView } from '@/layouts'
-import { AppPage, ArticlePage, ProjectPage, WebPage } from './page'
+import { FeedPage, ArticlePage, WebPage, AllWebPage } from './page'
 
 import { mapGetters } from 'vuex'
 
@@ -29,9 +29,9 @@ export default {
   components: {
     RouteView,
     PageView,
-    AppPage,
+    FeedPage,
     ArticlePage,
-    ProjectPage,
+    AllWebPage,
     WebPage
   },
   data () {
@@ -39,22 +39,22 @@ export default {
       tabListNoTitle: [
         {
           key: 'article',
-          tab: '文章'
+          tab: '推荐'
         },
         {
-          key: 'app',
-          tab: '应用'
-        },
-        {
-          key: 'project',
-          tab: '项目'
+          key: 'feed',
+          tab: '动态'
         },
         {
           key: 'web',
-          tab: '网站'
+          tab: '我的'
+        },
+        {
+          key: 'all_web',
+          tab: '全部'
         }
       ],
-      noTitleKey: 'app'
+      noTitleKey: 'article'
     }
   },
   computed: {

@@ -1,6 +1,6 @@
-import AppPage from './App'
+import FeedPage from './Feed'
 import ArticlePage from './Article'
-import ProjectPage from './Project'
 import WebPage from './Web'
+import AllWebPage from './AllWeb'
 
-export { AppPage, ArticlePage, ProjectPage, WebPage }
+export { FeedPage, ArticlePage, AllWebPage, WebPage }

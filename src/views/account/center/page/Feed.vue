@@ -33,7 +33,7 @@ for (let i = 0; i < 11; i++) {
 }
 
 export default {
-  name: 'Article',
+  name: 'Feed',
   components: {},
   data () {
     return {
