@@ -54,7 +54,7 @@ export default {
           tab: '全部'
         }
       ],
-      noTitleKey: 'article'
+      noTitleKey: 'all_web'
     }
   },
   computed: {
