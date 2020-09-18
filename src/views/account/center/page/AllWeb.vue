@@ -2,28 +2,28 @@
   <div>
     <a-row :gutter="24">
       <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
-        <a-card
-          class="project-list"
-          :loading="loading"
-          style="margin-bottom: 24px;"
-          :bordered="false"
-          title="常用"
-          :body-style="{ padding: 0 }">
-          <!-- <a slot="extra">全部项目</a> -->
-          <div>
-            <a-card-grid style="width:12.5%;" class="project-card-grid" :key="i" v-for="(item, i) in projects">
-              <a-card :bordered="false" :body-style="{ padding: 0 }">
-                <a-card-meta >
-                  <div slot="title" class="card-title">
-                    <a-avatar size="small" :src="item.cover"/>
-                    <a>{{ item.title }}</a>
-                  </div>
-                </a-card-meta>
-              </a-card>
-            </a-card-grid>
-          </div>
-        </a-card>
-
+        <div :key="wtid" v-for="(webs, wtid) in webList">
+          <a-card
+            class="project-list"
+            :loading="loading"
+            style="margin-bottom: 24px;"
+            :bordered="false"
+            :title="webs.type"
+            :body-style="{ padding: 0 }">
+            <div>
+              <a-card-grid style="width:12.5%;" class="project-card-grid" :key="i" v-for="(web, i) in webs.list">
+                <a-card :bordered="false" :body-style="{ padding: 0 }">
+                  <a-card-meta >
+                    <div slot="title" class="card-title">
+                      <a-avatar size="small" :src="web.img"/>
+                      <a>{{ web.name }}</a>
+                    </div>
+                  </a-card-meta>
+                </a-card>
+              </a-card-grid>
+            </div>
+          </a-card>
+        </div>
       </a-col>
     </a-row>
   </div>
@@ -37,6 +37,7 @@ import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
 
 import { getRoleList, getServiceList } from '@/api/manage'
+import { webSites } from '@/api/main'
 
 const DataSet = require('@antv/data-set')
 
@@ -55,6 +56,7 @@ export default {
       radarLoading: true,
       activities: [],
       teams: [],
+      webList: {},
 
       radarData: []
     }
@@ -75,10 +77,16 @@ export default {
   },
   methods: {
     getProjects () {
-      this.$http.get('/list/search/projects')
-        .then(res => {
-          this.projects = res.result && res.result.data
-          this.loading = false
+      webSites({ mobile: 111 }).then(res => {
+        if (res.code !== 0) {
+          return
+        }
+        const allSites = res.data && res.data.list
+        this.webList = allSites.wtid_1.children
+        // console.log('webList:', this.webList)
+        this.loading = false
+        }).catch(err => {
+          console.log('err:', err)
         })
     }
   }
