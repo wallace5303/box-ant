@@ -1,115 +1,75 @@
 <template>
-  <div>
-    <a-row :gutter="24">
-      <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
-        <div :key="wtid" v-for="(webs, wtid) in webList">
-          <a-card
-            class="project-list"
-            :loading="loading"
-            style="margin-bottom: 24px;"
-            :bordered="false"
-            :title="webs.type"
-            :body-style="{ padding: 0 }">
-            <div>
-              <a-card-grid style="width:12.5%;" class="project-card-grid" :key="i" v-for="(web, i) in webs.list">
-                <a-card :bordered="false" :body-style="{ padding: 0 }">
-                  <a-card-meta >
-                    <div slot="title" class="card-title">
-                      <a-avatar size="small" :src="web.img"/>
-                      <a>{{ web.name }}</a>
-                    </div>
-                  </a-card-meta>
-                </a-card>
-              </a-card-grid>
-            </div>
-          </a-card>
-        </div>
-      </a-col>
-    </a-row>
-  </div>
+  <div class="app-list">
+    <a-list
+      :grid="{ gutter: 24, lg: 6, md: 2, sm: 1, xs: 1 }"
+      :dataSource="dataSource">
+      <a-list-item slot="renderItem" slot-scope="item">
+        <a-card :hoverable="true">
+          <a-card-meta >
+            <div style="margin-bottom: 3px" slot="title">{{ item.title }}</div>
+            <a-avatar class="card-avatar" slot="avatar" :src="item.avatar" size="small"/>
+          </a-card-meta>
+          <template class="ant-card-actions" slot="actions">
+            <a>
+              <a-icon type="edit"/>
+            </a>
+          </template>
+        </a-card>
+      </a-list-item>
+    </a-list>
 
+  </div>
 </template>
 
 <script>
-import { timeFix } from '@/utils/util'
-import { mapState } from 'vuex'
-import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
-import { Radar } from '@/components'
-
-import { getRoleList, getServiceList } from '@/api/manage'
-import { webSites } from '@/api/main'
-
-const DataSet = require('@antv/data-set')
+const dataSource = []
+for (let i = 0; i < 11; i++) {
+  dataSource.push({
+    title: 'Alipay',
+    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
+    activeUser: 17,
+    newUser: 1700
+  })
+}
 
 export default {
-  name: 'AllWeb',
-  components: {
-    PageHeaderWrapper,
-    Radar
-  },
+  name: 'Feed',
+  components: {},
   data () {
     return {
-      timeFix: timeFix(),
-
-      projects: [],
-      loading: true,
-      radarLoading: true,
-      activities: [],
-      teams: [],
-      webList: {},
-
-      radarData: []
-    }
-  },
-  computed: {
-  },
-  created () {
-    getRoleList().then(res => {
-      // console.log('workplace -> call getRoleList()', res)
-    })
-
-    getServiceList().then(res => {
-      // console.log('workplace -> call getServiceList()', res)
-    })
-  },
-  mounted () {
-    this.getProjects()
-  },
-  methods: {
-    getProjects () {
-      webSites({ mobile: 111 }).then(res => {
-        if (res.code !== 0) {
-          return
-        }
-        const allSites = res.data && res.data.list
-        this.webList = allSites.wtid_1.children
-        // console.log('webList:', this.webList)
-        this.loading = false
-        }).catch(err => {
-          console.log('err:', err)
-        })
+      dataSource
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-  //@import "./web.less";
-  .project-list {
-    .card-title {
-      font-size: 0;
-      a {
-        color: rgba(0, 0, 0, 0.85);
-        margin-left: 12px;
-        line-height: 24px;
-        height: 24px;
-        display: inline-block;
-        vertical-align: top;
-        font-size: 14px;
 
-        &:hover {
-          color: #1890ff;
+  .app-list {
+
+    .meta-cardInfo {
+      zoom: 1;
+      margin-top: 16px;
+
+      > div {
+        position: relative;
+        text-align: left;
+        float: left;
+        width: 50%;
+
+        p {
+          line-height: 32px;
+          font-size: 24px;
+          margin: 0;
+
+          &:first-child {
+            color: rgba(0, 0, 0, .45);
+            font-size: 12px;
+            line-height: 20px;
+            margin-bottom: 4px;
+          }
         }
+
       }
     }
   }
