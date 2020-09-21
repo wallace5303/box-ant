@@ -15,15 +15,15 @@
     <a-list :loading="loading" size="large" :pagination="paginationOpt">
       <a-list-item :key="index" v-for="(item, index) in webList">
         <a-list-item-meta :description="item.desc">
-          <a-avatar slot="avatar" size="large" shape="square" :src="item.img"/>
+          <a-avatar slot="avatar" size="large" shape="circle" :src="item.img"/>
           <a slot="title">{{ item.name }}</a>
         </a-list-item-meta>
         <div slot="actions">
-          <a @click="add(item)">添加</a>
+          <a @click="save(item)">添加</a>
         </div>
         <div class="list-content">
           <div class="list-content-item">
-            <a-icon type="like-o" style="margin-right: 8px" />
+            <a-icon type="star-o" style="margin-right: 8px" />
             <span>100</span>
           </div>
         </div>
@@ -35,14 +35,14 @@
 
 <script>
 // 演示如何使用 this.$dialog 封装 modal 组件
-import TaskForm from './modules/TaskForm'
+import WebForm from './modules/WebForm'
 import Info from './components/Info'
 import { outApi } from '@/api/main'
 
 export default {
   name: 'StandardList',
   components: {
-    TaskForm,
+    WebForm,
     Info
   },
   data () {
@@ -95,12 +95,12 @@ export default {
           console.log('err:', err)
         })
     },
-    edit (record) {
-      console.log('record', record)
-      this.$dialog(TaskForm,
+    save (webInfo) {
+      console.log('webInfo', webInfo)
+      this.$dialog(WebForm,
         // component props
         {
-          record,
+          webInfo,
           on: {
             ok () {
               console.log('ok 回调')
