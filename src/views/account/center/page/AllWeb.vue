@@ -12,7 +12,7 @@
       </a-radio-group>
       <a-input-search style="margin-left: 16px; width: 272px;" /> -->
     </div>
-    <a-list :loading="loading" size="large" :pagination="pagination" @change="handleTableChange">
+    <a-list :loading="loading" size="large" :pagination="paginationOpt">
       <a-list-item :key="index" v-for="(item, index) in webList">
         <a-list-item-meta :description="item.desc">
           <a-avatar slot="avatar" size="large" shape="square" :src="item.img"/>
@@ -49,10 +49,16 @@ export default {
     return {
       webList: {},
       webPageList: {},
-      pagination: {
+      paginationOpt: {
         current: 1,
         total: 0,
-        showTotal: total => `共有 ${total} 条数据`
+        pageSize: 10,
+        'show-quick-jumper': true,
+        onChange: (current) => {
+          this.paginationOpt.current = current
+          this.queryParam.page = current
+          this.getAllWebs()
+        }
       },
       loading: true,
       // 查询参数
@@ -66,14 +72,6 @@ export default {
     this.getAllWebs()
   },
   methods: {
-    handleTableChange (pagination) {
-      console.log('pagination', pagination)
-      this.pagination.current = pagination.current
-      this.pagination.pageSize = pagination.pageSize
-      this.queryParam.page = pagination.current
-      this.queryParam.type2 = pagination.type2
-      this.getAllWebs()
-    },
     getAllWebs () {
       this.loading = true
       const params = {
@@ -90,8 +88,8 @@ export default {
         }
         this.webPageList = res.data && res.data.list
         this.webList = this.webPageList.data
-        console.log('webList:', this.webList)
-        this.pagination.total = this.webPageList.total
+        this.paginationOpt.total = this.webPageList.total
+        this.paginationOpt.pageSize = this.webPageList.per_page
         this.loading = false
         }).catch(err => {
           console.log('err:', err)
