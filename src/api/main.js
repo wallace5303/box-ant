@@ -1,17 +1,23 @@
 import request from '@/utils/request'
 
 const mainApi = {
+  outApi: '/v1/outApi',
   webSites: '/v1/box/webSites'
 }
 
 /**
- * login func
- * parameter: {
- *     username: '',
- *     password: ''
- * }
- * @param parameter
- * @returns {*}
+ * outApi
+ */
+export function outApi (parameter) {
+  return request({
+    url: mainApi.outApi,
+    method: 'post',
+    data: parameter
+  })
+}
+
+/**
+ * webSites
  */
 export function webSites (parameter) {
   return request({

@@ -2,7 +2,7 @@
   <a-card
     style="margin-top: 24px"
     :bordered="false"
-    title="标准列表">
+    title="推荐站点">
 
     <div slot="extra">
       <!-- <a-radio-group v-model="status">
@@ -12,35 +12,19 @@
       </a-radio-group>
       <a-input-search style="margin-left: 16px; width: 272px;" /> -->
     </div>
-    <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
-      <a-list-item :key="index" v-for="(item, index) in data">
-        <a-list-item-meta :description="item.description">
-          <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
-          <a slot="title">{{ item.title }}</a>
+    <a-list :loading="loading" size="large" :pagination="pagination" @change="handleTableChange">
+      <a-list-item :key="index" v-for="(item, index) in webList">
+        <a-list-item-meta :description="item.desc">
+          <a-avatar slot="avatar" size="large" shape="square" :src="item.img"/>
+          <a slot="title">{{ item.name }}</a>
         </a-list-item-meta>
         <div slot="actions">
-          <a @click="edit(item)">编辑</a>
-        </div>
-        <div slot="actions">
-          <a-dropdown>
-            <a-menu slot="overlay">
-              <a-menu-item><a>编辑</a></a-menu-item>
-              <a-menu-item><a>删除</a></a-menu-item>
-            </a-menu>
-            <a>更多<a-icon type="down"/></a>
-          </a-dropdown>
+          <a @click="add(item)">添加</a>
         </div>
         <div class="list-content">
           <div class="list-content-item">
-            <span>Owner</span>
-            <p>{{ item.owner }}</p>
-          </div>
-          <div class="list-content-item">
-            <span>开始时间</span>
-            <p>{{ item.startAt }}</p>
-          </div>
-          <div class="list-content-item">
-            <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status" style="width: 180px" />
+            <a-icon type="like-o" style="margin-right: 8px" />
+            <span>100</span>
           </div>
         </div>
       </a-list-item>
@@ -53,59 +37,7 @@
 // 演示如何使用 this.$dialog 封装 modal 组件
 import TaskForm from './modules/TaskForm'
 import Info from './components/Info'
-
-const data = []
-data.push({
-  title: 'Alipay',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
-  description: '那是一种内在的东西， 他们到达不了，也无法触及的',
-  owner: '付晓晓',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 90
-  }
-})
-data.push({
-  title: 'Angular',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png',
-  description: '希望是一个好东西，也许是最好的，好东西是不会消亡的',
-  owner: '曲丽丽',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 54
-  }
-})
-data.push({
-  title: 'Ant Design',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
-  description: '生命就像一盒巧克力，结果往往出人意料',
-  owner: '林东东',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 66
-  }
-})
-data.push({
-  title: 'Ant Design Pro',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png',
-  description: '城镇中有那么多的酒馆，她却偏偏走进了我的酒馆',
-  owner: '周星星',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    value: 30
-  }
-})
-data.push({
-  title: 'Bootstrap',
-  avatar: 'https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png',
-  description: '那时候我只会想自己想要什么，从不想自己拥有什么',
-  owner: '吴加好',
-  startAt: '2018-07-26 22:44',
-  progress: {
-    status: 'exception',
-    value: 100
-  }
-})
+import { outApi } from '@/api/main'
 
 export default {
   name: 'StandardList',
@@ -115,11 +47,56 @@ export default {
   },
   data () {
     return {
-      data,
-      status: 'all'
+      webList: {},
+      webPageList: {},
+      pagination: {
+        current: 1,
+        total: 0,
+        showTotal: total => `共有 ${total} 条数据`
+      },
+      loading: true,
+      // 查询参数
+      queryParam: {
+        page: 1,
+        type2: ''
+      }
     }
   },
+  mounted () {
+    this.getAllWebs()
+  },
   methods: {
+    handleTableChange (pagination) {
+      console.log('pagination', pagination)
+      this.pagination.current = pagination.current
+      this.pagination.pageSize = pagination.pageSize
+      this.queryParam.page = pagination.current
+      this.queryParam.type2 = pagination.type2
+      this.getAllWebs()
+    },
+    getAllWebs () {
+      this.loading = true
+      const params = {
+        out_url: 'allWebSites',
+        method: 'POST',
+        data: {
+          page: this.queryParam.page,
+          type2: this.queryParam.type2
+        }
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return
+        }
+        this.webPageList = res.data && res.data.list
+        this.webList = this.webPageList.data
+        console.log('webList:', this.webList)
+        this.pagination.total = this.webPageList.total
+        this.loading = false
+        }).catch(err => {
+          console.log('err:', err)
+        })
+    },
     edit (record) {
       console.log('record', record)
       this.$dialog(TaskForm,
