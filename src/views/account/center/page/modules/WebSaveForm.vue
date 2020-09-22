@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="新建规则"
+    title="添加"
     :width="640"
     :visible="visible"
     :confirmLoading="loading"
@@ -10,11 +10,31 @@
     <a-spin :spinning="loading">
       <a-form :form="form" v-bind="formLayout">
         <!-- 检查是否有 id 并且大于0，大于0是修改。其他是新增，新增不显示主键ID -->
-        <a-form-item v-show="model && model.id > 0" label="主键ID">
+        <!-- <a-form-item v-show="model && model.id > 0" label="主键ID">
           <a-input v-decorator="['id', { initialValue: 0 }]" disabled />
+        </a-form-item> -->
+        <a-form-item
+          label="类型"
+        >
+          <a-select v-decorator="['type', {initialValue:1}]">
+            <a-select-option :value="1">常用</a-select-option>
+            <a-select-option :value="2">专业</a-select-option>
+            <a-select-option :value="3">娱乐</a-select-option>
+            <a-select-option :value="4">游戏</a-select-option>
+            <a-select-option :value="5">阅读</a-select-option>
+            <a-select-option :value="6">旅行</a-select-option>
+            <a-select-option :value="7">交友</a-select-option>
+          </a-select>
         </a-form-item>
-        <a-form-item label="描述">
-          <a-input v-decorator="['description', {rules: [{required: true, min: 5, message: '请输入至少五个字符的规则描述！'}]}]" />
+        <a-form-item
+          label="名称"
+        >
+          <a-input v-decorator="['name', {rules:[{required: true, message: '请填写名称'}]}]" />
+        </a-form-item>
+        <a-form-item
+          label="地址"
+        >
+          <a-input v-decorator="['url', {rules:[{required: true, message: '请填写地址'}]}]" />
         </a-form-item>
       </a-form>
     </a-spin>
@@ -25,7 +45,7 @@
 import pick from 'lodash.pick'
 
 // 表单字段
-const fields = ['description', 'id']
+const fields = ['type', 'name', 'url']
 
 export default {
   props: {
@@ -58,7 +78,7 @@ export default {
     }
   },
   created () {
-    console.log('custom modal created')
+    console.log('webSaveForm modal created')
 
     // 防止表单未注册
     fields.forEach(v => this.form.getFieldDecorator(v))

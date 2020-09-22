@@ -19,7 +19,7 @@
           <a slot="title">{{ item.name }}</a>
         </a-list-item-meta>
         <div slot="actions">
-          <a @click="save(item)">添加</a>
+          <a @click="handleEdit(item)">添加</a>
         </div>
         <div class="list-content">
           <div class="list-content-item">
@@ -29,13 +29,21 @@
         </div>
       </a-list-item>
     </a-list>
+    <web-form
+      ref="webSaveModal"
+      :visible="visible"
+      :loading="confirmLoading"
+      :model="mdl"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    />
   </a-card>
 
 </template>
 
 <script>
 // 演示如何使用 this.$dialog 封装 modal 组件
-import WebForm from './modules/WebForm'
+import WebForm from './modules/WebSaveForm'
 import Info from './components/Info'
 import { outApi } from '@/api/main'
 
@@ -65,13 +73,20 @@ export default {
       queryParam: {
         page: 1,
         type2: ''
-      }
+      },
+      visible: false,
+      confirmLoading: false,
+      mdl: null
     }
   },
   mounted () {
     this.getAllWebs()
   },
   methods: {
+    handleEdit (record) {
+      this.visible = true
+      this.mdl = { ...record }
+    },
     getAllWebs () {
       this.loading = true
       const params = {
@@ -95,32 +110,112 @@ export default {
           console.log('err:', err)
         })
     },
-    save (webInfo) {
-      console.log('webInfo', webInfo)
-      this.$dialog(WebForm,
-        // component props
-        {
-          webInfo,
-          on: {
-            ok () {
-              console.log('ok 回调')
-            },
-            cancel () {
-              console.log('cancel 回调')
-            },
-            close () {
-              console.log('modal close 回调')
-            }
-          }
-        },
-        // modal props
-        {
-          title: '操作',
-          width: 700,
-          centered: true,
-          maskClosable: false
-        })
+    handleCancel () {
+      this.visible = false
+      this.confirmLoading = false
+      const form = this.$refs.webSaveModal.form
+      // form.resetFields() // 清理表单数据（可不做）
+    },
+    handleOk () {
+      // console.log('webInfo', webInfo)
+      const form = this.$refs.webSaveModal.form
+      this.confirmLoading = true
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          console.log('values', values)
+          // const saveMySiteParams = {
+          //   out_url: 'allWebSites',
+          //   method: 'POST',
+          //   data: {
+          //     page: this.queryParam.page,
+          //     type2: this.queryParam.type2
+          //   }
+          // }
+          // outApi(saveMySiteParams).then(res => {
+          //   if (res.code !== 0) {
+          //     return
+          //   }
+          //   this.webPageList = res.data && res.data.list
+          //   this.webList = this.webPageList.data
+
+          //   }).catch(err => {
+          //     console.log('err:', err)
+          //   })
+          // new Promise((resolve, reject) => {
+          //     setTimeout(() => {
+          //       resolve()
+          //     }, 1000)
+          //   }).then(res => {
+          //     this.visible = false
+          //     this.confirmLoading = false
+
+          //     this.$message.info('新增成功')
+          //   })
+          // if (values.id > 0) {
+          //   // 修改 e.g.
+          //   new Promise((resolve, reject) => {
+          //     setTimeout(() => {
+          //       resolve()
+          //     }, 1000)
+          //   }).then(res => {
+          //     this.visible = false
+          //     this.confirmLoading = false
+          //     // 重置表单数据
+          //     form.resetFields()
+          //     // 刷新表格
+          //     this.$refs.table.refresh()
+
+          //     this.$message.info('修改成功')
+          //   })
+          // } else {
+          //   // 新增
+          //   new Promise((resolve, reject) => {
+          //     setTimeout(() => {
+          //       resolve()
+          //     }, 1000)
+          //   }).then(res => {
+          //     this.visible = false
+          //     this.confirmLoading = false
+          //     // 重置表单数据
+          //     form.resetFields()
+          //     // 刷新表格
+          //     this.$refs.table.refresh()
+
+          //     this.$message.info('新增成功')
+          //   })
+          // }
+        } else {
+          this.confirmLoading = false
+        }
+      })
     }
+    // save (webInfo) {
+    //   console.log('webInfo', webInfo)
+    //   this.$dialog(WebForm,
+    //     // component props
+    //     {
+    //       webInfo,
+    //       on: {
+    //         ok (err, data) {
+    //           console.log('ok 回调 err:', err)
+    //           console.log('ok 回调 data:', data)
+    //         },
+    //         cancel () {
+    //           console.log('cancel 回调')
+    //         },
+    //         close () {
+    //           console.log('modal close 回调')
+    //         }
+    //       }
+    //     },
+    //     // modal props
+    //     {
+    //       title: '操作',
+    //       width: 700,
+    //       centered: true,
+    //       maskClosable: false
+    //     })
+    // }
   }
 }
 </script>

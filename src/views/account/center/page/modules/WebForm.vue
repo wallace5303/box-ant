@@ -71,7 +71,7 @@ export default {
     onOk () {
       console.log('监听了 modal ok 事件')
       return new Promise(resolve => {
-        resolve(true)
+        resolve('111')
       })
     },
     onCancel () {
