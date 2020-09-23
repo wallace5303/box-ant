@@ -9,7 +9,7 @@
             style="margin-bottom: 24px;"
             :bordered="false"
             :title="webs.title"
-            headStyle="border-bottom: 0px solid #e8e8e8; padding: 0"
+            :head-style="{'border-bottom': '0px solid #e8e8e8', padding: 0}"
             :body-style="{padding: 0}">
             <div>
               <a-card-grid class="project-card-grid" :key="i" v-for="(web, i) in webs.list">
