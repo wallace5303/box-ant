@@ -122,25 +122,27 @@ export default {
       this.confirmLoading = true
       form.validateFields((errors, values) => {
         if (!errors) {
-          console.log('values', values)
-          // const saveMySiteParams = {
-          //   out_url: 'allWebSites',
-          //   method: 'POST',
-          //   data: {
-          //     page: this.queryParam.page,
-          //     type2: this.queryParam.type2
-          //   }
-          // }
-          // outApi(saveMySiteParams).then(res => {
-          //   if (res.code !== 0) {
-          //     return
-          //   }
-          //   this.webPageList = res.data && res.data.list
-          //   this.webList = this.webPageList.data
-
-          //   }).catch(err => {
-          //     console.log('err:', err)
-          //   })
+          const saveMySiteParams = {
+            out_url: 'saveSite',
+            method: 'POST',
+            data: {
+              type: values.type,
+              name: values.name,
+              url: values.url,
+              sort: 0
+            }
+          }
+          outApi(saveMySiteParams).then(res => {
+            if (res.code !== 0) {
+              this.$message.info('添加失败')
+              return
+            }
+              this.visible = false
+              this.confirmLoading = false
+              this.$message.info('添加成功')
+            }).catch(err => {
+              console.log('err:', err)
+            })
           // new Promise((resolve, reject) => {
           //     setTimeout(() => {
           //       resolve()
@@ -189,33 +191,6 @@ export default {
         }
       })
     }
-    // save (webInfo) {
-    //   console.log('webInfo', webInfo)
-    //   this.$dialog(WebForm,
-    //     // component props
-    //     {
-    //       webInfo,
-    //       on: {
-    //         ok (err, data) {
-    //           console.log('ok 回调 err:', err)
-    //           console.log('ok 回调 data:', data)
-    //         },
-    //         cancel () {
-    //           console.log('cancel 回调')
-    //         },
-    //         close () {
-    //           console.log('modal close 回调')
-    //         }
-    //       }
-    //     },
-    //     // modal props
-    //     {
-    //       title: '操作',
-    //       width: 700,
-    //       centered: true,
-    //       maskClosable: false
-    //     })
-    // }
   }
 }
 </script>

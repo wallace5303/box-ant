@@ -2,28 +2,29 @@
   <div>
     <a-row :gutter="24">
       <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
-        <a-card
-          class="project-list"
-          :loading="loading"
-          style="margin-bottom: 24px;"
-          :bordered="false"
-          title="常用"
-          :body-style="{ padding: 0 }">
-          <!-- <a slot="extra">全部项目</a> -->
-          <div>
-            <a-card-grid style="width:12.5%;" class="project-card-grid" :key="i" v-for="(item, i) in projects">
-              <a-card :bordered="false" :body-style="{ padding: 0 }">
-                <a-card-meta >
-                  <div slot="title" class="card-title">
-                    <a-avatar size="small" :src="item.cover"/>
-                    <a>{{ item.title }}</a>
-                  </div>
-                </a-card-meta>
-              </a-card>
-            </a-card-grid>
-          </div>
-        </a-card>
+        <div :key="wtid" v-for="(webs, wtid) in webList">
+          <a-card
+            class="project-list"
+            :loading="loading"
+            style="margin-bottom: 24px;"
+            :bordered="false"
+            :title="webs.title"
+            :body-style="{ padding: 0 }">
+            <div>
+              <a-card-grid class="project-card-grid" :key="i" v-for="(web, i) in webs.list">
+                <a-card :bordered="false" :body-style="{ padding: 0 }">
+                  <a-card-meta >
+                    <div slot="title" class="card-title">
+                      <a-avatar size="small" :src="web.img"/>
+                      <a>{{ web.name }}</a>
+                    </div>
+                  </a-card-meta>
+                </a-card>
+              </a-card-grid>
+            </div>
 
+          </a-card>
+        </div>
       </a-col>
     </a-row>
   </div>
@@ -35,8 +36,7 @@ import { timeFix } from '@/utils/util'
 import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
-
-import { getRoleList, getServiceList } from '@/api/manage'
+import { outApi } from '@/api/main'
 
 const DataSet = require('@antv/data-set')
 
@@ -48,37 +48,32 @@ export default {
   },
   data () {
     return {
-      timeFix: timeFix(),
-
-      projects: [],
       loading: true,
-      radarLoading: true,
-      activities: [],
-      teams: [],
-
-      radarData: []
+      webList: {}
     }
   },
   computed: {
   },
   created () {
-    getRoleList().then(res => {
-      // console.log('workplace -> call getRoleList()', res)
-    })
-
-    getServiceList().then(res => {
-      // console.log('workplace -> call getServiceList()', res)
-    })
   },
   mounted () {
-    this.getProjects()
+    this.getMySites()
   },
   methods: {
-    getProjects () {
-      this.$http.get('/list/search/projects')
-        .then(res => {
-          this.projects = res.result && res.result.data
-          this.loading = false
+    getMySites () {
+      const params = {
+        out_url: 'mySites',
+        method: 'POST',
+        data: {}
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return
+        }
+        this.webList = res.data
+        this.loading = false
+        }).catch(err => {
+          console.log('err:', err)
         })
     }
   }
@@ -88,6 +83,9 @@ export default {
 <style lang="less" scoped>
   //@import "./web.less";
   .project-list {
+    .project-card-grid {
+        width: 12.5%;
+      }
     .card-title {
       font-size: 0;
       a {
