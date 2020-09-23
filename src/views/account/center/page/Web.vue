@@ -17,7 +17,7 @@
                   <a-card-meta >
                     <div slot="title" class="card-title">
                       <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
-                      <a>{{ web.name }}</a>
+                      <a :href="web.url" target="_blank">{{ web.name }}</a>
                     </div>
                   </a-card-meta>
                 </a-card>
