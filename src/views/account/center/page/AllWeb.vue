@@ -98,14 +98,15 @@ export default {
         }
       }
       outApi(params).then(res => {
+        this.loading = false
         if (res.code !== 0) {
+          this.$message.info('无法获取数据')
           return
         }
         this.webPageList = res.data && res.data.list
         this.webList = this.webPageList.data
         this.paginationOpt.total = this.webPageList.total
         this.paginationOpt.pageSize = this.webPageList.per_page
-        this.loading = false
         }).catch(err => {
           console.log('err:', err)
         })
@@ -133,12 +134,12 @@ export default {
             }
           }
           outApi(saveMySiteParams).then(res => {
+            this.confirmLoading = false
             if (res.code !== 0) {
               this.$message.info('添加失败')
               return
             }
               this.visible = false
-              this.confirmLoading = false
               this.$message.info('添加成功')
             }).catch(err => {
               console.log('err:', err)
