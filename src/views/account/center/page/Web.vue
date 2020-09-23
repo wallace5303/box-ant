@@ -9,13 +9,14 @@
             style="margin-bottom: 24px;"
             :bordered="false"
             :title="webs.title"
-            :body-style="{ padding: 0 }">
+            headStyle="border-bottom: 0px solid #e8e8e8; padding: 0"
+            :body-style="{padding: 0}">
             <div>
               <a-card-grid class="project-card-grid" :key="i" v-for="(web, i) in webs.list">
                 <a-card :bordered="false" :body-style="{ padding: 0 }">
                   <a-card-meta >
                     <div slot="title" class="card-title">
-                      <a-avatar size="small" :src="web.img"/>
+                      <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
                       <a>{{ web.name }}</a>
                     </div>
                   </a-card-meta>
@@ -107,27 +108,6 @@ export default {
       height: 44px;
       line-height: 22px;
       overflow: hidden;
-    }
-    .project-item {
-      display: flex;
-      margin-top: 8px;
-      overflow: hidden;
-      font-size: 12px;
-      height: 20px;
-      line-height: 20px;
-      a {
-        color: rgba(0, 0, 0, 0.45);
-        display: inline-block;
-        flex: 1 1 0;
-        &:hover {
-          color: #1890ff;
-        }
-      }
-      .datetime {
-        color: rgba(0, 0, 0, 0.25);
-        flex: 0 0 auto;
-        float: right;
-      }
     }
   }
 

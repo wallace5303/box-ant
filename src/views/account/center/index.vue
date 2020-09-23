@@ -38,20 +38,20 @@ export default {
     return {
       tabListNoTitle: [
         {
-          key: 'feed',
-          tab: '动态'
+          key: 'article',
+          tab: '推荐'
         },
         {
-          key: 'web',
-          tab: '我的'
+          key: 'feed',
+          tab: '动态'
         },
         {
           key: 'all_web',
           tab: '全部'
         },
         {
-          key: 'article',
-          tab: '推荐'
+          key: 'web',
+          tab: '我的'
         }
       ],
       noTitleKey: 'all_web'
