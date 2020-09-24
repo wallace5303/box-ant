@@ -24,6 +24,7 @@
             <a-select-option :value="5">阅读</a-select-option>
             <a-select-option :value="6">旅行</a-select-option>
             <a-select-option :value="7">交友</a-select-option>
+            <a-select-option :value="8">其它</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -34,7 +35,7 @@
         <a-form-item
           label="地址"
         >
-          <a-input v-decorator="['url', {rules:[{required: true, message: '请填写地址'}]}]" />
+          <a-input placeholder="如：http://wwwbaidu.com/" v-decorator="['url', {rules:[{required: true, message: '请正确填写地址'}]}]" />
         </a-form-item>
       </a-form>
     </a-spin>

@@ -17,7 +17,8 @@
                   <a-card-meta >
                     <div slot="title" class="card-title">
                       <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
-                      <a :href="web.url" target="_blank">{{ web.name }}</a>
+                      <a v-if="web.url" :href="web.url" target="_blank">{{ web.name }}</a>
+                      <a @click="handleAdd()" v-else>{{ web.name }}</a>
                     </div>
                   </a-card-meta>
                 </a-card>
@@ -28,6 +29,14 @@
         </div>
       </a-col>
     </a-row>
+    <web-form
+      ref="webSaveModal"
+      :visible="visible"
+      :loading="confirmLoading"
+      :model="mdl"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    />
   </div>
 
 </template>
@@ -38,19 +47,23 @@ import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
 import { outApi } from '@/api/main'
-
+import WebForm from './modules/WebSaveForm'
 const DataSet = require('@antv/data-set')
 
 export default {
   name: 'Web',
   components: {
     PageHeaderWrapper,
+    WebForm,
     Radar
   },
   data () {
     return {
       loading: true,
-      webList: {}
+      webList: {},
+      visible: false,
+      confirmLoading: false,
+      mdl: null
     }
   },
   computed: {
@@ -61,6 +74,9 @@ export default {
     this.getMySites()
   },
   methods: {
+    handleAdd () {
+      this.visible = true
+    },
     getMySites () {
       const params = {
         out_url: 'mySites',
@@ -76,6 +92,43 @@ export default {
         }).catch(err => {
           console.log('err:', err)
         })
+    },
+    handleCancel () {
+      this.visible = false
+      this.confirmLoading = false
+      const form = this.$refs.webSaveModal.form
+    },
+    handleOk () {
+      const form = this.$refs.webSaveModal.form
+      this.confirmLoading = true
+      form.validateFields((errors, values) => {
+        if (!errors) {
+          const saveMySiteParams = {
+            out_url: 'saveSite',
+            method: 'POST',
+            data: {
+              type: values.type,
+              name: values.name,
+              url: values.url,
+              sort: 0
+            }
+          }
+          outApi(saveMySiteParams).then(res => {
+            this.confirmLoading = false
+            if (res.code !== 0) {
+              this.$message.info('添加失败')
+              return
+            }
+              this.visible = false
+              this.$message.info('添加成功')
+              this.getMySites()
+            }).catch(err => {
+              console.log('err:', err)
+            })
+        } else {
+          this.confirmLoading = false
+        }
+      })
     }
   }
 }
