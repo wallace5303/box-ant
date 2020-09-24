@@ -70,7 +70,6 @@ export default {
       outApi(params).then(res => {
         this.loading = false
         if (res.code !== 0) {
-          this.$message.info('无法获取数据')
           return
         }
         this.webList = res.data

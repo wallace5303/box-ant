@@ -54,6 +54,12 @@ request.interceptors.request.use(config => {
 
 // response interceptor
 request.interceptors.response.use((response) => {
+  if (response.data.code === -2) {
+    notification.error({
+      message: 'Forbidden',
+      description: response.data.message
+    })
+  }
   return response.data
 }, errorHandler)
 
