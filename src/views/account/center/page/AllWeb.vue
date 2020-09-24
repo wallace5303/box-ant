@@ -2,15 +2,14 @@
   <a-card
     style="margin-top: 24px"
     :bordered="false"
-    title="推荐站点">
-
-    <div slot="extra">
-      <!-- <a-radio-group v-model="status">
-        <a-radio-button value="all">全部</a-radio-button>
-        <a-radio-button value="processing">进行中</a-radio-button>
-        <a-radio-button value="waiting">等待中</a-radio-button>
+    title="站点">
+    <div slot="extra" style="margin-left: initial">
+      <a-radio-group v-model="status" @change="handleChangeType(status)">
+        <a-radio-button value="wsid">最新</a-radio-button>
+        <a-radio-button value="col_times">收藏最多</a-radio-button>
+        <a-radio-button value="sort">推荐</a-radio-button>
       </a-radio-group>
-      <a-input-search style="margin-left: 16px; width: 272px;" /> -->
+      <a-input-search style="margin-left: 16px; width: 272px;" />
     </div>
     <a-list :loading="loading" size="large" :pagination="paginationOpt">
       <a-list-item :key="index" v-for="(item, index) in webList">
@@ -26,7 +25,7 @@
         </div>
         <div class="list-view">
           <div class="list-content-item">
-            <a :href="item.url">查看</a>
+            <a :href="item.url" target="_blank">查看</a>
           </div>
         </div>
         <div class="list-view">
@@ -74,8 +73,11 @@ export default {
       // 查询参数
       queryParam: {
         page: 1,
-        type2: ''
+        type2: 0,
+        sort: 'wsid', // wsid sort col_times
+        desc: ''
       },
+      status: 'wsid',
       visible: false,
       confirmLoading: false,
       mdl: null
@@ -85,6 +87,12 @@ export default {
     this.getAllWebs()
   },
   methods: {
+    handleChangeType (status) {
+      this.status = status
+      this.queryParam.sort = status
+      this.queryParam.page = 1
+      this.getAllWebs()
+    },
     handleEdit (record) {
       this.visible = true
       this.mdl = { ...record }
@@ -95,6 +103,8 @@ export default {
         out_url: 'allWebSites',
         method: 'POST',
         data: {
+          sort: this.queryParam.sort,
+          desc: this.queryParam.desc,
           page: this.queryParam.page,
           type2: this.queryParam.type2
         }
