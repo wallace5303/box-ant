@@ -179,7 +179,7 @@ export default {
 }
 .list-times {
   width: 10%;
-  text-align: center;
+  text-align: left;
 }
 .list-view {
   width: 10%;
