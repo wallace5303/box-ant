@@ -9,7 +9,7 @@
         <a-radio-button value="col_times">收藏最多</a-radio-button>
         <a-radio-button value="sort">推荐</a-radio-button>
       </a-radio-group>
-      <a-input-search style="margin-left: 16px; width: 272px;" />
+      <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
     </div>
     <a-list :loading="loading" size="large" :pagination="paginationOpt">
       <a-list-item :key="index" v-for="(item, index) in webList">
@@ -87,10 +87,17 @@ export default {
     this.getAllWebs()
   },
   methods: {
+    handleSearch (value) {
+      this.queryParam.sort = 'wsid'
+      this.queryParam.page = 1
+      this.queryParam.desc = value
+      this.getAllWebs()
+    },
     handleChangeType (status) {
       this.status = status
       this.queryParam.sort = status
       this.queryParam.page = 1
+      this.queryParam.desc = ''
       this.getAllWebs()
     },
     handleEdit (record) {
@@ -126,7 +133,6 @@ export default {
       this.visible = false
       this.confirmLoading = false
       const form = this.$refs.webSaveModal.form
-      // form.resetFields() // 清理表单数据（可不做）
     },
     handleOk () {
       // console.log('webInfo', webInfo)
@@ -138,6 +144,7 @@ export default {
             out_url: 'saveSite',
             method: 'POST',
             data: {
+              wsid: values.wsid,
               type: values.type,
               name: values.name,
               url: values.url,
