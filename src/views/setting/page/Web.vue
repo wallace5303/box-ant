@@ -1,11 +1,14 @@
 <template>
   <div>
+    <a-spin :spinning="loading"/>
     <a-row :gutter="24">
       <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
-        <div :key="wtid" v-for="(webs, wtid) in webList">
+        <div>
           <a-card
-            class="project-list"
+            :key="wtid"
             :loading="loading"
+            v-for="(webs, wtid) in webList"
+            class="project-list"
             style="margin-bottom: 24px;"
             :bordered="false"
             :title="webs.title"
