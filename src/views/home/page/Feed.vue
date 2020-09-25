@@ -35,7 +35,7 @@ import { ArticleListContent } from '@/components'
 import IconText from '@/views/list/search/components/IconText'
 
 export default {
-  name: 'Article',
+  name: 'Feed',
   components: {
     IconText,
     ArticleListContent

@@ -1,77 +1,75 @@
 <template>
-  <div class="app-list">
-    <a-list
-      :grid="{ gutter: 24, lg: 6, md: 2, sm: 1, xs: 1 }"
-      :dataSource="dataSource">
-      <a-list-item slot="renderItem" slot-scope="item">
-        <a-card :hoverable="true">
-          <a-card-meta >
-            <div style="margin-bottom: 3px" slot="title">{{ item.title }}</div>
-            <a-avatar class="card-avatar" slot="avatar" :src="item.avatar" size="small"/>
-          </a-card-meta>
-          <!-- <template class="ant-card-actions" slot="actions">
-            <a>
-              <a-icon type="edit"/>
-            </a>
-          </template> -->
-        </a-card>
-      </a-list-item>
-    </a-list>
-
-  </div>
+  <a-list
+    size="large"
+    rowKey="id"
+    :loading="loading"
+    itemLayout="vertical"
+    :dataSource="data"
+  >
+    <a-list-item :key="item.id" slot="renderItem" slot-scope="item">
+      <template slot="actions">
+        <icon-text type="star-o" :text="item.star" />
+        <icon-text type="like-o" :text="item.like" />
+        <icon-text type="message" :text="item.message" />
+      </template>
+      <a-list-item-meta>
+        <a slot="title" href="https://vue.ant.design/">{{ item.title }}</a>
+        <template slot="description">
+          <span>
+            <a-tag>Ant Design</a-tag>
+            <a-tag>设计语言</a-tag>
+            <a-tag>蚂蚁金服</a-tag>
+          </span>
+        </template>
+      </a-list-item-meta>
+      <article-list-content :description="item.description" :owner="item.owner" :avatar="item.avatar" :href="item.href" :updateAt="item.updatedAt" />
+    </a-list-item>
+    <div slot="footer" v-if="data.length > 0" style="text-align: center; margin-top: 16px;">
+      <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
+    </div>
+  </a-list>
 </template>
 
 <script>
-const dataSource = []
-for (let i = 0; i < 11; i++) {
-  dataSource.push({
-    title: 'Alipay',
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
-    activeUser: 17,
-    newUser: 1700
-  })
-}
+import { ArticleListContent } from '@/components'
+import IconText from '@/views/list/search/components/IconText'
 
 export default {
   name: 'Feed',
-  components: {},
+  components: {
+    IconText,
+    ArticleListContent
+  },
   data () {
     return {
-      dataSource
+      loading: true,
+      loadingMore: false,
+      data: []
+    }
+  },
+  mounted () {
+    this.getList()
+  },
+  methods: {
+    getList () {
+      this.$http.get('/list/article').then(res => {
+        console.log('res', res)
+        this.data = res.result
+        this.loading = false
+      })
+    },
+    loadMore () {
+      this.loadingMore = true
+      this.$http.get('/list/article').then(res => {
+        this.data = this.data.concat(res.result)
+      }).finally(() => {
+        this.loadingMore = false
+      })
     }
   }
 }
 </script>
 
-<style lang="less" scoped>
-
-  .app-list {
-
-    .meta-cardInfo {
-      zoom: 1;
-      margin-top: 16px;
-
-      > div {
-        position: relative;
-        text-align: left;
-        float: left;
-        width: 50%;
-
-        p {
-          line-height: 32px;
-          font-size: 24px;
-          margin: 0;
-
-          &:first-child {
-            color: rgba(0, 0, 0, .45);
-            font-size: 12px;
-            line-height: 20px;
-            margin-bottom: 4px;
-          }
-        }
-
-      }
-    }
-  }
+<style scoped>
 
 </style>

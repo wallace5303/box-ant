@@ -14,9 +14,15 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/account/center',
+    redirect: '/home',
     children: [
-
+      // home
+      {
+        path: '/home',
+        name: 'home',
+        component: () => import('@/views/home'),
+        meta: { title: 'menu.home', keepAlive: true, icon: 'home' }
+      },
       // account
       {
         path: '/account',
@@ -52,22 +58,6 @@ export const asyncRouterMap = [
                 meta: { title: 'menu.user.secret', hidden: true, keepAlive: true, permission: [ 'user' ] }
               }
             ]
-          }
-        ]
-      },
-      // dashboard
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        redirect: '/dashboard/workplace',
-        component: RouteView,
-        meta: { title: 'menu.dashboard', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
-        children: [
-          {
-            path: '/dashboard/workplace',
-            name: 'Workplace',
-            component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: 'menu.dashboard.workplace', keepAlive: true, permission: [ 'dashboard' ] }
           }
         ]
       }
@@ -114,7 +104,7 @@ export const constantRouterMap = [
 
   {
     path: '/404',
-    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404')
+    component: () => import(/* webpackChunkName: "fail" */ '@/views/404')
   }
 
 ]
