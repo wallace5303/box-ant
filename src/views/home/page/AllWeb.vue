@@ -112,7 +112,6 @@ export default {
       this.mdl = { ...record }
     },
     getAllWebs () {
-      this.loading = true
       const params = {
         out_url: 'allWebSites',
         method: 'POST',
