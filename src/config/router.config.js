@@ -23,6 +23,13 @@ export const asyncRouterMap = [
         component: () => import('@/views/home'),
         meta: { title: 'menu.home', keepAlive: true, icon: 'home' }
       },
+      // manage
+      {
+        path: '/manage',
+        name: 'manage',
+        component: () => import('@/views/manage'),
+        meta: { title: 'menu.manage', keepAlive: true, icon: 'appstore' }
+      },
       // setting
       {
         path: '/setting',

@@ -10,16 +10,8 @@ const components = {
 const locale = {
   'message': '-',
   'menu.home': '主页',
-  'menu.dashboard': '仪表盘',
-  'menu.dashboard.analysis': '分析页',
-  'menu.dashboard.monitor': '监控页',
-  'menu.dashboard.workplace': '工作台',
-
-  'menu.user.center': '用户中心',
-  'menu.user.my': '我的',
-  'menu.user.setting': '设置',
-  'menu.user.base': '基本设置',
-  'menu.user.secret': '安全设置'
+  'menu.manage': '管理',
+  'menu.setting': '设置'
 }
 
 export default {
