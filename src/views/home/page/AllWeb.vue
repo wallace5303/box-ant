@@ -109,7 +109,11 @@ export default {
     },
     handleEdit (record) {
       this.visible = true
-      this.mdl = { ...record }
+      this.mdl = {
+        id: record.wsid,
+        name: record.name,
+        url: record.url
+      }
     },
     getAllWebs () {
       const params = {
@@ -145,6 +149,7 @@ export default {
       const form = this.$refs.webSaveModal.form
       this.confirmLoading = true
       form.validateFields((errors, values) => {
+        console.log('allweb values:', values)
         if (!errors) {
           const saveMySiteParams = {
             out_url: 'saveSite',

@@ -10,7 +10,7 @@
     <a-spin :spinning="loading">
       <a-form :form="form" v-bind="formLayout">
         <a-form-item>
-          <a-input v-decorator="['wsid', { initialValue: 0 }]" type="hidden" />
+          <a-input v-decorator="['id', { initialValue: 0 }]" type="hidden" />
         </a-form-item>
         <a-form-item
           label="类型"
@@ -45,7 +45,7 @@
 import pick from 'lodash.pick'
 
 // 表单字段
-const fields = ['wsid', 'type', 'name', 'url']
+const fields = ['id', 'type', 'name', 'url']
 
 export default {
   props: {
