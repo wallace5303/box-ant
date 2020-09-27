@@ -1,5 +1,5 @@
-import FeedPage from './Feed'
-import WebPage from './Web'
-import AllWebPage from './AllWeb'
+import WebSiteManage from './WebSiteManage'
+import FeedManage from './FeedManage'
+import UserCenter from './UserCenter'
 
-export { FeedPage, AllWebPage, WebPage }
+export { WebSiteManage, FeedManage, UserCenter }

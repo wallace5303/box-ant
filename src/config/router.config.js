@@ -28,15 +28,15 @@ export const asyncRouterMap = [
         path: '/manage',
         name: 'manage',
         component: () => import('@/views/manage'),
-        meta: { title: 'menu.manage', keepAlive: true, icon: 'appstore' }
-      },
-      // setting
-      {
-        path: '/setting',
-        name: 'setting',
-        component: () => import('@/views/setting'),
-        meta: { title: 'menu.setting', keepAlive: true, icon: 'setting' }
+        meta: { title: 'menu.manage', keepAlive: true, icon: 'setting' }
       }
+      // // setting
+      // {
+      //   path: '/setting',
+      //   name: 'setting',
+      //   component: () => import('@/views/setting'),
+      //   meta: { title: 'menu.setting', keepAlive: true, icon: 'setting' }
+      // }
       // account
       // {
       //   path: '/account',

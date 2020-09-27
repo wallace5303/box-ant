@@ -20,7 +20,7 @@
 
 <script>
 import { PageView, RouteView } from '@/layouts'
-import { FeedPage, WebPage, AllWebPage } from './page'
+import { WebSiteManage, FeedManage, UserCenter } from './page'
 
 import { mapGetters } from 'vuex'
 
@@ -28,27 +28,27 @@ export default {
   components: {
     RouteView,
     PageView,
-    FeedPage,
-    AllWebPage,
-    WebPage
+    WebSiteManage,
+    FeedManage,
+    UserCenter
   },
   data () {
     return {
       tabListNoTitle: [
         {
-          key: 'feed',
-          tab: '动态'
+          key: 'web_site_manage',
+          tab: '网址管理'
         },
         {
-          key: 'all_web',
-          tab: '全部'
+          key: 'feed_manage',
+          tab: '动态管理'
         },
         {
-          key: 'web',
-          tab: '我的'
+          key: 'user_center',
+          tab: '个人中心'
         }
       ],
-      noTitleKey: 'feed'
+      noTitleKey: 'web_site_manage'
     }
   },
   computed: {
