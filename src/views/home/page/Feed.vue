@@ -57,15 +57,13 @@ import FeedList from './modules/FeedList'
 import IconText from '@/views/home/page/components/IconText'
 import { outApi } from '@/api/main'
 import WebForm from './modules/WebSaveForm'
-import { TagSelect, StandardFormRow } from '@/components'
-const TagSelectOption = TagSelect.Option
+import { StandardFormRow } from '@/components'
 
 export default {
   name: 'Feed',
   components: {
     FeedList,
     StandardFormRow,
-    TagSelectOption,
     WebForm,
     IconText
   },

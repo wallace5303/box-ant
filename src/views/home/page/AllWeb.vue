@@ -1,65 +1,79 @@
 <template>
-  <a-card
-    style="margin-top: 24px"
-    :bordered="false"
-    title="站点">
-    <div slot="extra" style="margin-left: initial">
+  <div>
+    <standard-form-row title="" block style="padding-bottom: 11px;">
       <a-radio-group v-model="status" @change="handleChangeType(status)">
         <a-radio-button value="wsid">最新</a-radio-button>
         <a-radio-button value="col_times">收藏最多</a-radio-button>
         <a-radio-button value="sort">推荐</a-radio-button>
       </a-radio-group>
       <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
-    </div>
-    <a-list :loading="loading" size="large" :pagination="paginationOpt">
-      <a-list-item :key="index" v-for="(item, index) in webList">
-        <a-list-item-meta :description="item.desc">
-          <a-avatar
-            style="color: #f56a00;backgroundColor:#fff"
-            slot="avatar"
-            size="default"
-            shape="square"
-            :src="item.img"
-            icon="tag">
-          </a-avatar>
-          <a slot="title">{{ item.name }}</a>
-        </a-list-item-meta>
-        <div class="list-times">
-          <div class="list-content-item">
-            <a-icon type="star-o" style="margin-right: 8px" />
-            <span>{{ item.col_times }}</span>
+    </standard-form-row>
+    <a-card
+      style="margin-top: 0px"
+      :bordered="true"
+      title="">
+      <!-- <div slot="extra" style="margin-left: initial">
+        <a-radio-group v-model="status" @change="handleChangeType(status)">
+          <a-radio-button value="wsid">最新</a-radio-button>
+          <a-radio-button value="col_times">收藏最多</a-radio-button>
+          <a-radio-button value="sort">推荐</a-radio-button>
+        </a-radio-group>
+        <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
+      </div> -->
+      <div class="operate">
+        <a-button type="dashed" style="width: 100%">添加后 - 在“我的”查看</a-button>
+      </div>
+      <a-list :loading="loading" size="large" :pagination="paginationOpt">
+        <a-list-item :key="index" v-for="(item, index) in webList" style="padding-top: 10px;padding-bottom: 10px;">
+          <a-list-item-meta :description="item.desc">
+            <a-avatar
+              style="color: #f56a00;backgroundColor:#fff"
+              slot="avatar"
+              size="default"
+              shape="square"
+              :src="item.img"
+              icon="tag">
+            </a-avatar>
+            <a slot="title">{{ item.name }}</a>
+          </a-list-item-meta>
+          <div class="list-times">
+            <div class="list-content-item">
+              <a-icon type="star-o" style="margin-right: 8px" />
+              <span>{{ item.col_times }}</span>
+            </div>
           </div>
-        </div>
-        <div class="list-view">
-          <div class="list-content-item">
-            <a :href="item.url" target="_blank">查看</a>
+          <div class="list-view">
+            <div class="list-content-item">
+              <a :href="item.url" target="_blank">查看</a>
+            </div>
           </div>
-        </div>
-        <div class="list-view">
-          <a @click="handleEdit(item)">添加</a>
-        </div>
-      </a-list-item>
-    </a-list>
-    <web-form
-      ref="webSaveModal"
-      :visible="visible"
-      :loading="confirmLoading"
-      :model="mdl"
-      @cancel="handleCancel"
-      @ok="handleOk"
-    />
-  </a-card>
-
+          <div class="list-view">
+            <a @click="handleEdit(item)">添加</a>
+          </div>
+        </a-list-item>
+      </a-list>
+      <web-form
+        ref="webSaveModal"
+        :visible="visible"
+        :loading="confirmLoading"
+        :model="mdl"
+        @cancel="handleCancel"
+        @ok="handleOk"
+      />
+    </a-card>
+  </div>
 </template>
 
 <script>
 import WebForm from './modules/WebSaveForm'
 import { outApi } from '@/api/main'
+import { StandardFormRow } from '@/components'
 
 export default {
   name: 'StandardList',
   components: {
-    WebForm
+    WebForm,
+    StandardFormRow
   },
   data () {
     return {
