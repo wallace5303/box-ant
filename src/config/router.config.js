@@ -28,7 +28,7 @@ export const asyncRouterMap = [
         path: '/setting',
         name: 'setting',
         component: () => import('@/views/setting'),
-        meta: { title: 'menu.setting', keepAlive: true, icon: 'home' }
+        meta: { title: 'menu.setting', keepAlive: true, icon: 'setting' }
       }
       // account
       // {

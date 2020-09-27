@@ -8,6 +8,9 @@
       </a-radio-group>
       <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
     </standard-form-row>
+    <div class="operate">
+      <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">发布</a-button>
+    </div>
     <a-list
       size="large"
       rowKey="id"
@@ -40,15 +43,23 @@
       <div slot="footer" v-if="pageInfo.next_page_url" style="text-align: center; margin-top: 16px;">
         <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
       </div>
-      <web-form
-        ref="webSaveModal"
-        :visible="visible"
-        :loading="confirmLoading"
-        :model="mdl"
-        @cancel="handleCancel"
-        @ok="handleOk"
-      />
     </a-list>
+    <web-form
+      ref="webSaveModal"
+      :visible="visible"
+      :loading="confirmLoading"
+      :model="mdl"
+      @cancel="handleCancel"
+      @ok="handleOk"
+    />
+    <feed-add-form
+      ref="feedAddModal"
+      :visible="addFeedVisible"
+      :loading="feedConfirmLoading"
+      :model="mdl2"
+      @cancel="handleCancelFeed"
+      @ok="handleOkFeed"
+    />
   </div>
 </template>
 
@@ -57,6 +68,7 @@ import FeedList from './modules/FeedList'
 import IconText from '@/views/home/page/components/IconText'
 import { outApi } from '@/api/main'
 import WebForm from './modules/WebSaveForm'
+import FeedAddForm from './modules/FeedAddForm'
 import { StandardFormRow } from '@/components'
 
 export default {
@@ -65,6 +77,7 @@ export default {
     FeedList,
     StandardFormRow,
     WebForm,
+    FeedAddForm,
     IconText
   },
   data () {
@@ -84,8 +97,11 @@ export default {
       clickColTimes: [],
       clickLikeTimes: [],
       visible: false,
+      addFeedVisible: false,
       confirmLoading: false,
-      mdl: null
+      feedConfirmLoading: false,
+      mdl: null,
+      mdl2: null
     }
   },
   mounted () {
@@ -106,6 +122,17 @@ export default {
       this.queryParam.desc = ''
       this.feedList = []
       this.getFeedList()
+    },
+    handleAdd () {
+      this.addFeedVisible = true
+      this.mdl2 = {
+        title: '',
+        type: 0,
+        content: '',
+        url: '',
+        link: '',
+        pic: ''
+      }
     },
     handleEdit (record) {
       this.visible = true
@@ -159,6 +186,7 @@ export default {
       return false
     },
     getFeedList () {
+      this.loading = true
       const params = {
         out_url: 'feedList',
         method: 'POST',
@@ -190,8 +218,12 @@ export default {
       this.confirmLoading = false
       const form = this.$refs.webSaveModal.form
     },
+    handleCancelFeed () {
+      this.addFeedVisible = false
+      this.feedConfirmLoading = false
+      const form = this.$refs.feedAddModal.form
+    },
     handleOk () {
-      // console.log('webInfo', webInfo)
       const form = this.$refs.webSaveModal.form
       this.confirmLoading = true
       form.validateFields((errors, values) => {
@@ -215,17 +247,46 @@ export default {
               return
             }
             this.visible = false
-            this.clickData[values.id] = {
-              fid: values.id,
-              col_incr: 1,
-              like_incr: 1
-            }
             this.$message.info('添加成功')
           }).catch(err => {
             console.log('err:', err)
           })
         } else {
           this.confirmLoading = false
+        }
+      })
+    },
+    handleOkFeed () {
+      const form = this.$refs.feedAddModal.form
+      this.feedConfirmLoading = true
+      form.validateFields((errors, values) => {
+        console.log('add feed values:', values)
+        if (!errors) {
+          const params = {
+            out_url: 'feedSend',
+            method: 'POST',
+            data: {
+              title: values.title,
+              link: values.link,
+              url: values.url,
+              content: values.content,
+              pic: values.pic
+            }
+          }
+          outApi(params).then(res => {
+            this.feedConfirmLoading = false
+            if (res.code !== 0) {
+              this.$message.info('添加失败')
+              return
+            }
+            this.addFeedVisible = false
+            this.$message.info('添加成功')
+            this.handleChangeType('fid')
+          }).catch(err => {
+            console.log('err:', err)
+          })
+        } else {
+          this.feedConfirmLoading = false
         }
       })
     }
