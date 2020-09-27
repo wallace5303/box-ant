@@ -1,45 +1,55 @@
 <template>
-  <a-list
-    size="large"
-    rowKey="id"
-    :loading="loading"
-    itemLayout="vertical"
-    :dataSource="feedList"
-  >
-    <a-list-item :key="item.id" slot="renderItem" slot-scope="item">
-      <template slot="actions">
-        <a @click="handleEdit(item)"><icon-text type="star-o" :text="item.col_times"/></a>
-        <a @click="handleLike(item)"><icon-text type="like-o" :text="item.like" /></a>
-      </template>
-      <a-list-item-meta>
-        <a slot="title"><strong>{{ item.title }}</strong></a>
-        <template slot="description">
-          <span v-if="item.url">
-            <a :href="item.url" target="_blank"><a-tag>{{ item.url }}</a-tag></a>
-          </span>
+  <div>
+    <standard-form-row title="" block style="padding-bottom: 11px;">
+      <a-radio-group v-model="status" @change="handleChangeType(status)">
+        <a-radio-button value="sort">推荐</a-radio-button>
+        <a-radio-button value="fid">最新</a-radio-button>
+        <a-radio-button value="col_times">收藏最多</a-radio-button>
+      </a-radio-group>
+      <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
+    </standard-form-row>
+    <a-list
+      size="large"
+      rowKey="id"
+      :loading="loading"
+      itemLayout="vertical"
+      :dataSource="feedList"
+    >
+      <a-list-item :key="item.id" slot="renderItem" slot-scope="item">
+        <template slot="actions">
+          <a @click="handleEdit(item)"><icon-text type="star-o" :text="item.col_times"/></a>
+          <a @click="handleLike(item)"><icon-text type="like-o" :text="item.like" /></a>
         </template>
-      </a-list-item-meta>
-      <img
-        v-if="item.pic"
-        slot="extra"
-        width="272"
-        alt="pic"
-        :src="item.pic"
+        <a-list-item-meta>
+          <a slot="title"><strong>{{ item.title }}</strong></a>
+          <template slot="description">
+            <span v-if="item.url">
+              <a :href="item.url" target="_blank"><a-tag>{{ item.url }}</a-tag></a>
+            </span>
+          </template>
+        </a-list-item-meta>
+        <img
+          v-if="item.pic"
+          slot="extra"
+          width="272"
+          alt="pic"
+          :src="item.pic"
+        />
+        <feed-list :description="item.content" :owner="item.username" :avatar="item.avatar" :href="item.link" :updateAt="item.created_at" />
+      </a-list-item>
+      <div slot="footer" v-if="pageInfo.next_page_url" style="text-align: center; margin-top: 16px;">
+        <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
+      </div>
+      <web-form
+        ref="webSaveModal"
+        :visible="visible"
+        :loading="confirmLoading"
+        :model="mdl"
+        @cancel="handleCancel"
+        @ok="handleOk"
       />
-      <feed-list :description="item.content" :owner="item.username" :avatar="item.avatar" :href="item.link" :updateAt="item.created_at" />
-    </a-list-item>
-    <div slot="footer" v-if="pageInfo.next_page_url" style="text-align: center; margin-top: 16px;">
-      <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
-    </div>
-    <web-form
-      ref="webSaveModal"
-      :visible="visible"
-      :loading="confirmLoading"
-      :model="mdl"
-      @cancel="handleCancel"
-      @ok="handleOk"
-    />
-  </a-list>
+    </a-list>
+  </div>
 </template>
 
 <script>
@@ -47,11 +57,15 @@ import FeedList from './modules/FeedList'
 import IconText from '@/views/home/page/components/IconText'
 import { outApi } from '@/api/main'
 import WebForm from './modules/WebSaveForm'
+import { TagSelect, StandardFormRow } from '@/components'
+const TagSelectOption = TagSelect.Option
 
 export default {
   name: 'Feed',
   components: {
     FeedList,
+    StandardFormRow,
+    TagSelectOption,
     WebForm,
     IconText
   },
@@ -62,10 +76,11 @@ export default {
       feedList: [],
       pageInfo: {},
       data: [],
+      status: 'sort',
       // 查询参数
       queryParam: {
         page: 1,
-        sort: 'fid', // fid like col_times
+        sort: 'sort', // fid like col_times sort
         desc: ''
       },
       clickColTimes: [],
@@ -79,6 +94,21 @@ export default {
     this.getFeedList()
   },
   methods: {
+    handleSearch (value) {
+      this.queryParam.sort = 'col_times'
+      this.queryParam.page = 1
+      this.queryParam.desc = value
+      this.feedList = []
+      this.getFeedList()
+    },
+    handleChangeType (status) {
+      this.status = status
+      this.queryParam.sort = status
+      this.queryParam.page = 1
+      this.queryParam.desc = ''
+      this.feedList = []
+      this.getFeedList()
+    },
     handleEdit (record) {
       this.visible = true
       this.mdl = {
