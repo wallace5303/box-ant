@@ -8,8 +8,8 @@
   >
     <a-list-item :key="item.id" slot="renderItem" slot-scope="item">
       <template slot="actions">
-        <a @click="handleEdit(item)"><icon-text type="star-o" :text="item.col_times + (clickData[item.id] ? clickData[item.id].col_incr : 0)"/></a>
-        <icon-text type="like-o" :text="item.like" />
+        <a @click="handleEdit(item)"><icon-text type="star-o" :text="item.col_times"/></a>
+        <a @click="handleLike(item)"><icon-text type="like-o" :text="item.like" /></a>
       </template>
       <a-list-item-meta>
         <a slot="title"><strong>{{ item.title }}</strong></a>
@@ -68,7 +68,8 @@ export default {
         sort: 'fid', // fid like col_times
         desc: ''
       },
-      clickData: {},
+      clickColTimes: [],
+      clickLikeTimes: [],
       visible: false,
       confirmLoading: false,
       mdl: null
@@ -85,6 +86,49 @@ export default {
         name: record.title,
         url: record.url
       }
+      if (!this.hasExistedColId(record.fid)) {
+        record.col_times += 1
+        this.clickColTimes.push(record.fid)
+      }
+    },
+    handleLike (record) {
+      if (!this.hasExistedLikeId(record.fid)) {
+        this.clickLikeTimes.push(record.fid)
+        record.like += 1
+        this.dataIncr(record, 'like')
+      }
+    },
+    dataIncr (record, type) {
+      const params = {
+        out_url: 'dataIncr',
+        method: 'POST',
+        data: {
+          fid: record.fid,
+          type: type
+        }
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return
+        }
+        this.$message.info('+1')
+      }).catch(err => {
+        console.log('err:', err)
+      })
+    },
+    hasExistedColId (id) {
+      const set = new Set(this.clickColTimes)
+      if (set.has(id)) {
+        return true
+      }
+      return false
+    },
+    hasExistedLikeId (id) {
+      const set = new Set(this.clickLikeTimes)
+      if (set.has(id)) {
+        return true
+      }
+      return false
     },
     getFeedList () {
       const params = {
