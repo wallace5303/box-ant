@@ -9,9 +9,9 @@
           :activeTabKey="noTitleKey"
           @tabChange="key => handleTabChange(key, 'noTitleKey')"
         >
-          <feed-page v-if="noTitleKey === 'feed'"></feed-page>
-          <web-page v-else-if="noTitleKey === 'web'"></web-page>
-          <all-web-page v-else-if="noTitleKey === 'all_web'"></all-web-page>
+          <web-site-manage v-if="noTitleKey === 'web_site_manage'"></web-site-manage>
+          <feed-manage v-else-if="noTitleKey === 'feed_manage'"></feed-manage>
+          <user-center v-else-if="noTitleKey === 'user_center'"></user-center>
         </a-card>
       </a-col>
     </a-row>
