@@ -351,7 +351,7 @@ const dataObj = {
       'name': '游客',
       'username': 'guest',
       'password': '',
-      'avatar': '/avatar2.jpg',
+      'avatar': '/avatar.jpg',
       'status': 1,
       'telephone': '',
       'lastLoginIp': '27.154.74.118',

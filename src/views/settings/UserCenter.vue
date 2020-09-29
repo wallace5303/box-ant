@@ -3,55 +3,43 @@
     <a-row :gutter="16">
       <a-col :md="24" :lg="16">
 
-        <a-form layout="vertical">
-          <a-form-item
-            label="昵称"
-          >
-            <a-input placeholder="给自己起个名字" />
+        <a-form :form="form" layout="vertical" @submit="handleSubmit">
+          <a-form-item>
+            <a-input v-decorator="['uid', { initialValue: 0 }]" type="hidden" />
           </a-form-item>
           <a-form-item
-            label="Bio"
+            label="用户名"
           >
-            <a-textarea rows="4" placeholder="You are not alone."/>
+            <a-input v-decorator="['username', {rules:[{ required: true, message: '请填写用户名' }, { min: 6, message: '不能小于4个字符' }]}]" />
           </a-form-item>
-
           <a-form-item
             label="电子邮件"
-            :required="false"
           >
-            <a-input placeholder="exp@admin.com"/>
+            <a-input v-decorator="['email', {rules:[{required: true, message: '请填写邮箱'}]}]" />
           </a-form-item>
           <a-form-item
-            label="加密方式"
-            :required="false"
+            label="手机号"
           >
-            <a-select defaultValue="aes-256-cfb">
-              <a-select-option value="aes-256-cfb">aes-256-cfb</a-select-option>
-              <a-select-option value="aes-128-cfb">aes-128-cfb</a-select-option>
-              <a-select-option value="chacha20">chacha20</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item
-            label="连接密码"
-            :required="false"
-          >
-            <a-input placeholder="h3gSbecd"/>
+            <a-input v-decorator="['phone']" />
           </a-form-item>
           <a-form-item
             label="登录密码"
-            :required="false"
           >
-            <a-input placeholder="密码"/>
+            <a-input type="password" v-decorator="['password', {rules:[{required: true, message: '请填写密码'}, { min: 6, message: '密码不能少于6个字符' }]}]" />
+          </a-form-item>
+          <a-form-item
+            label="确认密码"
+          >
+            <a-input type="password" v-decorator="['password2', {rules:[{required: true, message: '请确认密码'}, { min: 6, message: '密码不能少于6个字符' }]}]" />
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary">提交</a-button>
-            <a-button style="margin-left: 8px">保存</a-button>
+            <a-button type="primary" html-type="submit">提交</a-button>
           </a-form-item>
         </a-form>
 
       </a-col>
-      <a-col :md="24" :lg="8" :style="{ minHeight: '180px' }">
+      <!-- <a-col :md="24" :lg="8" :style="{ minHeight: '180px' }">
         <div class="ant-upload-preview" @click="$refs.modal.edit(1)" >
           <a-icon type="cloud-upload-o" class="upload-icon"/>
           <div class="mask">
@@ -59,17 +47,23 @@
           </div>
           <img :src="option.img"/>
         </div>
-      </a-col>
+      </a-col> -->
 
     </a-row>
 
-    <avatar-modal ref="modal" @ok="setavatar"/>
+    <!-- <avatar-modal ref="modal" @ok="setavatar"/> -->
 
   </div>
 </template>
 
 <script>
+import pick from 'lodash.pick'
 import AvatarModal from './AvatarModal'
+import { outApi } from '@/api/main'
+import { forEach } from 'store/storages/all'
+
+// 表单字段
+const fields = ['uid', 'username', 'email', 'phone', 'passwrod', 'passwrod2']
 
 export default {
   components: {
@@ -80,7 +74,7 @@ export default {
       // cropper
       preview: {},
       option: {
-        img: '/avatar2.jpg',
+        img: '/avatar.jpg',
         info: true,
         size: 1,
         outputType: 'jpeg',
@@ -93,12 +87,83 @@ export default {
         // 开启宽度和高度比例
         fixed: true,
         fixedNumber: [1, 1]
-      }
+      },
+      userinfo: {},
+      confirmLoading: false,
+      form: this.$form.createForm(this)
     }
+  },
+  created () {
+    // 防止表单未注册
+    fields.forEach(v => this.form.getFieldDecorator(v))
+
+    // 当 userinfo 发生改变时，为表单设置值
+    this.$watch('userinfo', () => {
+      this.userinfo && this.form.setFieldsValue(pick(this.userinfo, fields))
+    })
+  },
+  mounted () {
+    this.getUserInfo()
   },
   methods: {
     setavatar (url) {
       this.option.img = url
+    },
+    getUserInfo () {
+      const params = {
+        out_url: 'userinfo',
+        method: 'POST',
+        data: {}
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return
+        }
+        this.userinfo = res.data
+      }).catch(err => {
+        console.log('err:', err)
+      })
+    },
+    handleSubmit (e) {
+      e.preventDefault()
+      this.form.validateFields((errors, values) => {
+        console.log('user values:', values)
+        if (!errors) {
+          if (values.password !== values.password2) {
+            this.$message.error('请检查两次输入的密码')
+            return false
+          }
+          const params = {
+            out_url: 'saveUser',
+            method: 'POST',
+            data: {
+              username: values.username,
+              email: values.email,
+              phone: values.phone,
+              password: values.password
+            }
+          }
+          outApi(params).then(res => {
+            if (res.code !== 0) {
+              this.$message.error(res.message)
+              return false
+            }
+            this.getUserInfo()
+          }).catch(err => {
+            console.log('err:', err)
+          })
+        } else {
+          console.log('errors:', errors)
+          // for (const key in errors) {
+          //   console.log('key:', key)
+          //   for (let i = 0; i < key.errors.length; i++) {
+          //     const one = key.errors[i]
+          //     this.$message.error(one['message'])
+          //   }
+          // }
+          // this.confirmLoading = false
+        }
+      })
     }
   }
 }

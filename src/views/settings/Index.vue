@@ -15,11 +15,11 @@
                 基本设置
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/settings/security">
+            <!-- <a-menu-item key="/settings/security">
               <router-link :to="{ name: 'SecuritySettings' }">
                 安全设置
               </router-link>
-            </a-menu-item>
+            </a-menu-item> -->
           </a-menu>
         </div>
         <div class="account-settings-info-right">
@@ -53,7 +53,7 @@ export default {
       // cropper
       preview: {},
       option: {
-        img: '/avatar2.jpg',
+        img: '/avatar.jpg',
         info: true,
         size: 1,
         outputType: 'jpeg',
