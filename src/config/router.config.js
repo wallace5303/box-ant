@@ -24,57 +24,35 @@ export const asyncRouterMap = [
         meta: { title: 'menu.home', keepAlive: true, icon: 'home' }
       },
       // manage
+      // {
+      //   path: '/manage',
+      //   name: 'manage',
+      //   component: () => import('@/views/manage'),
+      //   meta: { title: 'menu.manage', keepAlive: true, icon: 'setting' }
+      // },
+      // setting
       {
-        path: '/manage',
-        name: 'manage',
-        component: () => import('@/views/manage'),
-        meta: { title: 'menu.manage', keepAlive: true, icon: 'setting' }
+        path: '/settings',
+        name: 'settings',
+        component: () => import('@/views/settings/Index'),
+        meta: { title: 'menu.settings', hideHeader: true, icon: 'setting' },
+        redirect: '/settings/base',
+        hideChildrenInMenu: true,
+        children: [
+          {
+            path: '/settings/base',
+            name: 'UserCenterSettings',
+            component: () => import('@/views/settings/UserCenter'),
+            meta: { title: '个人信息', hidden: true, keepAlive: true }
+          },
+          {
+            path: '/settings/security',
+            name: 'SecuritySettings',
+            component: () => import('@/views/settings/Security'),
+            meta: { title: '安全设置', hidden: true, keepAlive: true }
+          }
+        ]
       }
-      // // setting
-      // {
-      //   path: '/setting',
-      //   name: 'setting',
-      //   component: () => import('@/views/setting'),
-      //   meta: { title: 'menu.setting', keepAlive: true, icon: 'setting' }
-      // }
-      // account
-      // {
-      //   path: '/account',
-      //   component: RouteView,
-      //   redirect: '/account/center',
-      //   name: 'account',
-      //   meta: { title: 'menu.user.center', icon: 'user', keepAlive: true, permission: [ 'user' ] },
-      //   children: [
-      //     {
-      //       path: '/account/center',
-      //       name: 'center',
-      //       component: () => import('@/views/account/center'),
-      //       meta: { title: 'menu.user.my', keepAlive: true, permission: [ 'user' ] }
-      //     },
-      //     {
-      //       path: '/account/settings',
-      //       name: 'settings',
-      //       component: () => import('@/views/account/settings/Index'),
-      //       meta: { title: 'menu.user.setting', hideHeader: true, permission: [ 'user' ] },
-      //       redirect: '/account/settings/base',
-      //       hideChildrenInMenu: true,
-      //       children: [
-      //         {
-      //           path: '/account/settings/base',
-      //           name: 'BaseSettings',
-      //           component: () => import('@/views/account/settings/BaseSetting'),
-      //           meta: { title: 'menu.user.base', hidden: true, permission: [ 'user' ] }
-      //         },
-      //         {
-      //           path: '/account/settings/security',
-      //           name: 'SecuritySettings',
-      //           component: () => import('@/views/account/settings/Security'),
-      //           meta: { title: 'menu.user.secret', hidden: true, keepAlive: true, permission: [ 'user' ] }
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // }
     ]
   },
   {

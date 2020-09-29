@@ -29,7 +29,12 @@
             <span>{{ item.type_name }}</span>
           </div>
           <div class="list-number">
-            <span>排序：{{ item.sort }}</span>
+            <a-tooltip>
+              <template slot="title">
+                数字大的在前
+              </template>
+              <span>排序：{{ item.sort }}</span>
+            </a-tooltip>
           </div>
           <div class="list-view">
             <a :href="item.url" target="_blank">查看</a>

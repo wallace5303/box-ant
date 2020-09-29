@@ -11,7 +11,7 @@ const locale = {
   'message': '-',
   'menu.home': '主页',
   'menu.manage': '管理',
-  'menu.setting': '设置'
+  'menu.settings': '设置'
 }
 
 export default {
