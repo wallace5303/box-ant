@@ -12,6 +12,7 @@
           <feed-page v-if="noTitleKey === 'feed'"></feed-page>
           <web-page v-else-if="noTitleKey === 'web'"></web-page>
           <all-web-page v-else-if="noTitleKey === 'all_web'"></all-web-page>
+          <web-site-manage v-else-if="noTitleKey === 'web_site_manage'"></web-site-manage>
         </a-card>
       </a-col>
     </a-row>
@@ -20,7 +21,7 @@
 
 <script>
 import { PageView, RouteView } from '@/layouts'
-import { FeedPage, WebPage, AllWebPage } from './page'
+import { FeedPage, WebPage, AllWebPage, WebSiteManage } from './page'
 
 import { mapGetters } from 'vuex'
 
@@ -30,6 +31,7 @@ export default {
     PageView,
     FeedPage,
     AllWebPage,
+    WebSiteManage,
     WebPage
   },
   data () {
@@ -46,6 +48,10 @@ export default {
         {
           key: 'web',
           tab: '我的'
+        },
+        {
+          key: 'web_site_manage',
+          tab: '管理'
         }
       ],
       noTitleKey: 'feed'

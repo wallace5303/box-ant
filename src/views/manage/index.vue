@@ -9,8 +9,7 @@
           :activeTabKey="noTitleKey"
           @tabChange="key => handleTabChange(key, 'noTitleKey')"
         >
-          <web-site-manage v-if="noTitleKey === 'web_site_manage'"></web-site-manage>
-          <feed-manage v-else-if="noTitleKey === 'feed_manage'"></feed-manage>
+          <feed-manage v-if="noTitleKey === 'feed_manage'"></feed-manage>
           <user-center v-else-if="noTitleKey === 'user_center'"></user-center>
         </a-card>
       </a-col>
@@ -20,7 +19,7 @@
 
 <script>
 import { PageView, RouteView } from '@/layouts'
-import { WebSiteManage, FeedManage, UserCenter } from './page'
+import { FeedManage, UserCenter } from './page'
 
 import { mapGetters } from 'vuex'
 
@@ -28,17 +27,12 @@ export default {
   components: {
     RouteView,
     PageView,
-    WebSiteManage,
     FeedManage,
     UserCenter
   },
   data () {
     return {
       tabListNoTitle: [
-        {
-          key: 'web_site_manage',
-          tab: '网址管理'
-        },
         {
           key: 'feed_manage',
           tab: '动态管理'
@@ -48,7 +42,7 @@ export default {
           tab: '个人中心'
         }
       ],
-      noTitleKey: 'web_site_manage'
+      noTitleKey: 'user_center'
     }
   },
   computed: {

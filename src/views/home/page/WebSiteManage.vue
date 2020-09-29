@@ -14,34 +14,29 @@
       <div class="operate">
         <a-button type="dashed" style="width: 100%">添加</a-button>
       </div>
-      <a-list :loading="loading" size="large" :pagination="paginationOpt">
+      <a-list :loading="loading" size="large">
         <a-list-item :key="index" v-for="(item, index) in webList" style="padding-top: 10px;padding-bottom: 10px;">
-          <a-list-item-meta :description="item.desc">
+          <a-list-item-meta>
             <a-avatar
               style="color: #f56a00;backgroundColor:#fff"
               slot="avatar"
               size="default"
               shape="square"
-              :src="item.img"
               icon="tag">
             </a-avatar>
             <a slot="title">{{ item.name }}</a>
           </a-list-item-meta>
-          <div class="list-times">
-            <div class="list-content-item">
-              <a-icon type="star-o" style="margin-right: 8px" />
-              <span>{{ item.col_times }}</span>
-            </div>
-          </div>
           <div class="list-view">
-            <div class="list-content-item">
-              <a :href="item.url" target="_blank">查看</a>
-            </div>
-          </div>
-          <div class="list-view">
-            <a @click="handleEdit(item)">添加</a>
+            <a :href="item.url" target="_blank">查看</a>
+            <a-divider type="vertical" />
+            <a @click="handleEdit(item)">编辑</a>
+            <a-divider type="vertical" />
+            <a @click="handleEdit(item)">删除</a>
           </div>
         </a-list-item>
+        <div slot="footer" v-if="pageInfo.next_page_url" style="text-align: center; margin-top: 16px;">
+          <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
+        </div>
       </a-list>
       <web-form
         ref="webSaveModal"
@@ -68,20 +63,10 @@ export default {
   },
   data () {
     return {
-      webList: {},
-      webPageList: {},
-      paginationOpt: {
-        current: 1,
-        total: 0,
-        pageSize: 10,
-        'show-quick-jumper': true,
-        onChange: (current) => {
-          this.paginationOpt.current = current
-          this.queryParam.page = current
-          this.getManageUserSite()
-        }
-      },
+      webList: [],
+      pageInfo: {},
       loading: true,
+      loadingMore: false,
       // 查询参数
       queryParam: {
         page: 1,
@@ -116,7 +101,7 @@ export default {
         url: record.url
       }
     },
-    getAllWebs () {
+    getManageUserSite () {
       const params = {
         out_url: 'manageUserSite',
         method: 'POST',
@@ -126,16 +111,20 @@ export default {
       }
       outApi(params).then(res => {
         this.loading = false
+        this.loadingMore = false
         if (res.code !== 0) {
           return
         }
-        this.webPageList = res.data && res.data.list
-        this.webList = this.webPageList.data
-        this.paginationOpt.total = this.webPageList.total
-        this.paginationOpt.pageSize = this.webPageList.per_page
+        this.pageInfo = res.data.list
+        this.webList = this.webList.concat(this.pageInfo.data)
         }).catch(err => {
           console.log('err:', err)
         })
+    },
+    loadMore () {
+      this.loadingMore = true
+      this.queryParam.page += 1
+      this.getFeedList()
     },
     handleCancel () {
       this.visible = false
@@ -186,12 +175,8 @@ export default {
     height: 48px;
     line-height: 48px;
 }
-.list-times {
-  width: 10%;
-  text-align: left;
-}
 .list-view {
-  width: 10%;
+  width: 20%;
   text-align: center;
 }
 .list-content-item {
