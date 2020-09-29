@@ -45,7 +45,8 @@
             </a-popconfirm>
           </div>
         </a-list-item>
-        <div slot="footer" v-if="pageInfo.next_page_url" style="text-align: center; margin-top: 16px;">
+        <span />
+        <div slot="footer" v-if="pageInfo.next_page_url" style="text-align: center; margin-top: 1px;">
           <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
         </div>
       </a-list>
