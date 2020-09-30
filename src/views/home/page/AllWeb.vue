@@ -51,6 +51,7 @@
             <a @click="handleEdit(item)">添加</a>
           </div>
         </a-list-item>
+        <span />
       </a-list>
       <web-form
         ref="webSaveModal"
@@ -65,6 +66,8 @@
 </template>
 
 <script>
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import WebForm from './modules/WebSaveForm'
 import { outApi } from '@/api/main'
 import { StandardFormRow } from '@/components'
@@ -77,6 +80,7 @@ export default {
   },
   data () {
     return {
+      token: null,
       webList: {},
       webPageList: {},
       paginationOpt: {
@@ -106,8 +110,12 @@ export default {
   },
   mounted () {
     this.getAllWebs()
+    this.setToken()
   },
   methods: {
+    setToken () {
+      this.token = storage.get(ACCESS_TOKEN)
+    },
     handleSearch (value) {
       this.queryParam.sort = 'wsid'
       this.queryParam.page = 1
@@ -122,6 +130,10 @@ export default {
       this.getAllWebs()
     },
     handleEdit (record) {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       this.visible = true
       this.mdl = {
         id: record.wsid,

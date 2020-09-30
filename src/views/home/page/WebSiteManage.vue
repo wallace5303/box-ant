@@ -68,6 +68,8 @@
 </template>
 
 <script>
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import WebForm from './modules/UserWebForm'
 import { outApi } from '@/api/main'
 import { StandardFormRow } from '@/components'
@@ -80,6 +82,7 @@ export default {
   },
   data () {
     return {
+      token: null,
       webList: [],
       pageInfo: {},
       loading: true,
@@ -97,8 +100,12 @@ export default {
   },
   mounted () {
     this.getManageUserSite()
+    this.setToken()
   },
   methods: {
+    setToken () {
+      this.token = storage.get(ACCESS_TOKEN)
+    },
     handleSearch (value) {
       this.queryParam.sort = 'uwsid'
       this.queryParam.page = 1
@@ -112,6 +119,10 @@ export default {
       this.getManageUserSite()
     },
     handleAdd () {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       this.visible = true
       this.mdl = {
         id: 0,
@@ -140,6 +151,10 @@ export default {
       })
     },
     handleEdit (record) {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       this.visible = true
       this.mdl = {
         id: record.uwsid,

@@ -65,6 +65,8 @@
 </template>
 
 <script>
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import FeedList from './modules/FeedList'
 import IconText from '@/views/home/page/components/IconText'
 import { outApi } from '@/api/main'
@@ -89,6 +91,7 @@ export default {
       pageInfo: {},
       data: [],
       status: 'sort',
+      token: null,
       // 查询参数
       queryParam: {
         page: 1,
@@ -107,6 +110,7 @@ export default {
   },
   mounted () {
     this.getFeedList()
+    this.setToken()
   },
   methods: {
     handleSearch (value) {
@@ -125,6 +129,10 @@ export default {
       this.getFeedList()
     },
     handleAdd () {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       this.addFeedVisible = true
       this.mdl2 = {
         title: '',
@@ -135,7 +143,14 @@ export default {
         pic: ''
       }
     },
+    setToken () {
+      this.token = storage.get(ACCESS_TOKEN)
+    },
     handleEdit (record) {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       this.visible = true
       this.mdl = {
         id: record.fid,
@@ -148,6 +163,10 @@ export default {
       }
     },
     handleLike (record) {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       if (!this.hasExistedLikeId(record.fid)) {
         this.clickLikeTimes.push(record.fid)
         record.like += 1
@@ -228,7 +247,7 @@ export default {
       const form = this.$refs.webSaveModal.form
       this.confirmLoading = true
       form.validateFields((errors, values) => {
-        console.log('feed values:', values)
+        // console.log('feed values:', values)
         if (!errors) {
           const saveMySiteParams = {
             out_url: 'saveSite',
@@ -277,7 +296,7 @@ export default {
           outApi(params).then(res => {
             this.feedConfirmLoading = false
             if (res.code !== 0) {
-              this.$message.info('添加失败')
+              this.$message.error('添加失败')
               return
             }
             this.addFeedVisible = false
