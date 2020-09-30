@@ -54,7 +54,7 @@ export default {
           tab: '管理'
         }
       ],
-      noTitleKey: 'web_site_manage'
+      noTitleKey: 'feed'
     }
   },
   computed: {

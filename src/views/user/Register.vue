@@ -6,6 +6,19 @@
         <a-input
           size="large"
           type="text"
+          placeholder="用户名"
+          v-decorator="[
+            'username',
+            {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+          ]"
+        >
+          <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        </a-input>
+      </a-form-item>
+      <a-form-item>
+        <a-input
+          size="large"
+          type="text"
           placeholder="邮箱"
           v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}]"
         ></a-input>
@@ -148,6 +161,16 @@ export default {
     }
   },
   methods: {
+    handleUsernameOrEmail (rule, value, callback) {
+      const { state } = this
+      const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
+      if (regex.test(value)) {
+        state.loginType = 0
+      } else {
+        state.loginType = 1
+      }
+      callback()
+    },
     handlePasswordLevel (rule, value, callback) {
       let level = 0
 
