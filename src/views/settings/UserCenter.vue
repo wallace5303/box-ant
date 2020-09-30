@@ -57,6 +57,8 @@
 </template>
 
 <script>
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import pick from 'lodash.pick'
 import AvatarModal from './AvatarModal'
 import { outApi } from '@/api/main'
@@ -71,6 +73,7 @@ export default {
   },
   data () {
     return {
+      token: null,
       // cropper
       preview: {},
       option: {
@@ -103,13 +106,21 @@ export default {
     })
   },
   mounted () {
+    this.setToken()
     this.getUserInfo()
   },
   methods: {
+    setToken () {
+      this.token = storage.get(ACCESS_TOKEN)
+    },
     setavatar (url) {
       this.option.img = url
     },
     getUserInfo () {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       const params = {
         out_url: 'userinfo',
         method: 'POST',
@@ -126,6 +137,10 @@ export default {
     },
     handleSubmit (e) {
       e.preventDefault()
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       this.form.validateFields((errors, values) => {
         console.log('user values:', values)
         if (!errors) {
