@@ -88,7 +88,14 @@
           :disabled="state.loginBtn"
         >确定</a-button>
       </a-form-item>
-
+      <router-link :to="{ name: 'home' }">
+        <a-button
+          size="large"
+          type="dashed"
+          class="login-button"
+          @click="setGuest"
+        >随便看看</a-button>
+      </router-link>
       <div class="user-login-other">
         <!-- <span>其他登录方式</span>
         <a>
@@ -124,6 +131,8 @@ import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 import { getSmsCaptcha, get2step } from '@/api/login'
+import storage from 'store'
+import { USER_GUEST } from '@/store/mutation-types'
 
 export default {
   components: {
@@ -160,6 +169,9 @@ export default {
   },
   methods: {
     ...mapActions(['Login', 'Logout']),
+    setGuest () {
+      storage.set(USER_GUEST, 1)
+    },
     // handler
     handleUsernameOrEmail (rule, value, callback) {
       const { state } = this

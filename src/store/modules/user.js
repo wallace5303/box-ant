@@ -67,12 +67,17 @@ const user = {
           data: {}
         }
         outApi(params).then(response => {
-          if (response.code !== 0) {
-            reject(new Error('getInfo: roles must be a non-null array !'))
-            return
+          // if (response.code !== 0) {
+          //   reject(new Error('getInfo: roles must be a non-null array !'))
+          //   return
+          // }
+          let result = null
+          if (response.code === 0) {
+            result = response.data
+            result.role = dataObj.defaultUser.guest.role
+          } else {
+            result = dataObj.defaultUser.guest
           }
-          const result = response.data
-          result.role = dataObj.defaultUser.guest.role
           if (result.role && result.role.permissions.length > 0) {
             const role = result.role
             role.permissions = result.role.permissions
@@ -92,7 +97,7 @@ const user = {
           commit('SET_NAME', { name: result.username, welcome: welcome() })
           commit('SET_AVATAR', result.avatar)
 
-          resolve(response)
+          resolve(result)
         }).catch(error => {
           reject(error)
         })

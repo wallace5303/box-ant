@@ -5,7 +5,7 @@ import NProgress from 'nprogress' // progress bar
 import '@/components/NProgress/nprogress.less' // progress bar custom style
 import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, USER_GUEST } from '@/store/mutation-types'
 import { i18nRender } from '@/locales'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`))
   /* has token */
-  if (storage.get(ACCESS_TOKEN)) {
+  if (storage.get(ACCESS_TOKEN) || storage.get(USER_GUEST)) {
     if (to.path === loginRoutePath) {
       next({ path: defaultRoutePath })
       NProgress.done()
@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
         store
           .dispatch('GetInfo')
           .then(res => {
-            const roles = res.data && res.data.role
+            const roles = res && res.role
             // console.log('roles:', roles)
             // generate dynamic router
             store.dispatch('GenerateRoutes', { roles }).then(() => {
@@ -53,9 +53,9 @@ router.beforeEach((to, from, next) => {
             //   description: '请求用户信息失败，请重试'
             // })
             // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
-            store.dispatch('Logout').then(() => {
-              next({ path: loginRoutePath, query: { redirect: to.fullPath } })
-            })
+            // store.dispatch('Logout').then(() => {
+            //   next({ path: loginRoutePath, query: { redirect: to.fullPath } })
+            // })
           })
       } else {
         next()
