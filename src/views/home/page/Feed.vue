@@ -1,6 +1,11 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
+      <router-link :to="{ name: 'login' }">
+        <a-button type="default" icon="login" style="margin-right:10px;">
+          登录
+        </a-button>
+      </router-link>
       <a-radio-group v-model="status" @change="handleChangeType(status)">
         <a-radio-button value="sort">推荐</a-radio-button>
         <a-radio-button value="fid">最新</a-radio-button>

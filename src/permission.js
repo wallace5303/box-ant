@@ -17,6 +17,11 @@ const defaultRoutePath = '/home'
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`))
+  if (whiteList.includes(to.name)) {
+    // 在免登录白名单，直接进入
+    next()
+    return true
+  }
   /* has token */
   if (storage.get(ACCESS_TOKEN) || storage.get(USER_GUEST)) {
     if (to.path === loginRoutePath) {
@@ -62,13 +67,8 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    if (whiteList.includes(to.name)) {
-      // 在免登录白名单，直接进入
-      next()
-    } else {
-      next({ path: loginRoutePath, query: { redirect: to.fullPath } })
-      NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
-    }
+    next({ path: loginRoutePath, query: { redirect: to.fullPath } })
+    NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
   }
 })
 
