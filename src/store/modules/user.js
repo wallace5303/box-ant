@@ -1,5 +1,4 @@
 import storage from 'store'
-import { logout } from '@/api/login'
 import { outApi } from '@/api/main'
 import { ACCESS_TOKEN, USER_INFO } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
@@ -62,14 +61,10 @@ const user = {
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
-        const userinfo = storage.get(USER_INFO)
         const params = {
           out_url: 'userinfo',
           method: 'POST',
-          data: {
-            uid: userinfo.uid,
-            token: storage.get(ACCESS_TOKEN)
-          }
+          data: {}
         }
         outApi(params).then(response => {
           if (response.code !== 0) {
@@ -105,9 +100,14 @@ const user = {
     },
 
     // 登出
-    Logout ({ commit, state }) {
+    Logout ({ commit }) {
       return new Promise((resolve) => {
-        logout(state.token).then(() => {
+        const params = {
+          out_url: 'logout',
+          method: 'POST',
+          data: {}
+        }
+        outApi(params).then(() => {
           resolve()
         }).catch(() => {
           resolve()
@@ -115,6 +115,7 @@ const user = {
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           storage.remove(ACCESS_TOKEN)
+          storage.remove(USER_INFO)
         })
       })
     }
