@@ -10,12 +10,12 @@
           <a-form-item
             label="用户名"
           >
-            <a-input v-decorator="['username', {rules:[{ required: true, message: '请填写用户名' }, { min: 6, message: '不能小于4个字符' }]}]" />
+            <a-input v-decorator="['username', {rules:[{ required: true, message: '请填写用户名' }, { min: 4, message: '不能小于4个字符' }]}]" />
           </a-form-item>
           <a-form-item
             label="电子邮件"
           >
-            <a-input v-decorator="['email', {rules:[{required: true, message: '请填写邮箱'}]}]" />
+            <a-input v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}]" />
           </a-form-item>
           <a-form-item
             label="手机号"
@@ -106,19 +106,24 @@ export default {
     })
   },
   mounted () {
-    this.setToken()
+    this.getToken()
     this.getUserInfo()
   },
   methods: {
-    setToken () {
+    getToken () {
       this.token = storage.get(ACCESS_TOKEN)
     },
     setavatar (url) {
       this.option.img = url
     },
     getUserInfo () {
+      console.log('s userinfo')
       if (!this.token) {
-        this.$message.error('请登录')
+        // this.$message.error('请登录')
+        this.$notification.error({
+          message: 'Forbidden',
+          description: '请登录'
+        })
         return false
       }
       const params = {
@@ -128,7 +133,7 @@ export default {
       }
       outApi(params).then(res => {
         if (res.code !== 0) {
-          return
+          return false
         }
         this.userinfo = res.data
       }).catch(err => {

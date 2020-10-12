@@ -44,14 +44,14 @@ const user = {
         }
         outApi(params).then(response => {
           if (response.code !== 0) {
-            resolve('error')
+            resolve(response.message)
             return
           }
           const result = response.data
           storage.set(ACCESS_TOKEN, result.token, 1 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
           storage.set(USER_INFO, result.user_info)
-          resolve()
+          resolve('ok')
         }).catch(error => {
           reject(error)
         })
@@ -64,7 +64,9 @@ const user = {
         const params = {
           out_url: 'userinfo',
           method: 'POST',
-          data: {}
+          data: {
+            change_token_code: true
+          }
         }
         outApi(params).then(response => {
           // if (response.code !== 0) {
@@ -123,8 +125,31 @@ const user = {
           storage.remove(USER_INFO)
         })
       })
-    }
+    },
 
+    // 注册
+    Register ({ commit }, info) {
+      return new Promise((resolve, reject) => {
+        const params = {
+          out_url: 'register',
+          method: 'POST',
+          data: info
+        }
+        outApi(params).then(response => {
+          if (response.code !== 0) {
+            resolve(response.message)
+            return
+          }
+          const result = response.data
+          storage.set(ACCESS_TOKEN, result.token, 1 * 24 * 60 * 60 * 1000)
+          commit('SET_TOKEN', result.token)
+          storage.set(USER_INFO, result.user_info)
+          resolve('ok')
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    }
   }
 }
 

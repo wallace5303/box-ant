@@ -263,7 +263,7 @@ export default {
       })
     },
     loginSuccess (res) {
-      if (res === 'error') {
+      if (res !== 'ok') {
         this.isLoginError = true
         return
       }

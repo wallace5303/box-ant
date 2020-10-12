@@ -9,10 +9,10 @@
           placeholder="用户名"
           v-decorator="[
             'username',
-            {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+            {rules:[{ required: true, message: '请填写用户名' }, { min: 4, message: '不能小于4个字符' }]}
           ]"
         >
-          <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+          <!-- <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/> -->
         </a-input>
       </a-form-item>
       <a-form-item>
@@ -34,7 +34,7 @@
             <div :class="['user-register', passwordLevelClass]">强度：<span>{{ passwordLevelName }}</span></div>
             <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor " />
             <div style="margin-top: 10px;">
-              <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
+              <span>请至少输入 6 个字符。</span>
             </div>
           </div>
         </template>
@@ -42,8 +42,8 @@
           <a-input-password
             size="large"
             @click="handlePasswordInputClick"
-            placeholder="至少6位密码，区分大小写"
-            v-decorator="['password', {rules: [{ required: true, message: '至少6位密码，区分大小写'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
+            placeholder="至少6位密码"
+            v-decorator="['password', {rules: [{ required: true, message: '至少6位密码'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
           ></a-input-password>
         </a-form-item>
       </a-popover>
@@ -52,27 +52,19 @@
         <a-input-password
           size="large"
           placeholder="确认密码"
-          v-decorator="['password2', {rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
+          v-decorator="['password2', {rules: [{ required: true, message: '至少6位密码' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
         ></a-input-password>
       </a-form-item>
 
       <a-form-item>
-        <a-input size="large" placeholder="11 位手机号" v-decorator="['mobile', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
+        <a-input size="large" placeholder="手机号" v-decorator="['phone', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
           <a-select slot="addonBefore" size="large" defaultValue="+86">
             <a-select-option value="+86">+86</a-select-option>
-            <a-select-option value="+87">+87</a-select-option>
           </a-select>
         </a-input>
       </a-form-item>
-      <!--<a-input-group size="large" compact>
-            <a-select style="width: 20%" size="large" defaultValue="+86">
-              <a-select-option value="+86">+86</a-select-option>
-              <a-select-option value="+87">+87</a-select-option>
-            </a-select>
-            <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
-          </a-input-group>-->
 
-      <a-row :gutter="16">
+      <!-- <a-row :gutter="16">
         <a-col class="gutter-row" :span="16">
           <a-form-item>
             <a-input size="large" type="text" placeholder="验证码" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
@@ -88,7 +80,7 @@
             @click.stop.prevent="getCaptcha"
             v-text="!state.smsSendBtn && '获取验证码'||(state.time+' s')"></a-button>
         </a-col>
-      </a-row>
+      </a-row> -->
 
       <a-form-item>
         <a-button
@@ -110,6 +102,7 @@
 <script>
 import { getSmsCaptcha } from '@/api/login'
 import { deviceMixin } from '@/store/device-mixin'
+import { mapActions } from 'vuex'
 
 const levelNames = {
   0: '低',
@@ -161,6 +154,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['Register']),
     handleUsernameOrEmail (rule, value, callback) {
       const { state } = this
       const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
@@ -203,7 +197,6 @@ export default {
 
     handlePasswordCheck (rule, value, callback) {
       const password = this.form.getFieldValue('password')
-      console.log('value', value)
       if (value === undefined) {
         callback(new Error('请输入密码'))
       }
@@ -214,9 +207,9 @@ export default {
     },
 
     handlePhoneCheck (rule, value, callback) {
-      console.log('handlePhoneCheck, rule:', rule)
-      console.log('handlePhoneCheck, value', value)
-      console.log('handlePhoneCheck, callback', callback)
+      // console.log('handlePhoneCheck, rule:', rule)
+      // console.log('handlePhoneCheck, value', value)
+      // console.log('handlePhoneCheck, callback', callback)
 
       callback()
     },
@@ -230,11 +223,31 @@ export default {
     },
 
     handleSubmit () {
-      const { form: { validateFields }, state, $router } = this
-      validateFields({ force: true }, (err, values) => {
-        if (!err) {
+      const { form: { validateFields }, state, Register } = this
+      validateFields({ force: true }, (errors, values) => {
+        if (!errors) {
           state.passwordLevelChecked = false
-          $router.push({ name: 'registerResult', params: { ...values } })
+          const params = {
+            username: values.username,
+            email: values.email,
+            phone: values.phone,
+            pwd1: values.password,
+            pwd2: values.password
+          }
+          Register(params).then(res => {
+            if (res !== 'ok') {
+              this.$message.error(res)
+              return false
+            }
+            this.$message.info('注册成功')
+            this.$router.push({ path: '/' })
+          }).catch(err => {
+            this.$message.error(err)
+          }).finally(() => {
+              // 123
+          })
+        } else {
+          console.log('errors:', errors)
         }
       })
     },

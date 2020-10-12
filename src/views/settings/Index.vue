@@ -10,14 +10,14 @@
             type="inner"
             @openChange="onOpenChange"
           >
-            <a-menu-item key="/settings/base">
-              <router-link :to="{ name: 'UserCenterSettings' }">
-                基本设置
-              </router-link>
-            </a-menu-item>
             <a-menu-item key="/settings/security">
               <router-link :to="{ name: 'SecuritySettings' }">
                 安全设置
+              </router-link>
+            </a-menu-item>
+            <a-menu-item key="/settings/user" v-if="token">
+              <router-link :to="{ name: 'UserCenterSettings' }">
+                用户设置
               </router-link>
             </a-menu-item>
           </a-menu>
@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { RouteView } from '@/layouts'
 import { baseMixin } from '@/store/app-mixin'
 
@@ -44,6 +46,7 @@ export default {
   mixins: [baseMixin],
   data () {
     return {
+      token: null,
       // horizontal  inline
       mode: 'inline',
 
@@ -72,9 +75,13 @@ export default {
     }
   },
   mounted () {
+    this.getToken()
     this.updateMenu()
   },
   methods: {
+    getToken () {
+      this.token = storage.get(ACCESS_TOKEN)
+    },
     onOpenChange (openKeys) {
       this.openKeys = openKeys
     },

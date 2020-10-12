@@ -36,20 +36,20 @@ export const asyncRouterMap = [
         name: 'settings',
         component: () => import('@/views/settings/Index'),
         meta: { title: 'menu.settings', hideHeader: true, icon: 'setting' },
-        redirect: '/settings/base',
+        redirect: '/settings/security',
         hideChildrenInMenu: true,
         children: [
-          {
-            path: '/settings/base',
-            name: 'UserCenterSettings',
-            component: () => import('@/views/settings/UserCenter'),
-            meta: { title: '个人信息', hidden: true, keepAlive: true }
-          },
           {
             path: '/settings/security',
             name: 'SecuritySettings',
             component: () => import('@/views/settings/Security'),
             meta: { title: '安全设置', hidden: true, keepAlive: true }
+          },
+          {
+            path: '/settings/user',
+            name: 'UserCenterSettings',
+            component: () => import('@/views/settings/UserCenter'),
+            meta: { title: '个人信息', hidden: true, keepAlive: true }
           }
         ]
       }

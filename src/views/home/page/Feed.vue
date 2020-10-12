@@ -1,7 +1,7 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <router-link :to="{ name: 'login' }">
+      <router-link v-if="!token" :to="{ name: 'login' }">
         <a-button type="default" icon="login" style="margin-right:10px;">
           登录
         </a-button>
@@ -115,7 +115,7 @@ export default {
   },
   mounted () {
     this.getFeedList()
-    this.setToken()
+    this.getToken()
   },
   methods: {
     handleSearch (value) {
@@ -148,7 +148,7 @@ export default {
         pic: ''
       }
     },
-    setToken () {
+    getToken () {
       this.token = storage.get(ACCESS_TOKEN)
     },
     handleEdit (record) {

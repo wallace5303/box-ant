@@ -100,10 +100,10 @@ export default {
   },
   mounted () {
     this.getManageUserSite()
-    this.setToken()
+    this.getToken()
   },
   methods: {
-    setToken () {
+    getToken () {
       this.token = storage.get(ACCESS_TOKEN)
     },
     handleSearch (value) {
