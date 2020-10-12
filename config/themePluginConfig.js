@@ -1,6 +1,14 @@
 export default {
   theme: [
     {
+      key: '#52C41A',
+      fileName: '#52C41A.css',
+      theme: 'light',
+      modifyVars: {
+        '@primary-color': '#52C41A'
+      }
+    },
+    {
       key: 'dark',
       fileName: 'dark.css',
       theme: 'dark'
@@ -34,13 +42,6 @@ export default {
       }
     },
     {
-      key: '#52C41A',
-      fileName: '#52C41A.css',
-      modifyVars: {
-        '@primary-color': '#52C41A'
-      }
-    },
-    {
       key: '#2F54EB',
       fileName: '#2F54EB.css',
       modifyVars: {
@@ -54,7 +55,6 @@ export default {
         '@primary-color': '#722ED1'
       }
     },
-
     {
       key: '#F5222D',
       theme: 'dark',
