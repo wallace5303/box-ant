@@ -117,7 +117,6 @@ export default {
       this.option.img = url
     },
     getUserInfo () {
-      console.log('s userinfo')
       if (!this.token) {
         // this.$message.error('请登录')
         this.$notification.error({

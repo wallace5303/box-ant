@@ -74,6 +74,7 @@ export default {
         .catch(err => console.log(err))
         .finally(() => {
           console.log('logout')
+          this.$router.push({ name: 'login' })
         })
     }
   }
