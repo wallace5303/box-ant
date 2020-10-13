@@ -25,6 +25,6 @@ export default {
   },
   title: 'box',
   pwa: false,
-  iconfontUrl: '',
+  iconfontUrl: '', // http://wx1.sinaimg.cn/large/005WJhQlly1gia78eh73nj30kp0kpabd.jpg
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
 }
