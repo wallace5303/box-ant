@@ -27,28 +27,28 @@ export const asyncRouterMap = [
       {
         path: '/feed',
         name: 'feed',
-        component: () => import('@/views/home/page/Feed'),
+        component: () => import('@/views/home/single/Feed'),
         meta: { title: 'menu.feed', keepAlive: true, icon: 'compass' }
       },
       // web
       {
         path: '/web',
         name: 'web',
-        component: () => import('@/views/home/page/Web'),
+        component: () => import('@/views/home/single/Web'),
         meta: { title: 'menu.web', keepAlive: true, icon: 'user' }
       },
       // all web
       {
         path: '/allweb',
         name: 'allweb',
-        component: () => import('@/views/home/page/AllWeb'),
+        component: () => import('@/views/home/single/AllWeb'),
         meta: { title: 'menu.allweb', keepAlive: true, icon: 'appstore' }
       },
       // manage
       {
         path: '/manage',
         name: 'manage',
-        component: () => import('@/views/home/page/WebSiteManage'),
+        component: () => import('@/views/home/single/WebSiteManage'),
         meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' }
       },
       // setting
