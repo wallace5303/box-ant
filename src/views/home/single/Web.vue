@@ -1,6 +1,19 @@
 <template>
   <div>
+    <standard-form-row title="" block style="padding-bottom: 11px;">
+      <router-link :to="{ name: 'allweb' }">
+        <a-button type="default" style="margin-right:10px;">
+          精品推荐
+        </a-button>
+      </router-link>
+      <router-link :to="{ name: 'manage' }">
+        <a-button type="default" style="margin-right:10px;">
+          自定义添加
+        </a-button>
+      </router-link>
+    </standard-form-row>
     <a-card
+      v-if="token"
       style="width:100%"
       :bordered="false"
     >
@@ -49,10 +62,12 @@
 </template>
 
 <script>
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { timeFix } from '@/utils/util'
 import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
-import { Radar } from '@/components'
+import { Radar, StandardFormRow } from '@/components'
 import { outApi } from '@/api/main'
 import WebForm from './modules/WebSaveForm'
 const DataSet = require('@antv/data-set')
@@ -62,10 +77,12 @@ export default {
   components: {
     PageHeaderWrapper,
     WebForm,
-    Radar
+    Radar,
+    StandardFormRow
   },
   data () {
     return {
+      token: null,
       loading: true,
       webList: {},
       visible: false,
@@ -78,13 +95,20 @@ export default {
   created () {
   },
   mounted () {
+    this.getToken()
     this.getMySites()
   },
   methods: {
+    getToken () {
+      this.token = storage.get(ACCESS_TOKEN)
+    },
     handleAdd () {
       this.visible = true
     },
     getMySites () {
+      if (!this.token) {
+        return false
+      }
       const params = {
         out_url: 'mySites',
         method: 'POST',
