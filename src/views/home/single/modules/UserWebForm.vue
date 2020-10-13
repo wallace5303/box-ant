@@ -63,7 +63,7 @@ export default {
       default: () => null
     },
     category: {
-      type: Number,
+      type: String,
       required: true
     }
   },

@@ -1,8 +1,9 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <a-radio-group v-model="status" @change="handleChangeType(status)">
-        <a-radio-button value="uwsid">全部</a-radio-button>
+      <a-radio-group v-model="category" @change="handleChangeType(category)">
+        <a-radio-button value="1">普通</a-radio-button>
+        <a-radio-button value="2">隐私</a-radio-button>
       </a-radio-group>
       <!-- <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/> -->
     </standard-form-row>
@@ -55,11 +56,12 @@
           <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
         </div>
       </a-list>
-      <web-form
+      <user-web-form
         ref="webSaveModal"
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :category="category"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -70,14 +72,14 @@
 <script>
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import WebForm from './modules/UserWebForm'
+import UserWebForm from './modules/UserWebForm'
 import { outApi } from '@/api/main'
 import { StandardFormRow } from '@/components'
 
 export default {
   name: 'StandardList',
   components: {
-    WebForm,
+    UserWebForm,
     StandardFormRow
   },
   data () {
@@ -90,12 +92,14 @@ export default {
       // 查询参数
       queryParam: {
         page: 1,
-        sort: 'uwsid'
+        sort: 'uwsid',
+        category: '1'
       },
       status: 'uwsid',
       visible: false,
       confirmLoading: false,
-      mdl: null
+      mdl: null,
+      category: '1'
     }
   },
   mounted () {
@@ -111,10 +115,10 @@ export default {
       this.queryParam.page = 1
       this.getManageUserSite()
     },
-    handleChangeType (status) {
-      this.status = status
-      this.queryParam.sort = status
+    handleChangeType (category) {
+      this.category = category
       this.queryParam.page = 1
+      this.queryParam.category = category
       this.webList = []
       this.getManageUserSite()
     },
@@ -172,7 +176,8 @@ export default {
         out_url: 'manageUserSite',
         method: 'POST',
         data: {
-          page: this.queryParam.page
+          page: this.queryParam.page,
+          category: this.queryParam.category
         }
       }
       outApi(params).then(res => {
