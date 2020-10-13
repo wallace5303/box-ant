@@ -1,45 +1,49 @@
 <template>
   <div>
-    <a-spin :spinning="loading"/>
-    <a-row :gutter="24">
-      <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
-        <div>
-          <a-card
-            :key="wtid"
-            :loading="loading"
-            v-for="(webs, wtid) in webList"
-            class="project-list"
-            style="margin-bottom: 24px;"
-            :bordered="false"
-            :title="webs.title"
-            :head-style="{'border-bottom': '0px solid #e8e8e8', padding: 0}"
-            :body-style="{padding: 0}">
-            <div>
-              <a-card-grid class="project-card-grid" :key="i" v-for="(web, i) in webs.list">
-                <a-card :bordered="false" :body-style="{ padding: 0 }">
-                  <a-card-meta >
-                    <div slot="title" class="card-title">
-                      <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
-                      <a v-if="web.url" :href="web.url" target="_blank">{{ web.name }}</a>
-                      <a @click="handleAdd()" v-else>{{ web.name }}</a>
-                    </div>
-                  </a-card-meta>
-                </a-card>
-              </a-card-grid>
-            </div>
-
-          </a-card>
-        </div>
-      </a-col>
-    </a-row>
-    <web-form
-      ref="webSaveModal"
-      :visible="visible"
-      :loading="confirmLoading"
-      :model="mdl"
-      @cancel="handleCancel"
-      @ok="handleOk"
-    />
+    <a-card
+      style="width:100%"
+      :bordered="false"
+    >
+      <a-spin :spinning="loading"/>
+      <a-row :gutter="24">
+        <a-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24">
+          <div>
+            <a-card
+              :key="wtid"
+              :loading="loading"
+              v-for="(webs, wtid) in webList"
+              class="project-list"
+              style="margin-bottom: 24px;"
+              :bordered="false"
+              :title="webs.title"
+              :head-style="{'border-bottom': '0px solid #e8e8e8', padding: 0}"
+              :body-style="{padding: 0}">
+              <div>
+                <a-card-grid class="project-card-grid" :key="i" v-for="(web, i) in webs.list">
+                  <a-card :bordered="false" :body-style="{ padding: 0 }">
+                    <a-card-meta >
+                      <div slot="title" class="card-title">
+                        <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
+                        <a v-if="web.url" :href="web.url" target="_blank">{{ web.name }}</a>
+                        <a @click="handleAdd()" v-else>{{ web.name }}</a>
+                      </div>
+                    </a-card-meta>
+                  </a-card>
+                </a-card-grid>
+              </div>
+            </a-card>
+          </div>
+        </a-col>
+      </a-row>
+      <web-form
+        ref="webSaveModal"
+        :visible="visible"
+        :loading="confirmLoading"
+        :model="mdl"
+        @cancel="handleCancel"
+        @ok="handleOk"
+      />
+    </a-card>
   </div>
 
 </template>

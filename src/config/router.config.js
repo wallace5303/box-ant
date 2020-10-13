@@ -20,16 +20,16 @@ export const asyncRouterMap = [
       {
         path: '/home',
         name: 'home',
-        component: () => import('@/views/home'),
+        component: () => import('@/views/home/single/Feed'),
         meta: { title: 'menu.home', keepAlive: true, icon: 'home' }
       },
       // feed
-      {
-        path: '/feed',
-        name: 'feed',
-        component: () => import('@/views/home/single/Feed'),
-        meta: { title: 'menu.feed', keepAlive: true, icon: 'compass' }
-      },
+      // {
+      //   path: '/feed',
+      //   name: 'feed',
+      //   component: () => import('@/views/home/single/Feed'),
+      //   meta: { title: 'menu.feed', keepAlive: true, icon: 'compass' }
+      // },
       // web
       {
         path: '/web',

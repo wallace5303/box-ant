@@ -13,59 +13,64 @@
       </a-radio-group>
       <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
     </standard-form-row>
-    <div class="operate">
-      <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">发布</a-button>
-    </div>
-    <a-list
-      size="large"
-      rowKey="id"
-      :loading="loading"
-      itemLayout="vertical"
-      :dataSource="feedList"
+    <a-card
+      style="width:100%"
+      :bordered="false"
     >
-      <a-list-item :key="item.id" slot="renderItem" slot-scope="item">
-        <template slot="actions">
-          <a @click="handleEdit(item)"><icon-text type="star-o" :text="item.col_times"/></a>
-          <a @click="handleLike(item)"><icon-text type="like-o" :text="item.like" /></a>
-        </template>
-        <a-list-item-meta>
-          <a slot="title"><strong>{{ item.title }}</strong></a>
-          <template slot="description">
-            <span v-if="item.url">
-              <a :href="item.url" target="_blank"><a-tag>{{ item.url }}</a-tag></a>
-            </span>
-          </template>
-        </a-list-item-meta>
-        <img
-          v-if="item.pic"
-          slot="extra"
-          width="272"
-          alt="pic"
-          :src="item.pic"
-        />
-        <feed-list :description="item.content" :owner="item.username" :avatar="item.avatar" :href="item.link" :updateAt="item.created_at" />
-      </a-list-item>
-      <span />
-      <div slot="footer" v-if="pageInfo.next_page_url" style="text-align: center; margin-top: 1px;">
-        <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
+      <div class="operate">
+        <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">发布</a-button>
       </div>
-    </a-list>
-    <web-form
-      ref="webSaveModal"
-      :visible="visible"
-      :loading="confirmLoading"
-      :model="mdl"
-      @cancel="handleCancel"
-      @ok="handleOk"
-    />
-    <feed-add-form
-      ref="feedAddModal"
-      :visible="addFeedVisible"
-      :loading="feedConfirmLoading"
-      :model="mdl2"
-      @cancel="handleCancelFeed"
-      @ok="handleOkFeed"
-    />
+      <a-list
+        size="large"
+        rowKey="id"
+        :loading="loading"
+        itemLayout="vertical"
+        :dataSource="feedList"
+      >
+        <a-list-item :key="item.id" slot="renderItem" slot-scope="item">
+          <template slot="actions">
+            <a @click="handleEdit(item)"><icon-text type="star-o" :text="item.col_times"/></a>
+            <a @click="handleLike(item)"><icon-text type="like-o" :text="item.like" /></a>
+          </template>
+          <a-list-item-meta>
+            <a slot="title"><strong>{{ item.title }}</strong></a>
+            <template slot="description">
+              <span v-if="item.url">
+                <a :href="item.url" target="_blank"><a-tag>{{ item.url }}</a-tag></a>
+              </span>
+            </template>
+          </a-list-item-meta>
+          <img
+            v-if="item.pic"
+            slot="extra"
+            width="272"
+            alt="pic"
+            :src="item.pic"
+          />
+          <feed-list :description="item.content" :owner="item.username" :avatar="item.avatar" :href="item.link" :updateAt="item.created_at" />
+        </a-list-item>
+        <span />
+        <div slot="footer" v-if="pageInfo.next_page_url" style="text-align: center; margin-top: 1px;">
+          <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
+        </div>
+      </a-list>
+      <web-form
+        ref="webSaveModal"
+        :visible="visible"
+        :loading="confirmLoading"
+        :model="mdl"
+        @cancel="handleCancel"
+        @ok="handleOk"
+      />
+      <feed-add-form
+        ref="feedAddModal"
+        :visible="addFeedVisible"
+        :loading="feedConfirmLoading"
+        :model="mdl2"
+        @cancel="handleCancelFeed"
+        @ok="handleOkFeed"
+      />
+    </a-card>
   </div>
 </template>
 
