@@ -23,13 +23,34 @@ export const asyncRouterMap = [
         component: () => import('@/views/home'),
         meta: { title: 'menu.home', keepAlive: true, icon: 'home' }
       },
+      // feed
+      {
+        path: '/feed',
+        name: 'feed',
+        component: () => import('@/views/home/page/Feed'),
+        meta: { title: 'menu.feed', keepAlive: true, icon: 'compass' }
+      },
+      // web
+      {
+        path: '/web',
+        name: 'web',
+        component: () => import('@/views/home/page/Web'),
+        meta: { title: 'menu.web', keepAlive: true, icon: 'user' }
+      },
+      // all web
+      {
+        path: '/allweb',
+        name: 'allweb',
+        component: () => import('@/views/home/page/AllWeb'),
+        meta: { title: 'menu.allweb', keepAlive: true, icon: 'appstore' }
+      },
       // manage
-      // {
-      //   path: '/manage',
-      //   name: 'manage',
-      //   component: () => import('@/views/manage'),
-      //   meta: { title: 'menu.manage', keepAlive: true, icon: 'setting' }
-      // },
+      {
+        path: '/manage',
+        name: 'manage',
+        component: () => import('@/views/home/page/WebSiteManage'),
+        meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' }
+      },
       // setting
       {
         path: '/settings',

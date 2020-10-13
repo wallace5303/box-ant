@@ -42,12 +42,12 @@ export default {
           tab: '动态'
         },
         {
-          key: 'all_web',
-          tab: '全部'
-        },
-        {
           key: 'web',
           tab: '我的'
+        },
+        {
+          key: 'all_web',
+          tab: '全部'
         },
         {
           key: 'web_site_manage',
