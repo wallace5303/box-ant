@@ -9,10 +9,10 @@ const components = {
 
 const locale = {
   'message': '-',
-  'menu.home': '主页',
+  'menu.home': '动态',
   'menu.feed': '动态',
   'menu.web': '我的',
-  'menu.allweb': '站点',
+  'menu.allweb': '推荐站点',
   'menu.manage': '管理',
   'menu.settings': '设置'
 }

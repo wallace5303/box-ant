@@ -117,7 +117,7 @@ export default {
       outApi(params).then(res => {
         this.loading = false
         if (res.code !== 0) {
-          return
+          return false
         }
         this.webList = res.data
         }).catch(err => {

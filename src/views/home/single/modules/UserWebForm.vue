@@ -15,15 +15,8 @@
         <a-form-item
           label="类型"
         >
-          <a-select v-decorator="['type', {initialValue:1}]">
-            <a-select-option :value="1">常用</a-select-option>
-            <a-select-option :value="2">专业</a-select-option>
-            <a-select-option :value="3">娱乐</a-select-option>
-            <a-select-option :value="4">游戏</a-select-option>
-            <a-select-option :value="5">阅读</a-select-option>
-            <a-select-option :value="6">旅行</a-select-option>
-            <a-select-option :value="7">交友</a-select-option>
-            <a-select-option :value="8">其它</a-select-option>
+          <a-select v-decorator="['type', { initialValue: firstOption }]">
+            <a-select-option :key="index" v-for="(item, index) in myTypes" :value="item.uwtid">{{ item.name }}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -47,7 +40,10 @@
 </template>
 
 <script>
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import pick from 'lodash.pick'
+import { outApi } from '@/api/main'
 
 // 表单字段
 const fields = ['id', 'type', 'name', 'url', 'sort']
@@ -79,7 +75,10 @@ export default {
       }
     }
     return {
-      form: this.$form.createForm(this)
+      token: null,
+      form: this.$form.createForm(this),
+      myTypes: [],
+      firstOption: 0
     }
   },
   created () {
@@ -92,6 +91,36 @@ export default {
     this.$watch('model', () => {
       this.model && this.form.setFieldsValue(pick(this.model, fields))
     })
+  },
+  mounted () {
+    this.getToken()
+    this.getMyTypes()
+  },
+  methods: {
+    getToken () {
+      this.token = storage.get(ACCESS_TOKEN)
+    },
+    getMyTypes () {
+      if (!this.token) {
+        return false
+      }
+      const params = {
+        out_url: 'myTypes',
+        method: 'POST',
+        data: {}
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return false
+        }
+        this.myTypes = res.data
+        if (this.myTypes.length > 0) {
+          this.firstOption = res.data[0].uwtid
+        }
+        }).catch(err => {
+          console.log('err:', err)
+        })
+    }
   }
 }
 </script>

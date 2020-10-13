@@ -85,7 +85,7 @@ export default {
       token: null,
       webList: [],
       pageInfo: {},
-      loading: true,
+      loading: false,
       loadingMore: false,
       // 查询参数
       queryParam: {
@@ -99,8 +99,8 @@ export default {
     }
   },
   mounted () {
-    this.getManageUserSite()
     this.getToken()
+    this.getManageUserSite()
   },
   methods: {
     getToken () {
@@ -164,6 +164,9 @@ export default {
       }
     },
     getManageUserSite () {
+      if (!this.token) {
+        return false
+      }
       this.loading = true
       const params = {
         out_url: 'manageUserSite',
