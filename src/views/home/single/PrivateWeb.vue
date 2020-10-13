@@ -1,16 +1,9 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <router-link :to="{ name: 'allweb' }">
-        <a-button type="default" style="margin-right:10px;">
-          精品推荐
-        </a-button>
-      </router-link>
-      <router-link :to="{ name: 'manage' }">
-        <a-button type="default" style="margin-right:10px;">
-          自定义添加
-        </a-button>
-      </router-link>
+    <a-button type="default" style="margin-right:10px;">
+        添加
+    </a-button>
     </standard-form-row>
     <a-card
       v-if="token"
@@ -53,6 +46,7 @@
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :category="category"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -87,7 +81,8 @@ export default {
       webList: {},
       visible: false,
       confirmLoading: false,
-      mdl: null
+      mdl: null,
+      category: 2
     }
   },
   computed: {
@@ -113,7 +108,7 @@ export default {
         out_url: 'mySites',
         method: 'POST',
         data: {
-          category: 1
+          category: this.category
         }
       }
       outApi(params).then(res => {

@@ -61,6 +61,10 @@ export default {
     model: {
       type: Object,
       default: () => null
+    },
+    category: {
+      type: Number,
+      required: true
     }
   },
   data () {
@@ -107,7 +111,9 @@ export default {
       const params = {
         out_url: 'myTypes',
         method: 'POST',
-        data: {}
+        data: {
+          category: this.category
+        }
       }
       outApi(params).then(res => {
         if (res.code !== 0) {
