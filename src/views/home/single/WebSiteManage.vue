@@ -93,13 +93,13 @@ export default {
       queryParam: {
         page: 1,
         sort: 'uwsid',
-        category: '1'
+        category: this.$route.params.category || '1'
       },
       status: 'uwsid',
       visible: false,
       confirmLoading: false,
       mdl: null,
-      category: '1'
+      category: this.$route.params.category || '1'
     }
   },
   mounted () {

@@ -10,7 +10,7 @@
         <a-button style="margin-right:10px;" @click="handleLock">
           立即上锁
         </a-button>
-        <router-link :to="{ name: 'manage' }">
+        <router-link :to="{ name: 'manage', params: { category: '2' } }">
           <a-button type="default">
             自定义添加
           </a-button>
@@ -43,7 +43,7 @@
                       <div slot="title" class="card-title">
                         <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
                         <a v-if="web.url" :href="web.url" target="_blank">{{ web.name }}</a>
-                        <router-link v-else :to="{ name: 'manage' }">
+                        <router-link v-else :to="{ name: 'manage', params: { category: '2' }}">
                           <a>{{ web.name }}</a>
                         </router-link>
                       </div>
@@ -134,7 +134,7 @@ export default {
     getUnlockFlag () {
       const flagTime = Number(storage.get(UNLOCK_FLAG))
       const currentTime = new Date().getTime()
-      this.unlockFlag = currentTime > flagTime ? 1 : 0
+      this.unlockFlag = currentTime < flagTime ? 1 : 0
     },
     getMySites () {
       if (!this.token) {
