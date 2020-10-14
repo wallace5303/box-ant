@@ -132,7 +132,7 @@ import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 import { getSmsCaptcha, get2step } from '@/api/login'
 import storage from 'store'
-import { USER_GUEST } from '@/store/mutation-types'
+import { USER_GUEST, MPWD } from '@/store/mutation-types'
 
 export default {
   components: {
@@ -206,6 +206,8 @@ export default {
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           loginParams.password = values.password
+          // mpwd
+          storage.set(MPWD, md5(values.password))
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))

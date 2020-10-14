@@ -1,6 +1,6 @@
 import storage from 'store'
 import { outApi } from '@/api/main'
-import { ACCESS_TOKEN, USER_INFO } from '@/store/mutation-types'
+import { ACCESS_TOKEN, USER_INFO, MPWD, UNLOCK_FLAG } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 import dataObj from '@/utils/data'
 
@@ -123,6 +123,8 @@ const user = {
           commit('SET_ROLES', [])
           storage.remove(ACCESS_TOKEN)
           storage.remove(USER_INFO)
+          storage.remove(MPWD)
+          storage.remove(UNLOCK_FLAG)
         })
       })
     },

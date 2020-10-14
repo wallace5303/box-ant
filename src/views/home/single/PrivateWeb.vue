@@ -1,14 +1,24 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <router-link :to="{ name: 'manage' }">
-        <a-button type="default" style="margin-right:10px;">
-          自定义添加
+      <a-input-search v-if="!unlockFlag" placeholder="请输入密码" style="width: 200px;" @search="handleUnlock">
+        <a-button slot="enterButton">
+          解锁
         </a-button>
-      </router-link>
+      </a-input-search>
+      <div v-else>
+        <a-button style="margin-right:10px;" @click="handleLock">
+          立即上锁
+        </a-button>
+        <router-link :to="{ name: 'manage' }">
+          <a-button type="default">
+            自定义添加
+          </a-button>
+        </router-link>
+      </div>
     </standard-form-row>
     <a-card
-      v-if="token"
+      v-if="token && unlockFlag"
       style="width:100%"
       :bordered="false"
     >
@@ -58,8 +68,9 @@
   </div>
 </template>
 <script>
+import md5 from 'md5'
 import storage from 'store'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, MPWD, UNLOCK_FLAG } from '@/store/mutation-types'
 import { timeFix } from '@/utils/util'
 import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
@@ -84,6 +95,7 @@ export default {
       visible: false,
       confirmLoading: false,
       mdl: null,
+      unlockFlag: 0,
       category: 2
     }
   },
@@ -93,6 +105,7 @@ export default {
   },
   mounted () {
     this.getToken()
+    this.getUnlockFlag()
     this.getMySites()
   },
   methods: {
@@ -101,6 +114,27 @@ export default {
     },
     handleAdd () {
       this.visible = true
+    },
+    handleUnlock (value) {
+      const mpwd = storage.get(MPWD)
+      if (mpwd !== md5(value)) {
+        this.$message.info('密码错误')
+      }
+      // 设置过期时间
+      const expiresTime = new Date().getTime() + 1000 * 60 * 1
+      storage.set(UNLOCK_FLAG, expiresTime)
+      this.unlockFlag = 1
+      // this.getMySites()
+    },
+    handleLock () {
+      // 设置过期时间
+      storage.remove(UNLOCK_FLAG)
+      this.unlockFlag = 0
+    },
+    getUnlockFlag () {
+      const flagTime = Number(storage.get(UNLOCK_FLAG))
+      const currentTime = new Date().getTime()
+      this.unlockFlag = currentTime > flagTime ? 1 : 0
     },
     getMySites () {
       if (!this.token) {
