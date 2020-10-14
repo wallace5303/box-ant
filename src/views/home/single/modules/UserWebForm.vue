@@ -65,6 +65,10 @@ export default {
     category: {
       type: String,
       required: true
+    },
+    pMyTypes: {
+      type: Object,
+      default: () => {}
     }
   },
   data () {
@@ -81,7 +85,7 @@ export default {
     return {
       token: null,
       form: this.$form.createForm(this),
-      myTypes: [],
+      myTypes: {},
       firstOption: 0
     }
   },
@@ -108,6 +112,12 @@ export default {
       if (!this.token) {
         return false
       }
+      const ids = Object.keys(this.pMyTypes)
+      if (ids.length > 0) {
+        this.myTypes = this.pMyTypes
+        this.firstOption = this.pMyTypes[ids[0]].uwtid
+        return false
+      }
       const params = {
         out_url: 'myTypes',
         method: 'POST',
@@ -121,11 +131,11 @@ export default {
         }
         this.myTypes = res.data
         if (this.myTypes.length > 0) {
-          this.firstOption = res.data[0].uwtid
+          this.firstOption = this.myTypes[0].uwtid
         }
-        }).catch(err => {
-          console.log('err:', err)
-        })
+      }).catch(err => {
+        console.log('err:', err)
+      })
     }
   }
 }

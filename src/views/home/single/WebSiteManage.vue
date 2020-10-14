@@ -5,6 +5,16 @@
         <a-radio-button value="1">普通</a-radio-button>
         <a-radio-button value="2">隐私</a-radio-button>
       </a-radio-group>
+      <a-radio-group style="margin-left: 16px;" v-model="sort" @change="handleSort(sort)">
+        <a-radio-button value="uwsid">时间</a-radio-button>
+        <a-radio-button value="name">名称</a-radio-button>
+      </a-radio-group>
+      <span style="margin-left: 16px;">
+        <a-select placeholder="类型" style="width:100px;" v-decorator="['type2']" @change="handleType2">
+          <a-select-option value="0">全部</a-select-option>
+          <a-select-option :key="index" v-for="(item, index) in myTypes" :value="item.uwtid">{{ item.name }}</a-select-option>
+        </a-select>
+      </span>
       <!-- <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/> -->
     </standard-form-row>
     <a-card
@@ -62,6 +72,7 @@
         :loading="confirmLoading"
         :model="mdl"
         :category="category"
+        :pMyTypes="myTypes"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -87,23 +98,21 @@ export default {
       token: null,
       webList: [],
       pageInfo: {},
+      myTypes: {},
       loading: false,
       loadingMore: false,
-      // 查询参数
-      queryParam: {
-        page: 1,
-        sort: 'uwsid',
-        category: this.$route.params.category || '1'
-      },
-      status: 'uwsid',
+      page: 1,
+      sort: 'uwsid',
       visible: false,
       confirmLoading: false,
+      type2: 0,
       mdl: null,
       category: this.$route.params.category || '1'
     }
   },
   mounted () {
     this.getToken()
+    this.getMyTypes()
     this.getManageUserSite()
   },
   methods: {
@@ -111,14 +120,27 @@ export default {
       this.token = storage.get(ACCESS_TOKEN)
     },
     handleSearch (value) {
-      this.queryParam.sort = 'uwsid'
-      this.queryParam.page = 1
+      this.sort = 'uwsid'
+      this.page = 1
       this.getManageUserSite()
     },
     handleChangeType (category) {
       this.category = category
-      this.queryParam.page = 1
-      this.queryParam.category = category
+      this.sort = 'uwsid'
+      this.page = 1
+      this.webList = []
+      this.getMyTypes()
+      this.getManageUserSite()
+    },
+    handleSort (sort) {
+      this.sort = sort
+      this.page = 1
+      this.webList = []
+      this.getManageUserSite()
+    },
+    handleType2 (value) {
+      this.type2 = value
+      this.page = 1
       this.webList = []
       this.getManageUserSite()
     },
@@ -164,7 +186,8 @@ export default {
         id: record.uwsid,
         name: record.name,
         url: record.url,
-        sort: record.sort
+        sort: record.sort,
+        myTypes: this.myTypes
       }
     },
     getManageUserSite () {
@@ -176,8 +199,10 @@ export default {
         out_url: 'manageUserSite',
         method: 'POST',
         data: {
-          page: this.queryParam.page,
-          category: this.queryParam.category
+          page: this.page,
+          sort: this.sort,
+          type2: this.type2,
+          category: this.category
         }
       }
       outApi(params).then(res => {
@@ -194,8 +219,28 @@ export default {
     },
     loadMore () {
       this.loadingMore = true
-      this.queryParam.page += 1
+      this.page += 1
       this.getManageUserSite()
+    },
+    getMyTypes () {
+      if (!this.token) {
+        return false
+      }
+      const params = {
+        out_url: 'myTypes',
+        method: 'POST',
+        data: {
+          category: this.category
+        }
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return false
+        }
+        this.myTypes = res.data
+        }).catch(err => {
+          console.log('err:', err)
+        })
     },
     handleCancel () {
       this.visible = false
