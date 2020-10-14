@@ -38,7 +38,10 @@
                       <div slot="title" class="card-title">
                         <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
                         <a v-if="web.url" :href="web.url" target="_blank">{{ web.name }}</a>
-                        <a @click="handleAdd()" v-else>{{ web.name }}</a>
+                        <!-- <a v-else @click="handleAdd()">{{ web.name }}</a> -->
+                        <router-link v-else :to="{ name: 'manage' }">
+                          <a>{{ web.name }}</a>
+                        </router-link>
                       </div>
                     </a-card-meta>
                   </a-card>
@@ -48,14 +51,14 @@
           </div>
         </a-col>
       </a-row>
-      <web-form
+      <!-- <web-form
         ref="webSaveModal"
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
         @cancel="handleCancel"
         @ok="handleOk"
-      />
+      /> -->
     </a-card>
   </div>
 

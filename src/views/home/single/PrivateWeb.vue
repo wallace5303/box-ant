@@ -1,9 +1,11 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-    <a-button type="default" style="margin-right:10px;">
-        添加
-    </a-button>
+      <router-link :to="{ name: 'manage' }">
+        <a-button type="default" style="margin-right:10px;">
+          自定义添加
+        </a-button>
+      </router-link>
     </standard-form-row>
     <a-card
       v-if="token"
@@ -31,7 +33,9 @@
                       <div slot="title" class="card-title">
                         <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
                         <a v-if="web.url" :href="web.url" target="_blank">{{ web.name }}</a>
-                        <a @click="handleAdd()" v-else>{{ web.name }}</a>
+                        <router-link v-else :to="{ name: 'manage' }">
+                          <a>{{ web.name }}</a>
+                        </router-link>
                       </div>
                     </a-card-meta>
                   </a-card>
@@ -41,7 +45,7 @@
           </div>
         </a-col>
       </a-row>
-      <web-form
+      <!-- <web-form
         ref="webSaveModal"
         :visible="visible"
         :loading="confirmLoading"
@@ -49,12 +53,10 @@
         :category="category"
         @cancel="handleCancel"
         @ok="handleOk"
-      />
+      /> -->
     </a-card>
   </div>
-
 </template>
-
 <script>
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
@@ -67,7 +69,7 @@ import WebForm from './modules/WebSaveForm'
 const DataSet = require('@antv/data-set')
 
 export default {
-  name: 'Web',
+  name: 'PrivateWeb',
   components: {
     PageHeaderWrapper,
     WebForm,

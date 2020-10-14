@@ -41,7 +41,7 @@ export const asyncRouterMap = [
         path: '/privateweb',
         name: 'privateweb',
         component: () => import('@/views/home/single/PrivateWeb'),
-        meta: { title: 'menu.lock', keepAlive: true, icon: 'lock' }
+        meta: { title: 'menu.privateweb', keepAlive: true, icon: 'lock' }
       },
       // all web
       {
