@@ -33,7 +33,7 @@
       :bordered="true"
       title="">
       <div class="operate">
-        <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">添加</a-button>
+        <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">添加网址</a-button>
       </div>
       <a-list :loading="loading" size="large">
         <a-list-item :key="index" v-for="(item, index) in webList" style="padding-top: 10px;padding-bottom: 10px;">

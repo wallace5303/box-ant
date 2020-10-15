@@ -51,11 +51,39 @@ export const asyncRouterMap = [
         meta: { title: 'menu.allweb', keepAlive: true, icon: 'appstore' }
       },
       // manage
+      // {
+      //   path: '/manage',
+      //   name: 'manage',
+      //   component: () => import('@/views/home/single/WebSiteManage'),
+      //   meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' }
+      // },
       {
         path: '/manage',
         name: 'manage',
-        component: () => import('@/views/home/single/WebSiteManage'),
-        meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' }
+        component: () => import('@/views/home/single/BaseManage'),
+        redirect: '/manage/website',
+        meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' },
+        hideChildrenInMenu: true,
+        children: [
+          {
+            path: '/manage/website',
+            name: 'MangeWebSite',
+            component: () => import('@/views/home/single/WebSiteManage'),
+            meta: { title: 'menu.managewebsite' }
+          },
+          {
+            path: '/manage/webtype',
+            name: 'ManageWebType',
+            component: () => import('@/views/home/single/WebTypeManage'),
+            meta: { title: 'menu.managewebtype' }
+          }
+          // {
+          //   path: '/manage/feed',
+          //   name: 'ManageFeed',
+          //   component: () => import('@/views/home/single/WebTypeManage'),
+          //   meta: { title: '' }
+          // }
+        ]
       },
       // setting
       {

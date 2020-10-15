@@ -15,6 +15,8 @@ const locale = {
   'menu.privateweb': '隐私空间',
   'menu.allweb': '推荐站点',
   'menu.manage': '管理',
+  'menu.managewebsite': '管理网址',
+  'menu.managewebtype': '管理分类',
   'menu.settings': '设置'
 }
 
