@@ -1,10 +1,20 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <a-radio-group v-model="category" @change="handleChangeType(category)">
+      <a-radio-group style="margin-left: 16px;" v-model="category" @change="handleChangeType(category)">
         <a-radio-button value="1">普通</a-radio-button>
         <a-radio-button value="2">隐私</a-radio-button>
       </a-radio-group>
+      <a-input-search v-if="category === '2' && !unlockFlag" placeholder="请输入密码" style="margin-left: 16px;width: 200px;" @search="handleUnlock">
+        <a-button slot="enterButton">
+          解锁
+        </a-button>
+      </a-input-search>
+      <span v-else-if="category === '2' && unlockFlag">
+        <a-button style="margin-left: 16px;" @click="handleLock">
+          立即上锁
+        </a-button>
+      </span>
       <a-radio-group style="margin-left: 16px;" v-model="sort" @change="handleSort(sort)">
         <a-radio-button value="uwsid">时间</a-radio-button>
         <a-radio-button value="name">名称</a-radio-button>
@@ -18,6 +28,7 @@
       <!-- <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/> -->
     </standard-form-row>
     <a-card
+      v-if="isShowData"
       style="margin-top: 0px"
       :bordered="true"
       title="">
@@ -81,8 +92,9 @@
 </template>
 
 <script>
+import md5 from 'md5'
 import storage from 'store'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, MPWD, UNLOCK_FLAG } from '@/store/mutation-types'
 import UserWebForm from './modules/UserWebForm'
 import { outApi } from '@/api/main'
 import { StandardFormRow } from '@/components'
@@ -107,17 +119,44 @@ export default {
       confirmLoading: false,
       type2: 0,
       mdl: null,
-      category: this.$route.params.category || '1'
+      category: this.$route.params.category || '1',
+      isShowData: true
     }
   },
   mounted () {
     this.getToken()
+    this.getUnlockFlag()
     this.getMyTypes()
     this.getManageUserSite()
   },
   methods: {
     getToken () {
       this.token = storage.get(ACCESS_TOKEN)
+    },
+    handleUnlock (value) {
+      const mpwd = storage.get(MPWD)
+      if (mpwd !== md5(value)) {
+        this.$message.info('密码错误')
+      }
+      // 设置过期时间
+      const expiresTime = new Date().getTime() + 1000 * 60 * 1
+      storage.set(UNLOCK_FLAG, expiresTime)
+      this.unlockFlag = 1
+      this.isShowData = true
+      this.getMyTypes()
+      this.getManageUserSite()
+    },
+    handleLock () {
+      // 设置过期时间
+      storage.remove(UNLOCK_FLAG)
+      this.unlockFlag = 0
+      // 切换到普通
+      this.handleChangeType('1')
+    },
+    getUnlockFlag () {
+      const flagTime = Number(storage.get(UNLOCK_FLAG))
+      const currentTime = new Date().getTime()
+      this.unlockFlag = currentTime < flagTime ? 1 : 0
     },
     handleSearch (value) {
       this.sort = 'uwsid'
@@ -192,7 +231,13 @@ export default {
     },
     getManageUserSite () {
       if (!this.token) {
+        this.isShowData = false
         return false
+      } else if (this.category === '2' && !this.unlockFlag) {
+        this.isShowData = false
+        return false
+      } else {
+        this.isShowData = true
       }
       this.loading = true
       const params = {
@@ -225,7 +270,10 @@ export default {
     getMyTypes () {
       if (!this.token) {
         return false
+      } else if (this.category === '2' && !this.unlockFlag) {
+        return false
       }
+
       const params = {
         out_url: 'myTypes',
         method: 'POST',
@@ -237,7 +285,7 @@ export default {
         if (res.code !== 0) {
           return false
         }
-        this.myTypes = res.data
+        this.myTypes = Array.isArray(res.data) ? {} : res.data
         }).catch(err => {
           console.log('err:', err)
         })

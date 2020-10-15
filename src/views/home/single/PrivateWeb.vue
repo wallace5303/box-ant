@@ -6,7 +6,7 @@
           解锁
         </a-button>
       </a-input-search>
-      <div v-else>
+      <span v-else>
         <a-button style="margin-right:10px;" @click="handleLock">
           立即上锁
         </a-button>
@@ -15,7 +15,7 @@
             自定义添加
           </a-button>
         </router-link>
-      </div>
+      </span>
     </standard-form-row>
     <a-card
       v-if="token && unlockFlag"
