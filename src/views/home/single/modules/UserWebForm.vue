@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="添加"
+    title="编辑"
     :width="640"
     :visible="visible"
     :confirmLoading="loading"
@@ -67,8 +67,8 @@ export default {
       required: true
     },
     pMyTypes: {
-      type: Object,
-      default: () => {}
+      type: Array,
+      default: () => []
     }
   },
   data () {
@@ -85,7 +85,7 @@ export default {
     return {
       token: null,
       form: this.$form.createForm(this),
-      myTypes: {},
+      myTypes: [],
       firstOption: 0
     }
   },
@@ -112,10 +112,9 @@ export default {
       if (!this.token) {
         return false
       }
-      const ids = Object.keys(this.pMyTypes)
-      if (ids.length > 0) {
+      if (this.pMyTypes.length > 0) {
         this.myTypes = this.pMyTypes
-        this.firstOption = this.myTypes[ids[0]].uwtid
+        this.firstOption = this.myTypes[0].uwtid
         return false
       }
       const params = {
@@ -129,10 +128,9 @@ export default {
         if (res.code !== 0) {
           return false
         }
-        this.myTypes = Array.isArray(res.data) ? {} : res.data
-        const ids = Object.keys(this.myTypes)
-        if (ids.length > 0) {
-          this.firstOption = this.myTypes[ids[0]].uwtid
+        this.myTypes = res.data
+        if (this.myTypes.length > 0) {
+          this.firstOption = this.myTypes[0].uwtid
         }
       }).catch(err => {
         console.log('err:', err)

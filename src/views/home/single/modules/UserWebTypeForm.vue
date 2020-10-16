@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="添加"
+    title="编辑"
     :width="640"
     :visible="visible"
     :confirmLoading="loading"
@@ -31,10 +31,9 @@
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import pick from 'lodash.pick'
-import { outApi } from '@/api/main'
 
 // 表单字段
-const fields = ['id', 'type', 'name', 'url', 'sort']
+const fields = ['id', 'name', 'sort']
 
 export default {
   props: {
@@ -49,14 +48,6 @@ export default {
     model: {
       type: Object,
       default: () => null
-    },
-    category: {
-      type: String,
-      required: true
-    },
-    pMyTypes: {
-      type: Object,
-      default: () => {}
     }
   },
   data () {
@@ -72,9 +63,7 @@ export default {
     }
     return {
       token: null,
-      form: this.$form.createForm(this),
-      myTypes: {},
-      firstOption: 0
+      form: this.$form.createForm(this)
     }
   },
   created () {
@@ -90,41 +79,10 @@ export default {
   },
   mounted () {
     this.getToken()
-    this.getMyTypes()
   },
   methods: {
     getToken () {
       this.token = storage.get(ACCESS_TOKEN)
-    },
-    getMyTypes () {
-      if (!this.token) {
-        return false
-      }
-      const ids = Object.keys(this.pMyTypes)
-      if (ids.length > 0) {
-        this.myTypes = this.pMyTypes
-        this.firstOption = this.myTypes[ids[0]].uwtid
-        return false
-      }
-      const params = {
-        out_url: 'myTypes',
-        method: 'POST',
-        data: {
-          category: this.category
-        }
-      }
-      outApi(params).then(res => {
-        if (res.code !== 0) {
-          return false
-        }
-        this.myTypes = Array.isArray(res.data) ? {} : res.data
-        const ids = Object.keys(this.myTypes)
-        if (ids.length > 0) {
-          this.firstOption = this.myTypes[ids[0]].uwtid
-        }
-      }).catch(err => {
-        console.log('err:', err)
-      })
     }
   }
 }

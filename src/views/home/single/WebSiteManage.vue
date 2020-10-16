@@ -100,7 +100,7 @@ import { outApi } from '@/api/main'
 import { StandardFormRow } from '@/components'
 
 export default {
-  name: 'StandardList',
+  name: 'WebSiteManage',
   components: {
     UserWebForm,
     StandardFormRow
@@ -110,7 +110,7 @@ export default {
       token: null,
       webList: [],
       pageInfo: {},
-      myTypes: {},
+      myTypes: [],
       loading: false,
       loadingMore: false,
       page: 1,
@@ -285,7 +285,7 @@ export default {
         if (res.code !== 0) {
           return false
         }
-        this.myTypes = Array.isArray(res.data) ? {} : res.data
+        this.myTypes = res.data
         }).catch(err => {
           console.log('err:', err)
         })
@@ -296,17 +296,10 @@ export default {
       const form = this.$refs.webSaveModal.form
     },
     handleOk () {
-      // console.log('webInfo', webInfo)
       const form = this.$refs.webSaveModal.form
       this.confirmLoading = true
       form.validateFields((errors, values) => {
-        // console.log('getManageUserSite values:', values)
-        let alertMessageSuccess = '添加成功'
-        let alertMessageFail = '添加失败'
-        if (values.id > 0) {
-          alertMessageSuccess = '修改成功'
-          alertMessageFail = '修改失败'
-        }
+        const alertMessageFail = '网络异常'
         if (!errors) {
           const params = {
             out_url: 'saveSite',
@@ -321,11 +314,10 @@ export default {
           }
           outApi(params).then(res => {
             if (res.code !== 0) {
-              this.$message.info(alertMessageFail)
-              return
+              this.$message.info(alertMessageFail + '[' + res.code + ']')
+              return false
             }
             this.handleChangeType(this.status)
-            this.$message.info(alertMessageSuccess)
           }).catch(err => {
             console.log('err:', err)
           }).finally(() => {
