@@ -171,11 +171,7 @@ export default {
         this.$message.error('请登录')
         return false
       }
-      if (!this.hasExistedLikeId(record.fid)) {
-        this.clickLikeTimes.push(record.fid)
-        record.like += 1
-        this.dataIncr(record, 'like')
-      }
+      this.dataIncr(record, 'like')
     },
     dataIncr (record, type) {
       const params = {
@@ -187,9 +183,11 @@ export default {
         }
       }
       outApi(params).then(res => {
+        console.log('dataIncr:', res)
         if (res.code !== 0) {
           return false
         }
+        record.like += 1
       }).catch(err => {
         console.log('err:', err)
       })
