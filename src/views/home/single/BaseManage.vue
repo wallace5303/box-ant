@@ -59,7 +59,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.ant-page-header-footer {
-    margin-top: 0px;
+/deep/ .ant-page-header-footer {
+  margin-top: 0px;
+}
+/deep/ .ant-page-header {
+  padding: 5px 24px;
 }
 </style>
