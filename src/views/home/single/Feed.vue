@@ -6,10 +6,10 @@
           登录
         </a-button>
       </router-link>
-      <a-radio-group v-model="status" @change="handleChangeType(status)">
-        <a-radio-button value="sort">推荐</a-radio-button>
-        <a-radio-button value="fid">最新</a-radio-button>
-        <a-radio-button value="col_times">收藏最多</a-radio-button>
+      <a-radio-group v-model="module" @change="handleChangeType(module)">
+        <a-radio-button value="recommend">推荐</a-radio-button>
+        <a-radio-button value="new">最新</a-radio-button>
+        <a-radio-button value="collection">收藏最多</a-radio-button>
       </a-radio-group>
       <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
     </standard-form-row>
@@ -54,14 +54,14 @@
           <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
         </div>
       </a-list>
-      <web-form
+      <!-- <web-form
         ref="webSaveModal"
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
         @cancel="handleCancel"
         @ok="handleOk"
-      />
+      /> -->
       <feed-add-form
         ref="feedAddModal"
         :visible="addFeedVisible"
@@ -100,14 +100,10 @@ export default {
       feedList: [],
       pageInfo: {},
       data: [],
-      status: 'sort',
+      module: 'recommend',
       token: null,
-      // 查询参数
-      queryParam: {
-        page: 1,
-        sort: 'sort', // fid like col_times sort
-        desc: ''
-      },
+      page: 1,
+      desc: '',
       clickColTimes: [],
       clickLikeTimes: [],
       visible: false,
@@ -124,17 +120,15 @@ export default {
   },
   methods: {
     handleSearch (value) {
-      this.queryParam.sort = 'col_times'
-      this.queryParam.page = 1
-      this.queryParam.desc = value
+      this.page = 1
+      this.desc = value
       this.feedList = []
       this.getFeedList()
     },
-    handleChangeType (status) {
-      this.status = status
-      this.queryParam.sort = status
-      this.queryParam.page = 1
-      this.queryParam.desc = ''
+    handleChangeType (module) {
+      this.module = module
+      this.page = 1
+      this.desc = ''
       this.feedList = []
       this.getFeedList()
     },
@@ -194,9 +188,8 @@ export default {
       }
       outApi(params).then(res => {
         if (res.code !== 0) {
-          return
+          return false
         }
-        this.$message.info('+1')
       }).catch(err => {
         console.log('err:', err)
       })
@@ -221,16 +214,16 @@ export default {
         out_url: 'feedList',
         method: 'POST',
         data: {
-          sort: this.queryParam.sort,
-          desc: this.queryParam.desc,
-          page: this.queryParam.page
+          module: this.module,
+          desc: this.desc,
+          page: this.page
         }
       }
       outApi(params).then(res => {
         this.loading = false
         this.loadingMore = false
         if (res.code !== 0) {
-          return
+          return false
         }
         this.pageInfo = res.data
         this.feedList = this.feedList.concat(this.pageInfo.data)
@@ -240,52 +233,52 @@ export default {
     },
     loadMore () {
       this.loadingMore = true
-      this.queryParam.page += 1
+      this.page += 1
       this.getFeedList()
     },
-    handleCancel () {
-      this.visible = false
-      this.confirmLoading = false
-      const form = this.$refs.webSaveModal.form
-    },
+    // handleCancel () {
+    //   this.visible = false
+    //   this.confirmLoading = false
+    //   const form = this.$refs.webSaveModal.form
+    // },
     handleCancelFeed () {
       this.addFeedVisible = false
       this.feedConfirmLoading = false
       const form = this.$refs.feedAddModal.form
     },
-    handleOk () {
-      const form = this.$refs.webSaveModal.form
-      this.confirmLoading = true
-      form.validateFields((errors, values) => {
-        // console.log('feed values:', values)
-        if (!errors) {
-          const saveMySiteParams = {
-            out_url: 'saveSite',
-            method: 'POST',
-            data: {
-              fid: values.id,
-              type: values.type,
-              name: values.name,
-              url: values.url,
-              sort: 0
-            }
-          }
-          outApi(saveMySiteParams).then(res => {
-            this.confirmLoading = false
-            if (res.code !== 0) {
-              this.$message.info('添加失败')
-              return
-            }
-            this.visible = false
-            this.$message.info('添加成功')
-          }).catch(err => {
-            console.log('err:', err)
-          })
-        } else {
-          this.confirmLoading = false
-        }
-      })
-    },
+    // handleOk () {
+    //   const form = this.$refs.webSaveModal.form
+    //   this.confirmLoading = true
+    //   form.validateFields((errors, values) => {
+    //     // console.log('feed values:', values)
+    //     if (!errors) {
+    //       const saveMySiteParams = {
+    //         out_url: 'saveSite',
+    //         method: 'POST',
+    //         data: {
+    //           fid: values.id,
+    //           type: values.type,
+    //           name: values.name,
+    //           url: values.url,
+    //           sort: 0
+    //         }
+    //       }
+    //       outApi(saveMySiteParams).then(res => {
+    //         this.confirmLoading = false
+    //         if (res.code !== 0) {
+    //           this.$message.info('添加失败')
+    //           return
+    //         }
+    //         this.visible = false
+    //         this.$message.info('添加成功')
+    //       }).catch(err => {
+    //         console.log('err:', err)
+    //       })
+    //     } else {
+    //       this.confirmLoading = false
+    //     }
+    //   })
+    // },
     handleOkFeed () {
       const form = this.$refs.feedAddModal.form
       this.feedConfirmLoading = true
@@ -310,8 +303,8 @@ export default {
               return
             }
             this.addFeedVisible = false
-            this.$message.info('添加成功')
-            this.handleChangeType('fid')
+            this.$message.info('正在审核中...')
+            // this.handleChangeType('new')
           }).catch(err => {
             console.log('err:', err)
           })
