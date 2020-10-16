@@ -5,7 +5,7 @@
         <a-radio-button value="1">普通</a-radio-button>
         <a-radio-button value="2">隐私</a-radio-button>
       </a-radio-group>
-      <a-input-search v-if="category === '2' && !unlockFlag" placeholder="请输入密码" style="margin-left: 16px;width: 200px;" @search="handleUnlock">
+      <a-input-search type="password" v-if="category === '2' && !unlockFlag" placeholder="请输入密码" style="margin-left: 16px;width: 200px;" @search="handleUnlock">
         <a-button slot="enterButton">
           解锁
         </a-button>
@@ -22,7 +22,7 @@
       :bordered="true"
       title="">
       <div class="operate">
-        <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">添加网址</a-button>
+        <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">添加</a-button>
       </div>
       <a-list :loading="loading" size="large">
         <a-list-item :key="index" v-for="(item, index) in myTypes" style="padding-top: 10px;padding-bottom: 10px;">
@@ -38,8 +38,6 @@
             </a-tooltip>
           </div>
           <div class="list-view">
-            <a :href="item.url" target="_blank">查看</a>
-            <a-divider type="vertical" />
             <a @click="handleEdit(item)">编辑</a>
             <a-divider type="vertical" />
             <a-popconfirm
@@ -142,7 +140,6 @@ export default {
       }
     },
     delConfirm (delId) {
-      this.loading = true
       const params = {
         out_url: 'myTypesDel',
         method: 'POST',
@@ -152,8 +149,7 @@ export default {
       }
       outApi(params).then(res => {
         if (res.code === 0) {
-          this.handleChangeType(this.status)
-          this.$message.info('删除成功')
+          this.getMyTypes()
         }
       }).catch(err => {
         console.log('err:', err)
@@ -174,11 +170,15 @@ export default {
     },
     getMyTypes () {
       if (!this.token) {
+        this.isShowData = false
         return false
       } else if (this.category === '2' && !this.unlockFlag) {
+        this.isShowData = false
         return false
+      } else {
+        this.isShowData = true
       }
-
+      this.loading = true
       const params = {
         out_url: 'myTypes',
         method: 'POST',
@@ -193,6 +193,8 @@ export default {
         this.myTypes = res.data
         }).catch(err => {
           console.log('err:', err)
+        }).finally(() => {
+          this.loading = false
         })
     },
     handleCancel () {
@@ -212,6 +214,7 @@ export default {
             data: {
               uwtid: values.id,
               name: values.name,
+              category: this.category,
               sort: values.sort
             }
           }

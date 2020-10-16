@@ -5,7 +5,7 @@
         <a-radio-button value="1">普通</a-radio-button>
         <a-radio-button value="2">隐私</a-radio-button>
       </a-radio-group>
-      <a-input-search v-if="category === '2' && !unlockFlag" placeholder="请输入密码" style="margin-left: 16px;width: 200px;" @search="handleUnlock">
+      <a-input-search type="password" v-if="category === '2' && !unlockFlag" placeholder="请输入密码" style="margin-left: 16px;width: 200px;" @search="handleUnlock">
         <a-button slot="enterButton">
           解锁
         </a-button>
@@ -33,7 +33,7 @@
       :bordered="true"
       title="">
       <div class="operate">
-        <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">添加网址</a-button>
+        <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">添加</a-button>
       </div>
       <a-list :loading="loading" size="large">
         <a-list-item :key="index" v-for="(item, index) in webList" style="padding-top: 10px;padding-bottom: 10px;">
@@ -207,7 +207,7 @@ export default {
       }
       outApi(params).then(res => {
         if (res.code === 0) {
-          this.handleChangeType(this.status)
+          this.handleChangeType(this.category)
           this.$message.info('删除成功')
         }
       }).catch(err => {
@@ -306,6 +306,7 @@ export default {
             method: 'POST',
             data: {
               uwsid: values.id,
+              category: this.category,
               type: values.type,
               name: values.name,
               url: values.url,
@@ -317,7 +318,7 @@ export default {
               this.$message.info(alertMessageFail + '[' + res.code + ']')
               return false
             }
-            this.handleChangeType(this.status)
+            this.handleChangeType(this.category)
           }).catch(err => {
             console.log('err:', err)
           }).finally(() => {

@@ -65,10 +65,6 @@ export default {
     category: {
       type: String,
       required: true
-    },
-    pMyTypes: {
-      type: Array,
-      default: () => []
     }
   },
   data () {
@@ -110,11 +106,6 @@ export default {
     },
     getMyTypes () {
       if (!this.token) {
-        return false
-      }
-      if (this.pMyTypes.length > 0) {
-        this.myTypes = this.pMyTypes
-        this.firstOption = this.myTypes[0].uwtid
         return false
       }
       const params = {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <a-input-search v-if="!unlockFlag" placeholder="请输入密码" style="width: 200px;" @search="handleUnlock">
+      <a-input-search type="password" v-if="!unlockFlag" placeholder="请输入密码" style="width: 200px;" @search="handleUnlock">
         <a-button slot="enterButton">
           解锁
         </a-button>
