@@ -29,7 +29,7 @@
       >
         <a-list-item :key="item.id" slot="renderItem" slot-scope="item">
           <template slot="actions">
-            <a @click="handleEdit(item)"><icon-text type="star-o" :text="item.col_times"/></a>
+            <a @click="handleCollection(item)"><icon-text type="star-o" :text="item.col_times"/></a>
             <a @click="handleLike(item)"><icon-text type="like-o" :text="item.like" /></a>
           </template>
           <a-list-item-meta>
@@ -150,7 +150,7 @@ export default {
     getToken () {
       this.token = storage.get(ACCESS_TOKEN)
     },
-    handleEdit (record) {
+    handleCollection (record) {
       if (!this.token) {
         this.$message.error('请登录')
         return false
@@ -161,10 +161,7 @@ export default {
         name: record.title,
         url: record.url
       }
-      if (!this.hasExistedColId(record.fid)) {
-        record.col_times += 1
-        this.clickColTimes.push(record.fid)
-      }
+      // record.col_times += 1
     },
     handleLike (record) {
       if (!this.token) {
@@ -191,13 +188,6 @@ export default {
       }).catch(err => {
         console.log('err:', err)
       })
-    },
-    hasExistedColId (id) {
-      const set = new Set(this.clickColTimes)
-      if (set.has(id)) {
-        return true
-      }
-      return false
     },
     getFeedList () {
       this.loading = true
