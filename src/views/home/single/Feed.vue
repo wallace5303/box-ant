@@ -54,14 +54,14 @@
           <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
         </div>
       </a-list>
-      <!-- <web-form
+      <web-form
         ref="webSaveModal"
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
         @cancel="handleCancel"
         @ok="handleOk"
-      /> -->
+      />
       <feed-add-form
         ref="feedAddModal"
         :visible="addFeedVisible"
@@ -199,13 +199,6 @@ export default {
       }
       return false
     },
-    hasExistedLikeId (id) {
-      const set = new Set(this.clickLikeTimes)
-      if (set.has(id)) {
-        return true
-      }
-      return false
-    },
     getFeedList () {
       this.loading = true
       const params = {
@@ -234,49 +227,48 @@ export default {
       this.page += 1
       this.getFeedList()
     },
-    // handleCancel () {
-    //   this.visible = false
-    //   this.confirmLoading = false
-    //   const form = this.$refs.webSaveModal.form
-    // },
+    handleCancel () {
+      this.visible = false
+      this.confirmLoading = false
+      const form = this.$refs.webSaveModal.form
+    },
     handleCancelFeed () {
       this.addFeedVisible = false
       this.feedConfirmLoading = false
       const form = this.$refs.feedAddModal.form
     },
-    // handleOk () {
-    //   const form = this.$refs.webSaveModal.form
-    //   this.confirmLoading = true
-    //   form.validateFields((errors, values) => {
-    //     // console.log('feed values:', values)
-    //     if (!errors) {
-    //       const saveMySiteParams = {
-    //         out_url: 'saveSite',
-    //         method: 'POST',
-    //         data: {
-    //           fid: values.id,
-    //           type: values.type,
-    //           name: values.name,
-    //           url: values.url,
-    //           sort: 0
-    //         }
-    //       }
-    //       outApi(saveMySiteParams).then(res => {
-    //         this.confirmLoading = false
-    //         if (res.code !== 0) {
-    //           this.$message.info('添加失败')
-    //           return
-    //         }
-    //         this.visible = false
-    //         this.$message.info('添加成功')
-    //       }).catch(err => {
-    //         console.log('err:', err)
-    //       })
-    //     } else {
-    //       this.confirmLoading = false
-    //     }
-    //   })
-    // },
+    handleOk () {
+      const form = this.$refs.webSaveModal.form
+      this.confirmLoading = true
+      form.validateFields((errors, values) => {
+        // console.log('feed values:', values)
+        if (!errors) {
+          const saveMySiteParams = {
+            out_url: 'saveSite',
+            method: 'POST',
+            data: {
+              fid: values.id,
+              type: values.type,
+              name: values.name,
+              url: values.url,
+              sort: 0
+            }
+          }
+          outApi(saveMySiteParams).then(res => {
+            this.confirmLoading = false
+            if (res.code !== 0) {
+              this.$message.info('添加失败')
+              return
+            }
+            this.visible = false
+          }).catch(err => {
+            console.log('err:', err)
+          })
+        } else {
+          this.confirmLoading = false
+        }
+      })
+    },
     handleOkFeed () {
       const form = this.$refs.feedAddModal.form
       this.feedConfirmLoading = true
