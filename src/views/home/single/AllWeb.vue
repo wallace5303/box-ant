@@ -26,14 +26,7 @@
       <a-list :loading="loading" size="large" :pagination="paginationOpt">
         <a-list-item :key="index" v-for="(item, index) in webList" style="padding-top: 10px;padding-bottom: 10px;">
           <a-list-item-meta :description="item.desc">
-            <a-avatar
-              style="color: #f56a00;backgroundColor:#fff"
-              slot="avatar"
-              size="default"
-              shape="square"
-              :src="item.img"
-              icon="tag">
-            </a-avatar>
+            <a-avatar slot="avatar" size="default" shape="square" :src="item.img"></a-avatar>
             <a slot="title">{{ item.name }}</a>
           </a-list-item-meta>
           <div class="list-times">
