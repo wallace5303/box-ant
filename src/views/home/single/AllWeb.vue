@@ -1,10 +1,10 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <a-radio-group v-model="status" @change="handleChangeType(status)">
-        <a-radio-button value="wsid">最新</a-radio-button>
-        <a-radio-button value="col_times">收藏最多</a-radio-button>
-        <a-radio-button value="sort">推荐</a-radio-button>
+      <a-radio-group v-model="module" @change="handleChangeType(module)">
+        <a-radio-button value="new">最新</a-radio-button>
+        <a-radio-button value="collection">收藏最多</a-radio-button>
+        <a-radio-button value="recommend">推荐</a-radio-button>
       </a-radio-group>
       <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
     </standard-form-row>
@@ -12,14 +12,6 @@
       style="margin-top: 0px"
       :bordered="true"
       title="">
-      <!-- <div slot="extra" style="margin-left: initial">
-        <a-radio-group v-model="status" @change="handleChangeType(status)">
-          <a-radio-button value="wsid">最新</a-radio-button>
-          <a-radio-button value="col_times">收藏最多</a-radio-button>
-          <a-radio-button value="sort">推荐</a-radio-button>
-        </a-radio-group>
-        <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
-      </div> -->
       <div class="operate">
         <a-button type="dashed" style="width: 100%">添加后 - 在“我的”查看</a-button>
       </div>
@@ -93,19 +85,16 @@ export default {
         'show-quick-jumper': true,
         onChange: (current) => {
           this.paginationOpt.current = current
-          this.queryParam.page = current
+          this.page = current
           this.getAllWebs()
         }
       },
       loading: true,
       // 查询参数
-      queryParam: {
-        page: 1,
-        type2: 0,
-        sort: 'wsid', // wsid sort col_times
-        desc: ''
-      },
-      status: 'wsid',
+      page: 1,
+      type2: 0,
+      module: 'recommend',
+      desc: '',
       visible: false,
       confirmLoading: false,
       mdl: null
@@ -120,16 +109,15 @@ export default {
       this.token = storage.get(ACCESS_TOKEN)
     },
     handleSearch (value) {
-      this.queryParam.sort = 'wsid'
-      this.queryParam.page = 1
-      this.queryParam.desc = value
+      this.page = 1
+      this.desc = value
       this.getAllWebs()
     },
-    handleChangeType (status) {
-      this.status = status
-      this.queryParam.sort = status
-      this.queryParam.page = 1
-      this.queryParam.desc = ''
+    handleChangeType (module) {
+      this.module = module
+      this.page = 1
+      this.desc = ''
+      this.paginationOpt.current = 1
       this.getAllWebs()
     },
     handleEdit (record) {
@@ -149,10 +137,10 @@ export default {
         out_url: 'allWebSites',
         method: 'POST',
         data: {
-          sort: this.queryParam.sort,
-          desc: this.queryParam.desc,
-          page: this.queryParam.page,
-          type2: this.queryParam.type2
+          module: this.module,
+          desc: this.desc,
+          page: this.page,
+          type2: this.type2
         }
       }
       outApi(params).then(res => {
@@ -174,7 +162,6 @@ export default {
       const form = this.$refs.webSaveModal.form
     },
     handleOk () {
-      // console.log('webInfo', webInfo)
       const form = this.$refs.webSaveModal.form
       this.confirmLoading = true
       form.validateFields((errors, values) => {
