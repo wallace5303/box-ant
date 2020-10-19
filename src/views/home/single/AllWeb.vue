@@ -26,7 +26,17 @@
       <a-list :loading="loading" size="large" :pagination="paginationOpt">
         <a-list-item :key="index" v-for="(item, index) in webList" style="padding-top: 10px;padding-bottom: 10px;">
           <a-list-item-meta :description="item.desc">
-            <a-avatar slot="avatar" size="default" shape="square" :src="item.img"></a-avatar>
+            <a-avatar v-if="item.img" slot="avatar" size="default" shape="square" :src="item.img"></a-avatar>
+            <a-avatar
+              v-else
+              :style="item.style || 'color: #fff;backgroundColor:#2BA245;'"
+              slot="avatar"
+              size="default"
+              shape="square"
+              :src="item.img"
+            >
+              {{ item.name.substr(0,1) }}
+            </a-avatar>
             <a slot="title">{{ item.name }}</a>
           </a-list-item-meta>
           <div class="list-times">
