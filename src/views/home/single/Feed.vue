@@ -150,18 +150,45 @@ export default {
     getToken () {
       this.token = storage.get(ACCESS_TOKEN)
     },
+    // handleCollection (record) {
+    //   if (!this.token) {
+    //     this.$message.error('请登录')
+    //     return false
+    //   }
+    //   this.visible = true
+    //   this.mdl = {
+    //     id: record.fid,
+    //     name: record.title,
+    //     url: record.url
+    //   }
+    //   // record.col_times += 1
+    // },
     handleCollection (record) {
       if (!this.token) {
         this.$message.error('请登录')
         return false
       }
-      this.visible = true
-      this.mdl = {
-        id: record.fid,
-        name: record.title,
-        url: record.url
+      this.loading = true
+      const saveMySiteParams = {
+        out_url: 'saveSite',
+        method: 'POST',
+        data: {
+          fid: record.fid,
+          name: record.title,
+          url: record.url
+        }
       }
-      // record.col_times += 1
+      outApi(saveMySiteParams).then(res => {
+        if (res.code !== 0) {
+          this.$message.info('添加失败')
+          return false
+        }
+        this.loading = false
+        record.col_times += 1
+      }).catch(err => {
+        console.log('err:', err)
+        this.$message.info('网络异常')
+      })
     },
     handleLike (record) {
       if (!this.token) {
