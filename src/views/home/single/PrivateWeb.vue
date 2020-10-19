@@ -42,7 +42,14 @@
                     <a-card-meta >
                       <div slot="title" class="card-title">
                         <a-avatar style="color: #f56a00;backgroundColor:#fff" shape="square" size="small" :src="web.img" icon="tag"></a-avatar>
-                        <a v-if="web.url" :href="web.url" target="_blank">{{ web.name }}</a>
+                        <a class="overflow" v-if="web.url" :href="web.url" target="_blank">
+                          <a-tooltip>
+                            <template v-if="web.name.length > 5" slot="title">
+                              {{ web.name }}
+                            </template>
+                            {{ web.name }}
+                          </a-tooltip>
+                        </a>
                         <router-link v-else :to="{ name: 'manage', params: { category: '2' }}">
                           <a>{{ web.name }}</a>
                         </router-link>
@@ -121,7 +128,7 @@ export default {
         this.$message.info('密码错误')
       }
       // 设置过期时间
-      const expiresTime = new Date().getTime() + 1000 * 60 * 1
+      const expiresTime = new Date().getTime() + 1000 * 60 * 5
       storage.set(UNLOCK_FLAG, expiresTime)
       this.unlockFlag = 1
       // this.getMySites()
@@ -203,6 +210,7 @@ export default {
   .project-list {
     .project-card-grid {
         width: 12.5%;
+        padding: 15px;
       }
     .card-title {
       font-size: 0;
@@ -225,6 +233,13 @@ export default {
       height: 44px;
       line-height: 22px;
       overflow: hidden;
+    }
+    .overflow {
+      display:block;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      width: 100px;
     }
   }
 
