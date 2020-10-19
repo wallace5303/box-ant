@@ -134,7 +134,7 @@ export default {
     delConfirm (delId) {
       this.loading = true
       const params = {
-        out_url: 'delUserSite',
+        out_url: 'delMySite',
         method: 'POST',
         data: {
           uwsid: delId
@@ -208,7 +208,7 @@ export default {
         }
         if (!errors) {
           const params = {
-            out_url: 'saveSite',
+            out_url: 'saveMySite',
             method: 'POST',
             data: {
               uwsid: values.id,

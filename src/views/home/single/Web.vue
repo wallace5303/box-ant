@@ -148,7 +148,7 @@ export default {
       form.validateFields((errors, values) => {
         if (!errors) {
           const saveMySiteParams = {
-            out_url: 'saveSite',
+            out_url: 'saveMySite',
             method: 'POST',
             data: {
               type: values.type,

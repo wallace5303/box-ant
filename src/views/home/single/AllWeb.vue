@@ -168,7 +168,7 @@ export default {
         console.log('allweb values:', values)
         if (!errors) {
           const saveMySiteParams = {
-            out_url: 'saveSite',
+            out_url: 'saveMySite',
             method: 'POST',
             data: {
               wsid: values.wsid,

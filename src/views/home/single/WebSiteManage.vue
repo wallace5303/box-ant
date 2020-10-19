@@ -38,12 +38,16 @@
       <a-list :loading="loading" size="large">
         <a-list-item :key="index" v-for="(item, index) in webList" style="padding-top: 10px;padding-bottom: 10px;">
           <a-list-item-meta :description="item.url">
+            <a-avatar v-if="item.img" slot="avatar" size="default" shape="square" :src="item.img"></a-avatar>
             <a-avatar
-              style="color: #f56a00;backgroundColor:#fff"
+              v-else
+              :style="item.style || 'color: #fff;backgroundColor:#2BA245;'"
               slot="avatar"
               size="default"
               shape="square"
-              icon="tag">
+              :src="item.img"
+            >
+              {{ item.name.substr(0,1) }}
             </a-avatar>
             <a slot="title">{{ item.name }}</a>
           </a-list-item-meta>
@@ -199,7 +203,7 @@ export default {
     delConfirm (delId) {
       this.loading = true
       const params = {
-        out_url: 'delUserSite',
+        out_url: 'delMySite',
         method: 'POST',
         data: {
           uwsid: delId
@@ -302,7 +306,7 @@ export default {
         const alertMessageFail = '网络异常'
         if (!errors) {
           const params = {
-            out_url: 'saveSite',
+            out_url: 'saveMySite',
             method: 'POST',
             data: {
               uwsid: values.id,

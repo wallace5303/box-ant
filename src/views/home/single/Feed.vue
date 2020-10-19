@@ -170,7 +170,7 @@ export default {
       }
       this.loading = true
       const saveMySiteParams = {
-        out_url: 'saveSite',
+        out_url: 'saveMySite',
         method: 'POST',
         data: {
           fid: record.fid,
@@ -261,7 +261,7 @@ export default {
         // console.log('feed values:', values)
         if (!errors) {
           const saveMySiteParams = {
-            out_url: 'saveSite',
+            out_url: 'saveMySite',
             method: 'POST',
             data: {
               fid: values.id,
