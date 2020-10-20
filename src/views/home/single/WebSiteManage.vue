@@ -192,13 +192,13 @@ export default {
         this.$message.error('请登录')
         return false
       }
-      this.visible = true
       this.mdl = {
         id: 0,
         name: '',
         url: '',
         sort: 0
       }
+      this.visible = true
     },
     delConfirm (delId) {
       this.loading = true
@@ -206,7 +206,8 @@ export default {
         out_url: 'delMySite',
         method: 'POST',
         data: {
-          uwsid: delId
+          uwsid: delId,
+          category: this.category
         }
       }
       outApi(params).then(res => {
@@ -224,14 +225,13 @@ export default {
         this.$message.error('请登录')
         return false
       }
-      this.visible = true
       this.mdl = {
         id: record.uwsid,
         name: record.name,
         url: record.url,
-        sort: record.sort,
-        myTypes: this.myTypes
+        sort: record.sort
       }
+      this.visible = true
     },
     getManageUserSite () {
       if (!this.token) {

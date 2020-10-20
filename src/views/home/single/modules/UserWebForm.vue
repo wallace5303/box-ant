@@ -65,6 +65,11 @@ export default {
     category: {
       type: String,
       required: true
+    },
+    pMyTypes: {
+      type: Array,
+      required: true,
+      default: () => []
     }
   },
   data () {
@@ -94,39 +99,44 @@ export default {
     // 当 model 发生改变时，为表单设置值
     this.$watch('model', () => {
       this.model && this.form.setFieldsValue(pick(this.model, fields))
+      this.myTypes = this.pMyTypes
+      if (this.myTypes.length > 0) {
+        this.firstOption = this.myTypes[0].uwtid
+      }
+      // console.log('firstOption:', this.firstOption)
     })
   },
   mounted () {
-    this.getToken()
-    this.getMyTypes()
+    // this.getToken()
+    // this.getMyTypes()
   },
   methods: {
-    getToken () {
-      this.token = storage.get(ACCESS_TOKEN)
-    },
-    getMyTypes () {
-      if (!this.token) {
-        return false
-      }
-      const params = {
-        out_url: 'myTypes',
-        method: 'POST',
-        data: {
-          category: this.category
-        }
-      }
-      outApi(params).then(res => {
-        if (res.code !== 0) {
-          return false
-        }
-        this.myTypes = res.data
-        if (this.myTypes.length > 0) {
-          this.firstOption = this.myTypes[0].uwtid
-        }
-      }).catch(err => {
-        console.log('err:', err)
-      })
-    }
+    // getToken () {
+    //   this.token = storage.get(ACCESS_TOKEN)
+    // },
+    // getMyTypes () {
+    //   if (!this.token) {
+    //     return false
+    //   }
+    //   const params = {
+    //     out_url: 'myTypes',
+    //     method: 'POST',
+    //     data: {
+    //       category: this.category
+    //     }
+    //   }
+    //   outApi(params).then(res => {
+    //     if (res.code !== 0) {
+    //       return false
+    //     }
+    //     this.myTypes = res.data
+    //     if (this.myTypes.length > 0) {
+    //       this.firstOption = this.myTypes[0].uwtid
+    //     }
+    //   }).catch(err => {
+    //     console.log('err:', err)
+    //   })
+    // }
   }
 }
 </script>
