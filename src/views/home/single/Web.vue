@@ -37,7 +37,7 @@
                     <a-card-meta >
                       <div slot="title" class="card-title">
                         <a-avatar v-if="web.img" shape="square" size="small" :src="web.img"></a-avatar>
-                        <a-avatar v-else :style="web.style || 'color: #fff;backgroundColor:#2BA245;'" shape="square" size="small" :src="web.img">{{web.name.substr(0,1)}}</a-avatar>
+                        <a-avatar v-else :style="web.style || 'color: #fff;backgroundColor:#2BA245;'" shape="square" size="small" :src="web.img">{{ web.name.substr(0,1) }}</a-avatar>
                         <a class="overflow" v-if="web.url" :href="web.url" target="_blank">
                           <a-tooltip>
                             <template v-if="web.name.length > 5" slot="title">
