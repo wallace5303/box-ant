@@ -2,9 +2,9 @@
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
       <a-radio-group v-model="module" @change="handleChangeType(module)">
+        <a-radio-button value="recommend">推荐</a-radio-button>
         <a-radio-button value="new">最新</a-radio-button>
         <a-radio-button value="collection">收藏最多</a-radio-button>
-        <a-radio-button value="recommend">推荐</a-radio-button>
       </a-radio-group>
       <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
     </standard-form-row>
