@@ -32,7 +32,7 @@
         <a-form-item
           label="排序"
         >
-          <a-input-number v-decorator="['sort', {rules:[{required: false, message: '请填写数字'}]}]" />
+          <a-input-number v-decorator="['sort', {initialValue: 0, rules:[{required: false, message: '请填写数字'}]}]" />
         </a-form-item>
       </a-form>
     </a-spin>

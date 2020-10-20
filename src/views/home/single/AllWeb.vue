@@ -48,11 +48,13 @@
         </a-list-item>
         <span />
       </a-list>
-      <web-form
+      <user-web-form
         ref="webSaveModal"
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :category="category"
+        :pMyTypes="myTypes"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -63,19 +65,20 @@
 <script>
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import WebForm from './modules/WebSaveForm'
+import UserWebForm from './modules/UserWebForm'
 import { outApi } from '@/api/main'
 import { StandardFormRow } from '@/components'
 
 export default {
   name: 'StandardList',
   components: {
-    WebForm,
+    UserWebForm,
     StandardFormRow
   },
   data () {
     return {
       token: null,
+      myTypes: [],
       webList: {},
       webPageList: {},
       paginationOpt: {
@@ -97,12 +100,14 @@ export default {
       desc: '',
       visible: false,
       confirmLoading: false,
-      mdl: null
+      mdl: null,
+      category: '1'
     }
   },
   mounted () {
-    this.getAllWebs()
     this.getToken()
+    this.getAllWebs()
+    this.getMyTypes()
   },
   methods: {
     getToken () {
@@ -131,6 +136,27 @@ export default {
         name: record.name,
         url: record.url
       }
+    },
+    getMyTypes () {
+      if (!this.token) {
+        return false
+      }
+
+      const params = {
+        out_url: 'myTypes',
+        method: 'POST',
+        data: {
+          category: this.category
+        }
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return false
+        }
+        this.myTypes = res.data
+        }).catch(err => {
+          console.log('err:', err)
+        })
     },
     getAllWebs () {
       const params = {
