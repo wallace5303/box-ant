@@ -28,8 +28,6 @@
 </template>
 
 <script>
-import storage from 'store'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
 import pick from 'lodash.pick'
 
 // 表单字段
@@ -62,7 +60,6 @@ export default {
       }
     }
     return {
-      token: null,
       form: this.$form.createForm(this)
     }
   },
@@ -78,12 +75,12 @@ export default {
     })
   },
   mounted () {
-    this.getToken()
+    // this.getToken()
   },
   methods: {
-    getToken () {
-      this.token = storage.get(ACCESS_TOKEN)
-    }
+    // getToken () {
+    //   this.token = storage.get(ACCESS_TOKEN)
+    // }
   }
 }
 </script>
