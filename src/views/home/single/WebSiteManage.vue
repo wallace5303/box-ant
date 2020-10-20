@@ -143,7 +143,7 @@ export default {
         this.$message.info('密码错误')
       }
       // 设置过期时间
-      const expiresTime = new Date().getTime() + 1000 * 60 * 1
+      const expiresTime = new Date().getTime() + 1000 * 60 * 5
       storage.set(UNLOCK_FLAG, expiresTime)
       this.unlockFlag = 1
       this.isShowData = true
