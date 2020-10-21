@@ -3,7 +3,7 @@
     <standard-form-row title="" block style="padding-bottom: 11px;">
       <router-link v-if="!token" :to="{ name: 'login' }">
         <a-button type="default" icon="login" style="margin-right:10px;">
-          登录
+          去登录
         </a-button>
       </router-link>
       <a-radio-group v-model="module" @change="handleChangeType(module)">

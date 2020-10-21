@@ -99,6 +99,10 @@ export default {
       this.token = storage.get(ACCESS_TOKEN)
     },
     handleUnlock (value) {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       const mpwd = storage.get(MPWD)
       if (mpwd !== md5(value)) {
         this.$message.info('密码错误')

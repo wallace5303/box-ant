@@ -1,6 +1,11 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
+      <router-link v-if="!token" :to="{ name: 'login' }">
+        <a-button type="default" icon="login" style="margin-right:10px;">
+          去登录
+        </a-button>
+      </router-link>
       <a-input-search type="password" v-if="!unlockFlag" placeholder="请输入密码" style="width: 200px;" @search="handleUnlock">
         <a-button slot="enterButton">
           解锁
@@ -124,6 +129,10 @@ export default {
       this.visible = true
     },
     handleUnlock (value) {
+      if (!this.token) {
+        this.$message.error('请登录')
+        return false
+      }
       const mpwd = storage.get(MPWD)
       if (mpwd !== md5(value)) {
         this.$message.info('密码错误')
