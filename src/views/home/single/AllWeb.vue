@@ -78,6 +78,7 @@ export default {
   data () {
     return {
       token: null,
+      category: '1',
       myTypes: [],
       webList: {},
       webPageList: {},
@@ -100,8 +101,7 @@ export default {
       desc: '',
       visible: false,
       confirmLoading: false,
-      mdl: null,
-      category: '1'
+      mdl: null
     }
   },
   mounted () {
@@ -191,7 +191,7 @@ export default {
       const form = this.$refs.webSaveModal.form
       this.confirmLoading = true
       form.validateFields((errors, values) => {
-        console.log('allweb values:', values)
+        // console.log('allweb values:', values)
         if (!errors) {
           const saveMySiteParams = {
             out_url: 'saveMySite',

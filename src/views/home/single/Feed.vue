@@ -54,11 +54,13 @@
           <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
         </div>
       </a-list>
-      <web-form
+      <user-web-form
         ref="webSaveModal"
         :visible="visible"
         :loading="confirmLoading"
         :model="mdl"
+        :category="category"
+        :pMyTypes="myTypes"
         @cancel="handleCancel"
         @ok="handleOk"
       />
@@ -80,7 +82,7 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 import FeedList from './modules/FeedList'
 import IconText from '@/views/home/page/components/IconText'
 import { outApi } from '@/api/main'
-import WebForm from './modules/WebSaveForm'
+import UserWebForm from './modules/UserWebForm'
 import FeedAddForm from './modules/FeedAddForm'
 import { StandardFormRow } from '@/components'
 
@@ -89,7 +91,7 @@ export default {
   components: {
     FeedList,
     StandardFormRow,
-    WebForm,
+    UserWebForm,
     FeedAddForm,
     IconText
   },
@@ -97,6 +99,8 @@ export default {
     return {
       loading: true,
       loadingMore: false,
+      category: '1',
+      myTypes: [],
       feedList: [],
       pageInfo: {},
       data: [],
@@ -115,8 +119,9 @@ export default {
     }
   },
   mounted () {
-    this.getFeedList()
     this.getToken()
+    this.getFeedList()
+    this.getMyTypes()
   },
   methods: {
     handleSearch (value) {
@@ -150,46 +155,67 @@ export default {
     getToken () {
       this.token = storage.get(ACCESS_TOKEN)
     },
-    // handleCollection (record) {
-    //   if (!this.token) {
-    //     this.$message.error('请登录')
-    //     return false
-    //   }
-    //   this.visible = true
-    //   this.mdl = {
-    //     id: record.fid,
-    //     name: record.title,
-    //     url: record.url
-    //   }
-    //   // record.col_times += 1
-    // },
     handleCollection (record) {
       if (!this.token) {
         this.$message.error('请登录')
         return false
       }
-      this.loading = true
-      const saveMySiteParams = {
-        out_url: 'saveMySite',
+      this.visible = true
+      this.mdl = {
+        id: record.fid,
+        name: record.title,
+        url: record.url
+      }
+      record.col_times += 1
+    },
+    getMyTypes () {
+      if (!this.token) {
+        return false
+      }
+
+      const params = {
+        out_url: 'myTypes',
         method: 'POST',
         data: {
-          fid: record.fid,
-          name: record.title,
-          url: record.url
+          category: this.category
         }
       }
-      outApi(saveMySiteParams).then(res => {
+      outApi(params).then(res => {
         if (res.code !== 0) {
-          this.$message.info('添加失败')
           return false
         }
-        this.loading = false
-        record.col_times += 1
-      }).catch(err => {
-        console.log('err:', err)
-        this.$message.info('网络异常')
-      })
+        this.myTypes = res.data
+        }).catch(err => {
+          console.log('err:', err)
+        })
     },
+    // handleCollection (record) {
+    //   if (!this.token) {
+    //     this.$message.error('请登录')
+    //     return false
+    //   }
+    //   this.loading = true
+    //   const saveMySiteParams = {
+    //     out_url: 'saveMySite',
+    //     method: 'POST',
+    //     data: {
+    //       fid: record.fid,
+    //       name: record.title,
+    //       url: record.url
+    //     }
+    //   }
+    //   outApi(saveMySiteParams).then(res => {
+    //     if (res.code !== 0) {
+    //       this.$message.info('添加失败')
+    //       return false
+    //     }
+    //     this.loading = false
+    //     record.col_times += 1
+    //   }).catch(err => {
+    //     console.log('err:', err)
+    //     this.$message.info('网络异常')
+    //   })
+    // },
     handleLike (record) {
       if (!this.token) {
         this.$message.error('请登录')
