@@ -1,17 +1,17 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">
     <div class="container">
-      <!-- <div class="top">
-        <div class="header">
+      <div class="top">
+        <!-- <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo">
             <span class="title"></span>
           </a>
-        </div>
+        </div> -->
         <div class="desc">
-          网站管理大师-分享你收藏的网站
+          分享你收藏的网站
         </div>
-      </div> -->
+      </div>
 
       <router-view />
 
@@ -47,7 +47,6 @@ export default {
 <style lang="less" scoped>
 #userLayout.user-layout-wrapper {
     height: 100%;
-
     &.mobile {
       .container {
         .main {
