@@ -1,17 +1,17 @@
 <template>
   <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">
     <div class="container">
-      <div class="top">
+      <!-- <div class="top">
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo">
-            <span class="title">网站管理大师</span>
+            <span class="title"></span>
           </a>
         </div>
         <div class="desc">
-          分享你收藏的网站
+          网站管理大师-分享你收藏的网站
         </div>
-      </div>
+      </div> -->
 
       <router-view />
 
@@ -62,7 +62,7 @@ export default {
       min-height: 100%;
       background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
       background-size: 100%;
-      padding: 110px 0 144px;
+      padding: 20px 0 20px 0;
       position: relative;
 
       a {

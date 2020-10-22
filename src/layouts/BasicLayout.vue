@@ -13,6 +13,14 @@
   >
     <setting-drawer :settings="settings" @change="handleSettingChange" />
     <template v-slot:rightContentRender>
+      <!-- <template>
+        <span style="float: right;margin: 17px 0 0 0;">
+          <a-menu v-model="current" mode="horizontal">
+            <a-menu-item key="user"> <a-icon type="user" />用户 </a-menu-item>
+            <a-menu-item key="app"> <a-icon type="appstore" />下个 </a-menu-item>
+          </a-menu>
+        </span>
+      </template> -->
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
     <template v-slot:footerRender>
@@ -43,6 +51,7 @@ export default {
   },
   data () {
     return {
+      current: 'user',
       // preview.pro.antdv.com only use.
       isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
       // end

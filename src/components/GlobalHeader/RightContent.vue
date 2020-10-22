@@ -1,7 +1,11 @@
 <template>
   <div :class="wrpCls">
-    <!-- <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
-    <select-lang :class="prefixCls" /> -->
+    <span class="user">
+      <a-icon type="user" style="margin-right:5px;"/>
+      <span>{{ currentUser.name }}</span>
+    </span>
+    <!-- <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" /> -->
+    <!-- <select-lang :class="prefixCls" /> -->
   </div>
 </template>
 
@@ -59,3 +63,8 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+.user {
+  margin-right: 10px;
+}
+</style>
