@@ -56,10 +56,10 @@ export default {
   mounted () {
     setTimeout(() => {
       this.currentUser = {
-        name: this.username,
+        name: this.username === 'guest' ? '未登录' : this.username,
         avatar: this.avatar
       }
-    }, 1500)
+    }, 100)
   }
 }
 </script>
