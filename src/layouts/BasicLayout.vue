@@ -52,6 +52,7 @@ export default {
   data () {
     return {
       current: 'user',
+      colapsedNumber: 0,
       // preview.pro.antdv.com only use.
       isProPreviewSite: process.env.VUE_APP_PREVIEW === 'true' && process.env.NODE_ENV !== 'development',
       // end
@@ -96,8 +97,10 @@ export default {
     // 处理侧栏收起状态
     this.$watch('collapsed', () => {
       // this.collapsed = true
-      // console.log('1 this.collapsed:', this.collapsed)
-      this.collapsed = true
+      if (this.colapsedNumber === 0) {
+        this.collapsed = true
+        this.colapsedNumber++
+      }
       this.$store.commit(SIDEBAR_TYPE, this.collapsed)
     })
     this.$watch('isMobile', () => {
