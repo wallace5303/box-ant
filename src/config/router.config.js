@@ -20,23 +20,23 @@ export const asyncRouterMap = [
       {
         path: '/home',
         name: 'home',
-        component: () => import('@/views/home/single/Feed'),
-        meta: { title: 'menu.home', keepAlive: true, icon: 'home' }
+        component: () => import('@/views/home/single/Web'),
+        meta: { title: 'menu.home', keepAlive: true, icon: 'user' }
       },
       // feed
-      // {
-      //   path: '/feed',
-      //   name: 'feed',
-      //   component: () => import('@/views/home/single/Feed'),
-      //   meta: { title: 'menu.feed', keepAlive: true, icon: 'compass' }
-      // },
-      // web
       {
-        path: '/web',
-        name: 'web',
-        component: () => import('@/views/home/single/Web'),
-        meta: { title: 'menu.web', keepAlive: true, icon: 'user' }
+        path: '/feed',
+        name: 'feed',
+        component: () => import('@/views/home/single/Feed'),
+        meta: { title: 'menu.feed', keepAlive: true, icon: 'fire' }
       },
+      // web
+      // {
+      //   path: '/web',
+      //   name: 'web',
+      //   component: () => import('@/views/home/single/Web'),
+      //   meta: { title: 'menu.web', keepAlive: true, icon: 'user' }
+      // },
       {
         path: '/privateweb',
         name: 'privateweb',
@@ -50,29 +50,22 @@ export const asyncRouterMap = [
         component: () => import('@/views/home/single/AllWeb'),
         meta: { title: 'menu.allweb', keepAlive: true, icon: 'appstore' }
       },
-      // manage
-      // {
-      //   path: '/manage',
-      //   name: 'manage',
-      //   component: () => import('@/views/home/single/WebSiteManage'),
-      //   meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' }
-      // },
       {
         path: '/manage',
         name: 'manage',
         component: () => import('@/views/home/single/BaseManage'),
-        redirect: '/manage/website',
+        redirect: '/manageWebSite',
         meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' },
         hideChildrenInMenu: true,
         children: [
           {
-            path: '/manage/website',
+            path: '/manageWebSite',
             name: 'MangeWebSite',
             component: () => import('@/views/home/single/WebSiteManage'),
             meta: { title: 'menu.managewebsite' }
           },
           {
-            path: '/manage/webtype',
+            path: '/manageWebType',
             name: 'ManageWebType',
             component: () => import('@/views/home/single/WebTypeManage'),
             meta: { title: 'menu.managewebtype' }
@@ -91,17 +84,17 @@ export const asyncRouterMap = [
         name: 'settings',
         component: () => import('@/views/settings/Index'),
         meta: { title: 'menu.settings', hideHeader: true, icon: 'setting' },
-        redirect: '/settings/security',
+        redirect: '/settingsSecurity',
         hideChildrenInMenu: true,
         children: [
           {
-            path: '/settings/security',
+            path: '/settingsSecurity',
             name: 'SecuritySettings',
             component: () => import('@/views/settings/Security'),
             meta: { title: '安全设置', hidden: true, keepAlive: true }
           },
           {
-            path: '/settings/user',
+            path: '/settingsUser',
             name: 'UserCenterSettings',
             component: () => import('@/views/settings/UserCenter'),
             meta: { title: '个人信息', hidden: true, keepAlive: true }

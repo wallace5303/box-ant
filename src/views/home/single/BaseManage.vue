@@ -13,9 +13,9 @@
 <script>
 const getActiveKey = (path) => {
   switch (path) {
-    case '/manage/website':
+    case '/manageWebSite':
       return '1'
-    case '/manage/webtype':
+    case '/manageWebType':
       return '2'
     default:
       return '1'
@@ -45,10 +45,10 @@ export default {
       this.tabActiveKey = key
       switch (key) {
         case '1':
-          this.$router.push('/manage/website')
+          this.$router.push('/manageWebSite')
           break
         case '2':
-          this.$router.push('/manage/webtype')
+          this.$router.push('/manageWebType')
           break
         default:
           this.$router.push('/home')
