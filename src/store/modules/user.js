@@ -62,27 +62,8 @@ const user = {
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
-        // if (storage.get(ACCESS_TOKEN) || storage.get(USER_GUEST)) {
-        // }
-        const params = {
-          out_url: 'userinfo',
-          method: 'POST',
-          data: {
-            change_token_code: true
-          }
-        }
-        outApi(params).then(response => {
-          // if (response.code !== 0) {
-          //   reject(new Error('getInfo: roles must be a non-null array !'))
-          //   return
-          // }
-          let result = null
-          if (response.code === 0) {
-            result = response.data
-            result.role = dataObj.defaultUser.guest.role
-          } else {
-            result = dataObj.defaultUser.guest
-          }
+        let result = dataObj.defaultUser.guest
+        function setRole (result) {
           if (result.role && result.role.permissions.length > 0) {
             const role = result.role
             role.permissions = result.role.permissions
@@ -95,13 +76,30 @@ const user = {
             role.permissionList = role.permissions.map(permission => { return permission.permissionId })
             commit('SET_ROLES', result.role)
             commit('SET_INFO', result)
-          } else {
-            reject(new Error('getInfo: roles must be a non-null array !'))
           }
 
           commit('SET_NAME', { name: result.username, welcome: welcome() })
           commit('SET_AVATAR', result.avatar)
-
+        }
+        if (!storage.get(ACCESS_TOKEN) && storage.get(USER_GUEST)) {
+          setRole(result)
+          resolve(result)
+          return
+        }
+        // console.log('request userinfo')
+        const params = {
+          out_url: 'userinfo',
+          method: 'POST',
+          data: {
+            change_token_code: true
+          }
+        }
+        outApi(params).then(response => {
+          if (response.code === 0) {
+            result = response.data
+            result.role = dataObj.defaultUser.guest.role
+          }
+          setRole(result)
           resolve(result)
         }).catch(error => {
           reject(error)
