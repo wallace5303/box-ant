@@ -88,9 +88,9 @@
           type="primary"
           htmlType="submit"
           class="register-button"
-          :loading="registerBtn"
+          :loading="state.registerBtn"
           @click.stop.prevent="handleSubmit"
-          :disabled="registerBtn">注册
+          :disabled="state.registerBtn">注册
         </a-button>
         <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
       </a-form-item>
@@ -137,7 +137,8 @@ export default {
         passwordLevel: 0,
         passwordLevelChecked: false,
         percent: 10,
-        progressColor: '#FF0000'
+        progressColor: '#FF0000',
+        registerBtn: false
       },
       registerBtn: false
     }
@@ -226,6 +227,7 @@ export default {
       const { form: { validateFields }, state, Register } = this
       validateFields({ force: true }, (errors, values) => {
         if (!errors) {
+          state.registerBtn = true
           state.passwordLevelChecked = false
           const params = {
             username: values.username,
@@ -244,7 +246,8 @@ export default {
           }).catch(err => {
             this.$message.error(err)
           }).finally(() => {
-              // 123
+            // finally
+            state.registerBtn = false
           })
         } else {
           console.log('errors:', errors)
