@@ -11,7 +11,7 @@
     :i18nRender="i18nRender"
     v-bind="settings"
   >
-    <setting-drawer :settings="settings" @change="handleSettingChange" />
+    <!-- <setting-drawer :settings="settings" @change="handleSettingChange" /> -->
     <template v-slot:rightContentRender>
       <!-- <template>
         <span style="float: right;margin: 17px 0 0 0;">
