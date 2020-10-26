@@ -33,7 +33,7 @@
             <a @click="handleLike(item)"><icon-text type="like-o" :text="item.like" /></a>
           </template>
           <a-list-item-meta>
-            <a slot="title"><strong>{{ item.title }}</strong></a>
+            <a slot="title" :href="item.url" target="_blank"><strong>{{ item.title }}</strong></a>
             <template slot="description">
               <span v-if="item.url">
                 <a :href="item.url" target="_blank"><a-tag>{{ item.url }}</a-tag></a>
