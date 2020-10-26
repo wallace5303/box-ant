@@ -9,7 +9,7 @@ const components = {
 
 const locale = {
   'message': '-',
-  'menu.home': '动态',
+  'menu.home': '我的',
   'menu.feed': '动态',
   'menu.web': '我的',
   'menu.privateweb': '隐私空间',

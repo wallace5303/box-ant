@@ -267,7 +267,7 @@ export default {
     loginSuccess (res) {
       if (res !== 'ok') {
         this.isLoginError = true
-        return
+        return false
       }
       // check res.homePage define, set $router.push name res.homePage
       // Why not enter onComplete

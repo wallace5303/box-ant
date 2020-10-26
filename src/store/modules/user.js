@@ -1,6 +1,6 @@
 import storage from 'store'
 import { outApi } from '@/api/main'
-import { ACCESS_TOKEN, USER_INFO, MPWD, UNLOCK_FLAG } from '@/store/mutation-types'
+import { ACCESS_TOKEN, USER_INFO, MPWD, UNLOCK_FLAG, USER_GUEST } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 import dataObj from '@/utils/data'
 
@@ -51,6 +51,7 @@ const user = {
           storage.set(ACCESS_TOKEN, result.token, 1 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
           storage.set(USER_INFO, result.user_info)
+          storage.remove(USER_GUEST)
           resolve('ok')
         }).catch(error => {
           reject(error)
@@ -61,6 +62,8 @@ const user = {
     // 获取用户信息
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
+        // if (storage.get(ACCESS_TOKEN) || storage.get(USER_GUEST)) {
+        // }
         const params = {
           out_url: 'userinfo',
           method: 'POST',
@@ -125,6 +128,7 @@ const user = {
           storage.remove(USER_INFO)
           storage.remove(MPWD)
           storage.remove(UNLOCK_FLAG)
+          storage.remove(USER_GUEST)
         })
       })
     },
@@ -146,6 +150,7 @@ const user = {
           storage.set(ACCESS_TOKEN, result.token, 1 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
           storage.set(USER_INFO, result.user_info)
+          storage.remove(USER_GUEST)
           resolve('ok')
         }).catch(error => {
           reject(error)

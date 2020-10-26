@@ -117,6 +117,8 @@ export default {
   methods: {
     getToken () {
       this.token = storage.get(ACCESS_TOKEN)
+      // console.log('NODE_ENV', process.env.NODE_ENV)
+      // console.log('VUE_APP_PREVIEW', process.env.VUE_APP_PREVIEW)
     },
     handleAdd () {
       this.visible = true
