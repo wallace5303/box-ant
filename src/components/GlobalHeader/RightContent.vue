@@ -2,7 +2,7 @@
   <div :class="wrpCls">
     <span class="user">
       <a-icon type="user" style="margin-right:5px;"/>
-      <span>{{ currentUser.name }}</span>
+      <span>{{ currentUser.username }}</span>
     </span>
     <!-- <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" /> -->
     <!-- <select-lang :class="prefixCls" /> -->
@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import storage from 'store'
+import { USER_INFO } from '@/store/mutation-types'
 import AvatarDropdown from './AvatarDropdown'
 import SelectLang from '@/components/SelectLang'
 import { mapGetters } from 'vuex'
@@ -41,11 +43,13 @@ export default {
   data () {
     return {
       showMenu: true,
-      currentUser: {}
+      currentUser: {
+        username: '未登录',
+        avatar: ''
+      }
     }
   },
   computed: {
-    ...mapGetters(['username', 'avatar']),
     wrpCls () {
       return {
         'ant-pro-global-header-index-right': true,
@@ -54,12 +58,15 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => {
-      this.currentUser = {
-        name: this.username === 'guest' ? '未登录' : this.username,
-        avatar: this.avatar
+    this.getUserinfo()
+  },
+  methods: {
+    getUserinfo () {
+      const userinfo = storage.get(USER_INFO)
+      if (userinfo) {
+        this.currentUser = userinfo
       }
-    }, 100)
+    }
   }
 }
 </script>
