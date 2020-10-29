@@ -197,6 +197,7 @@ export default {
             out_url: 'saveMySite',
             method: 'POST',
             data: {
+              category: this.category,
               wsid: values.id,
               type: values.type,
               name: values.name,
