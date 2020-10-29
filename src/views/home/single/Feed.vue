@@ -80,7 +80,7 @@
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import FeedList from './modules/FeedList'
-import IconText from '@/views/home/page/components/IconText'
+import IconText from '@/views/home/single/components/IconText'
 import { outApi } from '@/api/main'
 import UserWebForm from './modules/UserWebForm'
 import FeedAddForm from './modules/FeedAddForm'
