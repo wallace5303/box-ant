@@ -2,7 +2,12 @@
   <div :class="wrpCls">
     <span class="user">
       <a-icon type="user" style="margin-right:5px;"/>
-      <span>{{ currentUser.username }}</span>
+      <span v-if="currentUser.username" >{{ currentUser.username }}</span>
+      <span v-else >
+        <router-link :to="{ name: 'login' }">
+          登录
+        </router-link>
+      </span>
     </span>
     <!-- <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" /> -->
     <!-- <select-lang :class="prefixCls" /> -->
@@ -44,7 +49,7 @@ export default {
     return {
       showMenu: true,
       currentUser: {
-        username: '未登录',
+        username: '',
         avatar: ''
       }
     }

@@ -197,7 +197,7 @@ export default {
             out_url: 'saveMySite',
             method: 'POST',
             data: {
-              wsid: values.wsid,
+              wsid: values.id,
               type: values.type,
               name: values.name,
               url: values.url,

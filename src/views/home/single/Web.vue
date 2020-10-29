@@ -85,14 +85,14 @@ import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar, StandardFormRow } from '@/components'
 import { outApi } from '@/api/main'
-import WebForm from './modules/WebSaveForm'
+// import WebForm from './modules/WebSaveForm'
 const DataSet = require('@antv/data-set')
 
 export default {
   name: 'Web',
   components: {
     PageHeaderWrapper,
-    WebForm,
+    // WebForm,
     Radar,
     StandardFormRow
   },
@@ -143,44 +143,44 @@ export default {
         }).catch(err => {
           console.log('err:', err)
         })
-    },
-    handleCancel () {
-      this.visible = false
-      this.confirmLoading = false
-      const form = this.$refs.webSaveModal.form
-    },
-    handleOk () {
-      const form = this.$refs.webSaveModal.form
-      this.confirmLoading = true
-      form.validateFields((errors, values) => {
-        if (!errors) {
-          const saveMySiteParams = {
-            out_url: 'saveMySite',
-            method: 'POST',
-            data: {
-              type: values.type,
-              name: values.name,
-              url: values.url,
-              sort: 0
-            }
-          }
-          outApi(saveMySiteParams).then(res => {
-            this.confirmLoading = false
-            if (res.code !== 0) {
-              this.$message.info('添加失败')
-              return false
-            }
-              this.visible = false
-              this.$message.info('添加成功')
-              this.getMySites()
-            }).catch(err => {
-              console.log('err:', err)
-            })
-        } else {
-          this.confirmLoading = false
-        }
-      })
     }
+    // handleCancel () {
+    //   this.visible = false
+    //   this.confirmLoading = false
+    //   const form = this.$refs.webSaveModal.form
+    // },
+    // handleOk () {
+    //   const form = this.$refs.webSaveModal.form
+    //   this.confirmLoading = true
+    //   form.validateFields((errors, values) => {
+    //     if (!errors) {
+    //       const saveMySiteParams = {
+    //         out_url: 'saveMySite',
+    //         method: 'POST',
+    //         data: {
+    //           type: values.type,
+    //           name: values.name,
+    //           url: values.url,
+    //           sort: 0
+    //         }
+    //       }
+    //       outApi(saveMySiteParams).then(res => {
+    //         this.confirmLoading = false
+    //         if (res.code !== 0) {
+    //           this.$message.info('添加失败')
+    //           return false
+    //         }
+    //           this.visible = false
+    //           this.$message.info('添加成功')
+    //           this.getMySites()
+    //         }).catch(err => {
+    //           console.log('err:', err)
+    //         })
+    //     } else {
+    //       this.confirmLoading = false
+    //     }
+    //   })
+    // }
   }
 }
 </script>
