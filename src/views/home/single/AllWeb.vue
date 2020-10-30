@@ -115,6 +115,7 @@ export default {
     },
     handleSearch (value) {
       this.page = 1
+      this.paginationOpt.current = 1
       this.desc = value
       this.getAllWebs()
     },
