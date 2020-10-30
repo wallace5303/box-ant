@@ -92,13 +92,13 @@ export const asyncRouterMap = [
             name: 'SecuritySettings',
             component: () => import('@/views/settings/Security'),
             meta: { title: '安全设置', hidden: true, keepAlive: true }
-          },
-          {
-            path: '/settingsUser',
-            name: 'UserCenterSettings',
-            component: () => import('@/views/settings/UserCenter'),
-            meta: { title: '个人信息', hidden: true, keepAlive: true }
           }
+          // {
+          //   path: '/settingsUser',
+          //   name: 'UserCenterSettings',
+          //   component: () => import('@/views/settings/UserCenter'),
+          //   meta: { title: '个人信息', hidden: true, keepAlive: true }
+          // }
         ]
       }
     ]

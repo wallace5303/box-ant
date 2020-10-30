@@ -112,7 +112,12 @@
           class="forge-password"
           style="float: left;"
         >忘记密码</router-link>
-        <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
+        <!-- <span class="register" @click="register">
+          注册账户
+        </span> -->
+        <a class="register" @click="register">
+          注册账户
+        </a>
       </div>
     </a-form>
 
@@ -171,6 +176,15 @@ export default {
     ...mapActions(['Login', 'Logout']),
     setGuest () {
       storage.set(USER_GUEST, 1)
+    },
+    register () {
+      this.$warning({
+        title: '注册后，返回此处登录',
+        content: '',
+        onOk () {
+          window.open('http://box.kaka996.com/index/user/register.html', '_blank')
+        }
+      })
     },
     // handler
     handleUsernameOrEmail (rule, value, callback) {

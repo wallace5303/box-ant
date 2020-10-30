@@ -15,11 +15,11 @@
                 安全设置
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/settings/user" v-if="token">
+            <!-- <a-menu-item key="/settings/user" v-if="token">
               <router-link :to="{ name: 'UserCenterSettings' }">
                 用户设置
               </router-link>
-            </a-menu-item>
+            </a-menu-item> -->
           </a-menu>
         </div>
         <div class="account-settings-info-right">
