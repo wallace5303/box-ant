@@ -3,7 +3,7 @@ import store from '@/store'
 import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, USER_INFO, MPWD, UNLOCK_FLAG } from '@/store/mutation-types'
 
 // 创建 axios 实例
 const request = axios.create({
@@ -54,9 +54,13 @@ request.interceptors.request.use(config => {
 
 // response interceptor
 request.interceptors.response.use((response) => {
-  if (response.data.code === -2) {
+  if (response.data.code !== 0) {
+    storage.remove(ACCESS_TOKEN)
+    storage.remove(USER_INFO)
+    storage.remove(MPWD)
+    storage.remove(UNLOCK_FLAG)
     notification.error({
-      message: 'Forbidden',
+      message: '注意',
       description: response.data.message
     })
   }

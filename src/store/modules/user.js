@@ -90,9 +90,7 @@ const user = {
         const params = {
           out_url: 'userinfo',
           method: 'POST',
-          data: {
-            change_token_code: true
-          }
+          data: {}
         }
         outApi(params).then(response => {
           if (response.code === 0) {
