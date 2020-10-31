@@ -109,7 +109,7 @@ export default {
       confirmLoading: false,
       mdl: null,
       unlockFlag: 0,
-      category: 2
+      category: '2'
     }
   },
   computed: {
@@ -135,7 +135,8 @@ export default {
       }
       const mpwd = storage.get(MPWD)
       if (mpwd !== md5(value)) {
-        this.$message.info('密码错误')
+        this.$message.error('密码错误')
+        return false
       }
       // 设置过期时间
       const expiresTime = new Date().getTime() + 1000 * 60 * 5

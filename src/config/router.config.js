@@ -60,13 +60,13 @@ export const asyncRouterMap = [
         children: [
           {
             path: '/manageWebSite',
-            name: 'MangeWebSite',
+            name: 'manageWebSite',
             component: () => import('@/views/home/single/WebSiteManage'),
             meta: { title: 'menu.managewebsite' }
           },
           {
             path: '/manageWebType',
-            name: 'ManageWebType',
+            name: 'manageWebType',
             component: () => import('@/views/home/single/WebTypeManage'),
             meta: { title: 'menu.managewebtype' }
           }

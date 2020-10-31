@@ -14,6 +14,8 @@
       title="">
       <div class="operate">
         <a-button type="dashed" style="width: 100%">添加后 - 在“我的”查看</a-button>
+        <!-- 添加后 - 在“我的”查看
+        <a-divider dashed="true" /> -->
       </div>
       <a-list :loading="loading" size="large" :pagination="paginationOpt">
         <a-list-item :key="index" v-for="(item, index) in webList" style="padding-top: 10px;padding-bottom: 10px;">

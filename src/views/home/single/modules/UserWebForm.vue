@@ -15,9 +15,18 @@
         <a-form-item
           label="类型"
         >
-          <a-select v-decorator="['type', { initialValue: firstOption }]">
-            <a-select-option :key="index" v-for="(item, index) in myTypes" :value="item.uwtid">{{ item.name }}</a-select-option>
-          </a-select>
+          <a-row :gutter="8">
+            <a-col :span="12">
+              <a-select v-decorator="['type', { initialValue: firstOption }]">
+                <a-select-option :key="index" v-for="(item, index) in myTypes" :value="item.uwtid">{{ item.name }}</a-select-option>
+              </a-select>
+            </a-col>
+            <a-col :span="12">
+              <router-link :to="{ name: 'manageWebType', params: { category: this.category } }">
+                <a-button>添加</a-button>
+              </router-link>
+            </a-col>
+          </a-row>
         </a-form-item>
         <a-form-item
           label="名称"
