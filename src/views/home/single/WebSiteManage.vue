@@ -49,7 +49,7 @@
             >
               {{ item.name.substr(0,1) }}
             </a-avatar>
-            <a slot="title">{{ item.name }}</a>
+            <a slot="title" :href="item.url" target="_blank">{{ item.name }}</a>
           </a-list-item-meta>
           <div class="list-number">
             <span>{{ item.type_name }}</span>
