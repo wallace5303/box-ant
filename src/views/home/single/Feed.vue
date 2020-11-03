@@ -291,6 +291,7 @@ export default {
             method: 'POST',
             data: {
               fid: values.id,
+              category: this.category,
               type: values.type,
               name: values.name,
               url: values.url,
