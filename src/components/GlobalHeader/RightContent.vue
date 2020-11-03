@@ -1,6 +1,18 @@
 <template>
   <div :class="wrpCls">
-    <span class="user">
+    <span class="menu-distance">
+      <a-icon type="project" style="margin-right:5px;"/>
+      <a class="a-deco" :href="electron_egg" target="_blank">
+        electron-egg
+      </a>
+    </span>
+    <span class="menu-distance">
+      <a-icon type="download" style="margin-right:5px;"/>
+      <a class="a-deco" :href="box_page" target="_blank">
+        客户端
+      </a>
+    </span>
+    <span class="menu-distance">
       <a-icon type="user" style="margin-right:5px;"/>
       <span v-if="currentUser.username" >{{ currentUser.username }}</span>
       <span v-else >
@@ -51,7 +63,9 @@ export default {
       currentUser: {
         username: '',
         avatar: ''
-      }
+      },
+      electron_egg: 'http://box.kaka996.com/cms/p/electronegg.html',
+      box_page: 'http://box.kaka996.com/cms/p/box.html'
     }
   },
   computed: {
@@ -76,7 +90,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.user {
+.menu-distance {
   margin-right: 10px;
+}
+.a-deco {
+  text-decoration:none;color: black;
 }
 </style>

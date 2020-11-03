@@ -21,6 +21,8 @@
           </a-menu>
         </span>
       </template> -->
+      <!-- <span style="float: right;margin: 17px 0 0 0;">electron-egg</span>
+      <span style="float: right;margin: 17px 0 0 0;">客户端</span> -->
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
     <template v-slot:footerRender>
