@@ -1,18 +1,6 @@
 <template>
   <div :class="wrpCls">
     <span class="menu-distance">
-      <a-icon type="project" style="margin-right:5px;"/>
-      <a class="a-deco" :href="electron_egg" target="_blank">
-        electron-egg
-      </a>
-    </span>
-    <span class="menu-distance">
-      <a-icon type="download" style="margin-right:5px;"/>
-      <a class="a-deco" :href="box_page" target="_blank">
-        客户端
-      </a>
-    </span>
-    <span class="menu-distance">
       <a-icon type="user" style="margin-right:5px;"/>
       <span v-if="currentUser.username" >{{ currentUser.username }}</span>
       <span v-else >
