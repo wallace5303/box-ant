@@ -19,6 +19,7 @@
       <a-input-search
         placeholder=""
         style="margin-left: 16px; width: 272px;"
+        v-model="inputText"
         @search="baiduSearch">
         <!-- <a-button slot="enterButton" style="backgroundColor:#4e6ef2; color:#fff;"> -->
         <a-button slot="enterButton">
@@ -136,7 +137,7 @@ export default {
     baiduSearch (value) {
       this.inputText = value
       window.open('https://www.baidu.com/s?wd=' + this.inputText, '_blank')
-      this.inputText = ''
+      // this.inputText = ''
     },
     // gotoItem (item) {
     //   window.open('https://www.baidu.com/s?wd=' + item, '_blank')
