@@ -1,6 +1,12 @@
 <template>
   <div :class="wrpCls">
     <span class="menu-distance">
+      <a-icon type="heart" style="margin-right:5px;"/>
+      <span @click="collectionWeb">
+        收藏
+      </span>
+    </span>
+    <span class="menu-distance">
       <a-icon type="project" style="margin-right:5px;"/>
       <a class="a-deco" :href="electron_egg" target="_blank">
         electron-egg
@@ -85,6 +91,16 @@ export default {
       if (userinfo) {
         this.currentUser = userinfo
       }
+    },
+    collectionWeb () {
+      const h = this.$createElement
+      this.$info({
+        title: '收藏本站或设置为主页，永不丢失',
+        content: h('div', {}, [
+          h('p', 'http://b.kaka996.com/')
+        ]),
+        onOk () {}
+      })
     }
   }
 }
