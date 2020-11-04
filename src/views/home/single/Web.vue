@@ -16,6 +16,24 @@
           自定义添加
         </a-button>
       </router-link>
+      <a-input-search
+        placeholder=""
+        style="margin-left: 16px; width: 272px;"
+        @search="baiduSearch">
+        <a-button slot="enterButton">
+          百度一下
+        </a-button>
+        <!--
+          v-model="inputText"
+          @keyup="show($event)"
+          @keydown.down="down()"
+          @keydown.up.prevent="up()"
+          <ul>
+          <li :key="index" v-for="(item, index) in result" :class="{bgcolor: index==nowIndex}" @click="gotoItem(item)">
+            {{ item }}
+          </li>
+        </ul> -->
+      </a-input-search>
     </standard-form-row>
     <a-card
       v-if="token"
@@ -100,6 +118,10 @@ export default {
     return {
       token: null,
       loading: true,
+      inputText: '',
+      text: '',
+      nowIndex: -1,
+      result: [],
       webList: {},
       visible: false,
       confirmLoading: false,
@@ -123,6 +145,55 @@ export default {
     handleAdd () {
       this.visible = true
     },
+    baiduSearch (value) {
+      this.inputText = value
+      window.open('https://www.baidu.com/s?wd=' + this.inputText, '_blank')
+    },
+    // gotoItem (item) {
+    //   window.open('https://www.baidu.com/s?wd=' + item, '_blank')
+    //   this.inputText = ''
+    // },
+    // show (ev) {
+    //   if (ev.keyCode === 38 || ev.keyCode === 40) {
+    //     if (this.nowIndex < -1) {
+    //       return false
+    //     }
+    //     if (this.nowIndex !== this.result.length && this.nowIndex !== -1) {
+    //       this.inputText = this.result[this.nowIndex]
+    //     }
+    //     return false
+    //   }
+    //   if (ev.keyCode === 13) {
+    //     window.open('https://www.baidu.com/s?wd=' + this.inputText, '_blank')
+    //     this.inputText = ''
+    //   }
+    //   this.text = this.inputText
+    //   this.$http.post('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
+    //     { wd: this.inputText },
+    //     {
+    //       emulateJSON: true
+    //   }).then(res => {
+    //     this.result = res.data.s
+    //   })
+    // },
+    // down () {
+    //   this.nowIndex++
+    //   if (this.nowIndex === this.result.length) {
+    //     this.nowIndex = -1
+    //     this.inputText = this.text
+    //   }
+    // },
+    // up () {
+    //   this.nowIndex--
+    //   if (this.nowIndex < -1) {
+    //     this.nowIndex = -1
+    //     return false
+    //   }
+    //   if (this.nowIndex === -1) {
+    //     this.nowIndex = this.result.length
+    //     this.inputText = this.text
+    //   }
+    // },
     getMySites () {
       if (!this.token) {
         return false
