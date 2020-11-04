@@ -20,19 +20,10 @@
         placeholder=""
         style="margin-left: 16px; width: 272px;"
         @search="baiduSearch">
+        <!-- <a-button slot="enterButton" style="backgroundColor:#4e6ef2; color:#fff;"> -->
         <a-button slot="enterButton">
           百度一下
         </a-button>
-        <!--
-          v-model="inputText"
-          @keyup="show($event)"
-          @keydown.down="down()"
-          @keydown.up.prevent="up()"
-          <ul>
-          <li :key="index" v-for="(item, index) in result" :class="{bgcolor: index==nowIndex}" @click="gotoItem(item)">
-            {{ item }}
-          </li>
-        </ul> -->
       </a-input-search>
     </standard-form-row>
     <a-card
@@ -119,9 +110,6 @@ export default {
       token: null,
       loading: true,
       inputText: '',
-      text: '',
-      nowIndex: -1,
-      result: [],
       webList: {},
       visible: false,
       confirmLoading: false,
