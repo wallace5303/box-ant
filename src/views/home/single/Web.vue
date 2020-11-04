@@ -136,6 +136,7 @@ export default {
     baiduSearch (value) {
       this.inputText = value
       window.open('https://www.baidu.com/s?wd=' + this.inputText, '_blank')
+      this.inputText = ''
     },
     // gotoItem (item) {
     //   window.open('https://www.baidu.com/s?wd=' + item, '_blank')
