@@ -1,7 +1,7 @@
 <template>
   <global-footer class="footer custom-render">
     <template v-slot:links>
-      <p>联系我们：（电话）13161886847 （邮箱）530353222@qq.com</p>
+      <p>联系我们：（邮箱）530353222@qq.com</p>
       <p>Copyright @ 2019~2020 盒子 版权所有</p>
       <p>京ICP备15041380号-2</p>
     </template>
