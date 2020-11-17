@@ -2,8 +2,8 @@
   <div :class="wrpCls">
     <span class="menu-distance">
       <a-icon type="project" style="margin-right:5px;"/>
-      <a class="a-deco" :href="electron_egg" target="_blank">
-        electron-egg
+      <a class="a-deco" href="https://gitee.com/wallace5303/electron-egg" target="_blank">
+        开源
       </a>
     </span>
     <span class="menu-distance">
