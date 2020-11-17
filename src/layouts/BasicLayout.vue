@@ -125,11 +125,6 @@ export default {
     if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'true') {
       updateTheme(this.settings.primaryColor)
     }
-    // talkingdata
-    const s = document.createElement('script')
-    s.type = 'text/javascript'
-    s.src = 'http://sdk.talkingdata.com/app/h5/v1?appid=9B17DB57120D465B9DF500EA876CC6D5&vn=box&vc=1.0.0'
-    document.body.appendChild(s)
   },
   methods: {
     i18nRender,

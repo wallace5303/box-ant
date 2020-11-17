@@ -19,6 +19,7 @@
       <a-input-search
         placeholder=""
         style="margin-left: 16px; width: 272px;"
+        v-model="inputText"
         @search="baiduSearch">
         <!-- <a-button slot="enterButton" style="backgroundColor:#4e6ef2; color:#fff;"> -->
         <a-button slot="enterButton">
@@ -27,7 +28,6 @@
       </a-input-search>
     </standard-form-row>
     <a-card
-      v-if="token"
       style="width:100%"
       :bordered="false"
     >
@@ -123,6 +123,7 @@ export default {
   mounted () {
     this.getToken()
     this.getMySites()
+    this.getDefaultSites()
   },
   methods: {
     getToken () {
@@ -189,6 +190,27 @@ export default {
       }
       const params = {
         out_url: 'mySites',
+        method: 'POST',
+        data: {
+          category: 1
+        }
+      }
+      outApi(params).then(res => {
+        this.loading = false
+        if (res.code !== 0) {
+          return false
+        }
+        this.webList = res.data
+        }).catch(err => {
+          console.log('err:', err)
+        })
+    },
+    getDefaultSites () {
+      if (this.token) {
+        return false
+      }
+      const params = {
+        out_url: 'defaultSites',
         method: 'POST',
         data: {
           category: 1

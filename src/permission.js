@@ -22,6 +22,10 @@ router.beforeEach((to, from, next) => {
     next()
     return true
   }
+  // 直接进
+  if (!storage.get(USER_GUEST)) {
+    storage.set(USER_GUEST, 1)
+  }
   /* has token */
   if (storage.get(ACCESS_TOKEN) || storage.get(USER_GUEST)) {
     if (to.path === loginRoutePath) {
