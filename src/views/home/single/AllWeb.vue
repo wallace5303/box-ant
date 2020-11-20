@@ -6,7 +6,11 @@
         <a-radio-button value="new">最新</a-radio-button>
         <a-radio-button value="collection">收藏最多</a-radio-button>
       </a-radio-group>
-      <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
+      <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch" placeholder="如：nodejs">
+        <a-button slot="enterButton">
+          搜索
+        </a-button>
+      </a-input-search>
     </standard-form-row>
     <a-card
       style="margin-top: 0px"
