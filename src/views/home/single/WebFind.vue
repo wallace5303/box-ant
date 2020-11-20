@@ -68,6 +68,14 @@
         @cancel="handleCancel"
         @ok="handleOk"
       />
+      <all-web-form
+        ref="allWebModal"
+        :visible="allWebVisible"
+        :loading="allWebConfirmLoading"
+        :model="allWebMdl"
+        @cancel="allWebHandleCancel"
+        @ok="allWebHandleOk"
+      />
     </a-card>
   </div>
 </template>
@@ -76,6 +84,7 @@
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import UserWebForm from './modules/UserWebForm'
+import AllWebForm from './modules/AllWebForm'
 import { outApi } from '@/api/main'
 import { StandardFormRow } from '@/components'
 
@@ -83,6 +92,7 @@ export default {
   name: 'StandardList',
   components: {
     UserWebForm,
+    AllWebForm,
     StandardFormRow
   },
   data () {
@@ -101,7 +111,10 @@ export default {
       desc: '',
       visible: false,
       confirmLoading: false,
-      mdl: null
+      allWebVisible: false,
+      allWebConfirmLoading: false,
+      mdl: null,
+      allWebMdl: null
     }
   },
   mounted () {
@@ -141,6 +154,13 @@ export default {
       if (!this.token) {
         this.$message.error('请登录')
         return false
+      }
+      this.allWebVisible = true
+      this.allWebMdl = {
+        id: 0,
+        name: '',
+        url: '',
+        desc: ''
       }
     },
     getWebFind (isReset) {
@@ -232,6 +252,41 @@ export default {
             })
         } else {
           this.confirmLoading = false
+        }
+      })
+    },
+    allWebHandleCancel () {
+      this.allWebVisible = false
+      this.allWebConfirmLoading = false
+      const form = this.$refs.allWebModal.form
+    },
+    allWebHandleOk () {
+      const form = this.$refs.allWebModal.form
+      this.allWebConfirmLoading = true
+      form.validateFields((errors, values) => {
+        console.log('allweb values:', values)
+        if (!errors) {
+          const saveAllWebParams = {
+            out_url: 'saveAllWeb',
+            method: 'POST',
+            data: {
+              name: values.name,
+              url: values.url,
+              desc: values.desc
+            }
+          }
+          outApi(saveAllWebParams).then(res => {
+            if (res.code !== 0) {
+              this.$message.info('添加失败')
+              return
+            }
+              this.$message.info('添加成功')
+            }).catch(err => {
+              console.log('err:', err)
+            }).finally(() => {
+              this.allWebVisible = false
+              this.allWebConfirmLoading = false
+            })
         }
       })
     }
