@@ -20,16 +20,56 @@ export const asyncRouterMap = [
       {
         path: '/home',
         name: 'home',
-        component: () => import('@/views/home/single/Web'),
-        meta: { title: 'menu.home', keepAlive: true, icon: 'user' }
+        component: () => import('@/views/home/single/BaseManage'),
+        meta: { title: 'menu.home', keepAlive: true, icon: 'user' },
+        redirect: '/homeWeb',
+        hideChildrenInMenu: true,
+        children: [
+          {
+            path: '/homeWeb',
+            name: 'homeWeb',
+            component: () => import('@/views/home/single/Web'),
+            meta: { title: 'menu.homeWeb' }
+          },
+          {
+            path: '/homeFind',
+            name: 'homeFind',
+            component: () => import('@/views/home/single/AllWeb'),
+            meta: { title: 'menu.homeFind' }
+          },
+          {
+            path: '/homePrivateweb',
+            name: 'homePrivateweb',
+            component: () => import('@/views/home/single/PrivateWeb'),
+            meta: { title: 'menu.homePrivateweb' }
+          },
+          {
+            path: '/homeManageWebSite',
+            name: 'homeManageWebSite',
+            component: () => import('@/views/home/single/WebSiteManage'),
+            meta: { title: 'menu.homeManageWebSite' }
+          },
+          {
+            path: '/homeManageWebType',
+            name: 'homeManageWebType',
+            component: () => import('@/views/home/single/WebTypeManage'),
+            meta: { title: 'menu.homeManageWebType' }
+          },
+          {
+            path: '/homeFeed',
+            name: 'homeFeed',
+            component: () => import('@/views/home/single/Feed'),
+            meta: { title: 'menu.homeFeed' }
+          }
+        ]
       },
       // feed
-      {
-        path: '/feed',
-        name: 'feed',
-        component: () => import('@/views/home/single/Feed'),
-        meta: { title: 'menu.feed', keepAlive: true, icon: 'fire' }
-      },
+      // {
+      //   path: '/feed',
+      //   name: 'feed',
+      //   component: () => import('@/views/home/single/Feed'),
+      //   meta: { title: 'menu.feed', keepAlive: true, icon: 'fire' }
+      // },
       // web
       // {
       //   path: '/web',
@@ -37,47 +77,41 @@ export const asyncRouterMap = [
       //   component: () => import('@/views/home/single/Web'),
       //   meta: { title: 'menu.web', keepAlive: true, icon: 'user' }
       // },
-      {
-        path: '/privateweb',
-        name: 'privateweb',
-        component: () => import('@/views/home/single/PrivateWeb'),
-        meta: { title: 'menu.privateweb', keepAlive: true, icon: 'lock' }
-      },
+      // {
+      //   path: '/privateweb',
+      //   name: 'privateweb',
+      //   component: () => import('@/views/home/single/PrivateWeb'),
+      //   meta: { title: 'menu.privateweb', keepAlive: true, icon: 'lock' }
+      // },
       // all web
-      {
-        path: '/allweb',
-        name: 'allweb',
-        component: () => import('@/views/home/single/AllWeb'),
-        meta: { title: 'menu.allweb', keepAlive: true, icon: 'appstore' }
-      },
-      {
-        path: '/manage',
-        name: 'manage',
-        component: () => import('@/views/home/single/BaseManage'),
-        redirect: '/manageWebSite',
-        meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' },
-        hideChildrenInMenu: true,
-        children: [
-          {
-            path: '/manageWebSite',
-            name: 'manageWebSite',
-            component: () => import('@/views/home/single/WebSiteManage'),
-            meta: { title: 'menu.managewebsite' }
-          },
-          {
-            path: '/manageWebType',
-            name: 'manageWebType',
-            component: () => import('@/views/home/single/WebTypeManage'),
-            meta: { title: 'menu.managewebtype' }
-          }
-          // {
-          //   path: '/manage/feed',
-          //   name: 'ManageFeed',
-          //   component: () => import('@/views/home/single/WebTypeManage'),
-          //   meta: { title: '' }
-          // }
-        ]
-      },
+      // {
+      //   path: '/allweb',
+      //   name: 'allweb',
+      //   component: () => import('@/views/home/single/AllWeb'),
+      //   meta: { title: 'menu.allweb', keepAlive: true, icon: 'appstore' }
+      // },
+      // {
+      //   path: '/manage',
+      //   name: 'manage',
+      //   component: () => import('@/views/home/single/BaseManage'),
+      //   redirect: '/manageWebSite',
+      //   meta: { title: 'menu.manage', keepAlive: true, icon: 'tool' },
+      //   hideChildrenInMenu: true,
+      //   children: [
+      //     {
+      //       path: '/manageWebSite',
+      //       name: 'manageWebSite',
+      //       component: () => import('@/views/home/single/WebSiteManage'),
+      //       meta: { title: 'menu.managewebsite' }
+      //     },
+      //     {
+      //       path: '/manageWebType',
+      //       name: 'manageWebType',
+      //       component: () => import('@/views/home/single/WebTypeManage'),
+      //       meta: { title: 'menu.managewebtype' }
+      //     }
+      //   ]
+      // },
       // setting
       {
         path: '/settings',

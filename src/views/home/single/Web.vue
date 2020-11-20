@@ -6,26 +6,29 @@
           去登录
         </a-button>
       </router-link>
-      <router-link :to="{ name: 'allweb' }">
-        <a-button type="default" style="margin-right:10px;">
-          精品推荐
-        </a-button>
-      </router-link>
-      <router-link :to="{ name: 'manage' }">
-        <a-button type="default" style="margin-right:10px;">
-          自定义添加
-        </a-button>
-      </router-link>
       <a-input-search
-        placeholder=""
-        style="margin-left: 16px; width: 272px;"
+        placeholder="如：nodejs教程"
+        style="width: 272px; margin-right:10px;"
         v-model="inputText"
         @search="baiduSearch">
-        <!-- <a-button slot="enterButton" style="backgroundColor:#4e6ef2; color:#fff;"> -->
+        <a-button slot="enterButton">
+          搜一搜
+        </a-button>
+      </a-input-search>
+      <!-- <a-input-search
+        placeholder=""
+        style="width: 272px; margin-right:10px;"
+        v-model="inputText"
+        @search="baiduSearch">
         <a-button slot="enterButton">
           百度一下
         </a-button>
-      </a-input-search>
+      </a-input-search> -->
+      <!-- <router-link :to="{ name: 'homeManageWebSite' }">
+        <a-button type="default" style="margin-right:10px;">
+          添加
+        </a-button>
+      </router-link> -->
     </standard-form-row>
     <a-card
       style="width:100%"

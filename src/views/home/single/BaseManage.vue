@@ -13,10 +13,18 @@
 <script>
 const getActiveKey = (path) => {
   switch (path) {
-    case '/manageWebSite':
+    case '/homeWeb':
       return '1'
-    case '/manageWebType':
+    case '/homeFind':
       return '2'
+    case '/homePrivateweb':
+      return '3'
+    case '/homeManageWebSite':
+      return '4'
+    case '/homeManageWebType':
+      return '5'
+    case '/homeFeed':
+      return '6'
     default:
       return '1'
   }
@@ -26,8 +34,12 @@ export default {
   data () {
     return {
       tabList: [
-        { key: '1', tab: '网址' },
-        { key: '2', tab: '分类' }
+        { key: '1', tab: '我的' },
+        { key: '2', tab: '发现' },
+        { key: '3', tab: '隐私' },
+        { key: '6', tab: 'feed' },
+        { key: '4', tab: '添加' },
+        { key: '5', tab: '分类编辑' }
       ],
       tabActiveKey: '1',
       noTitle: false
@@ -45,10 +57,22 @@ export default {
       this.tabActiveKey = key
       switch (key) {
         case '1':
-          this.$router.push('/manageWebSite')
+          this.$router.push('/homeWeb')
           break
         case '2':
-          this.$router.push('/manageWebType')
+          this.$router.push('/homeFind')
+          break
+        case '3':
+          this.$router.push('/homePrivateweb')
+          break
+        case '4':
+          this.$router.push('/homeManageWebSite')
+          break
+        case '5':
+          this.$router.push('/homeManageWebType')
+          break
+        case '6':
+          this.$router.push('/homeFeed')
           break
         default:
           this.$router.push('/home')

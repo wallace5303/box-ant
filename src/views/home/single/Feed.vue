@@ -14,8 +14,8 @@
       <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/>
     </standard-form-row>
     <a-card
-      style="width:100%"
-      :bordered="false"
+      style="margin-top: 0px"
+      :bordered="true"
     >
       <div class="operate">
         <a-button type="dashed" style="width: 100%" icon="plus" @click="handleAdd">发布</a-button>

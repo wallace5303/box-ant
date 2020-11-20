@@ -1,7 +1,18 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <a-radio-group style="margin-left: 16px;" v-model="category" @change="handleChangeType(category)">
+      <router-link v-if="!token" :to="{ name: 'login' }">
+        <a-button type="default" icon="login" style="margin-right:10px;">
+          去登录
+        </a-button>
+      </router-link>
+      <span style="margin-right: 10px;">
+        <a-select placeholder="类型" style="width:100px;" v-decorator="['type2']" @change="handleType2">
+          <a-select-option value="0">全部</a-select-option>
+          <a-select-option :key="index" v-for="(item, index) in myTypes" :value="item.uwtid">{{ item.name }}</a-select-option>
+        </a-select>
+      </span>
+      <a-radio-group style="margin-right: 10px;" v-model="category" @change="handleChangeType(category)">
         <a-radio-button value="1">普通</a-radio-button>
         <a-radio-button value="2">隐私</a-radio-button>
       </a-radio-group>
@@ -11,20 +22,14 @@
         </a-button>
       </a-input-search>
       <span v-else-if="category === '2' && unlockFlag">
-        <a-button style="margin-left: 16px;" @click="handleLock">
+        <a-button style="margin-right: 10px;" @click="handleLock">
           立即上锁
         </a-button>
       </span>
-      <a-radio-group style="margin-left: 16px;" v-model="sort" @change="handleSort(sort)">
+      <a-radio-group style="margin-right: 10px;" v-model="sort" @change="handleSort(sort)">
         <a-radio-button value="uwsid">时间</a-radio-button>
         <a-radio-button value="name">名称</a-radio-button>
       </a-radio-group>
-      <span style="margin-left: 16px;">
-        <a-select placeholder="类型" style="width:100px;" v-decorator="['type2']" @change="handleType2">
-          <a-select-option value="0">全部</a-select-option>
-          <a-select-option :key="index" v-for="(item, index) in myTypes" :value="item.uwtid">{{ item.name }}</a-select-option>
-        </a-select>
-      </span>
       <!-- <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch"/> -->
     </standard-form-row>
     <a-card

@@ -1,17 +1,22 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <a-radio-group style="margin-left: 16px;" v-model="category" @change="handleChangeType(category)">
+      <router-link v-if="!token" :to="{ name: 'login' }">
+        <a-button type="default" icon="login" style="margin-right:10px;">
+          去登录
+        </a-button>
+      </router-link>
+      <a-radio-group style="margin-right: 10px;" v-model="category" @change="handleChangeType(category)">
         <a-radio-button value="1">普通</a-radio-button>
         <a-radio-button value="2">隐私</a-radio-button>
       </a-radio-group>
-      <a-input-search type="password" v-if="category === '2' && !unlockFlag" placeholder="请输入密码" style="margin-left: 16px;width: 200px;" @search="handleUnlock">
+      <a-input-search type="password" v-if="category === '2' && !unlockFlag" placeholder="请输入密码" style="margin-right: 10px;width: 200px;" @search="handleUnlock">
         <a-button slot="enterButton">
           解锁
         </a-button>
       </a-input-search>
       <span v-else-if="category === '2' && unlockFlag">
-        <a-button style="margin-left: 16px;" @click="handleLock">
+        <a-button style="margin-right: 10px;" @click="handleLock">
           立即上锁
         </a-button>
       </span>
