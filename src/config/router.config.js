@@ -34,7 +34,7 @@ export const asyncRouterMap = [
           {
             path: '/homeFind',
             name: 'homeFind',
-            component: () => import('@/views/home/single/AllWeb'),
+            component: () => import('@/views/home/single/WebFind'),
             meta: { title: 'menu.homeFind' }
           },
           {
