@@ -1,12 +1,17 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <a-radio-group v-model="module" @change="handleChangeType(module)">
+      <a-radio-group v-model="module" @change="handleChangeType(module)" style="margin-right:10px;">
         <a-radio-button value="recommend">推荐</a-radio-button>
         <a-radio-button value="new">最新</a-radio-button>
         <a-radio-button value="collection">收藏最多</a-radio-button>
       </a-radio-group>
-      <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch" placeholder="如：nodejs">
+      <a-input-search
+        style="width: 272px;"
+        v-model="searchContent"
+        @change="resetDefault(searchContent)"
+        @search="handleSearch"
+        placeholder="如：nodejs">
         <a-button slot="enterButton">
           搜索
         </a-button>
@@ -100,6 +105,7 @@ export default {
         }
       },
       loading: true,
+      searchContent: '',
       // 查询参数
       page: 1,
       type2: 0,
@@ -142,6 +148,11 @@ export default {
         id: record.wsid,
         name: record.name,
         url: record.url
+      }
+    },
+    resetDefault (value) {
+      if (value === '') {
+        this.getAllWebs()
       }
     },
     getMyTypes () {

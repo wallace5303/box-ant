@@ -6,10 +6,14 @@
           去登录
         </a-button>
       </router-link>
+      <!-- <a-button type="link" style="margin-right:10px;" @click="defaultWeb">
+        默认
+      </a-button> -->
       <a-input-search
         placeholder="强大的搜索功能"
         style="width: 272px; margin-right:10px;"
         v-model="searchContent"
+        @change="resetDefault(searchContent)"
         @search="webSearch">
         <a-button slot="enterButton">
           搜一搜
@@ -153,6 +157,17 @@ export default {
     changeTag (tag) {
       this.webSearch(tag)
     },
+    defaultWeb () {
+      this.searchContent = ''
+      this.getMySites()
+      this.getDefaultSites()
+    },
+    resetDefault (value) {
+      if (value === '') {
+        this.getMySites()
+        this.getDefaultSites()
+      }
+    },
     baiduSearch (value) {
       this.inputText = value
       window.open('https://www.baidu.com/s?wd=' + this.inputText, '_blank')
@@ -204,6 +219,10 @@ export default {
     //   }
     // },
     webSearch (value) {
+      value = value.trim()
+      if (value === 'undefined' || !value || !/[^\s]/.test(value)) {
+        return false
+      }
       this.searchContent = value
       this.getSearchAllWeb()
     },
@@ -226,6 +245,7 @@ export default {
       if (!this.token) {
         return false
       }
+      this.loading = true
       const params = {
         out_url: 'mySites',
         method: 'POST',
@@ -234,14 +254,15 @@ export default {
         }
       }
       outApi(params).then(res => {
-        this.loading = false
         if (res.code !== 0) {
           return false
         }
         this.webList = res.data
-        }).catch(err => {
-          console.log('err:', err)
-        })
+      }).catch(err => {
+        console.log('err:', err)
+      }).finally(() => {
+        this.loading = false
+      })
     },
     getDefaultSites () {
       if (this.token) {
@@ -265,6 +286,7 @@ export default {
         })
     },
     getSearchAllWeb () {
+      this.loading = true
       const params = {
         out_url: 'searchAllWeb',
         method: 'POST',
@@ -273,14 +295,15 @@ export default {
         }
       }
       outApi(params).then(res => {
-        this.loading = false
         if (res.code !== 0) {
           return false
         }
         this.webList = res.data
-        }).catch(err => {
-          console.log('err:', err)
-        })
+      }).catch(err => {
+        console.log('err:', err)
+      }).finally(() => {
+        this.loading = false
+      })
     }
     // handleCancel () {
     //   this.visible = false

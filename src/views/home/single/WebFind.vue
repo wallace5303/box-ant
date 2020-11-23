@@ -1,12 +1,17 @@
 <template>
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
-      <a-radio-group v-model="module" @change="handleChangeType(module)">
+      <a-radio-group v-model="module" @change="handleChangeType(module)" style="margin-right:10px;">
         <a-radio-button value="new">最新</a-radio-button>
         <a-radio-button value="recommend">推荐</a-radio-button>
         <a-radio-button value="collection">收藏最多</a-radio-button>
       </a-radio-group>
-      <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch" placeholder="强大的搜索功能">
+      <a-input-search
+        style="width: 272px;"
+        v-model="searchContent"
+        @change="resetDefault(searchContent)"
+        @search="handleSearch"
+        placeholder="强大的搜索功能">
         <a-button slot="enterButton">
           搜索
         </a-button>
@@ -114,7 +119,8 @@ export default {
       allWebVisible: false,
       allWebConfirmLoading: false,
       mdl: null,
-      allWebMdl: null
+      allWebMdl: null,
+      searchContent: ''
     }
   },
   mounted () {
@@ -163,7 +169,13 @@ export default {
         desc: ''
       }
     },
+    resetDefault (value) {
+      if (value === '') {
+        this.handleChangeType('new')
+      }
+    },
     getWebFind (isReset) {
+      this.loading = true
       const params = {
         out_url: 'webFind',
         method: 'POST',
@@ -174,7 +186,6 @@ export default {
         }
       }
       outApi(params).then(res => {
-        this.loading = false
         if (res.code !== 0) {
           return false
         }
