@@ -7,10 +7,10 @@
         </a-button>
       </router-link>
       <a-input-search
-        placeholder="如：nodejs教程"
+        placeholder="强大的搜索功能"
         style="width: 272px; margin-right:10px;"
-        v-model="inputText"
-        @search="baiduSearch">
+        v-model="searchContent"
+        @search="webSearch">
         <a-button slot="enterButton">
           搜一搜
         </a-button>
@@ -29,6 +29,16 @@
           添加
         </a-button>
       </router-link> -->
+      <p/>
+      <span>热门搜索：</span>
+      <template v-for="tag in hotTags">
+        <a-checkable-tag
+          :key="tag"
+          @change="changeTag(tag)"
+        >
+          {{ tag }}
+        </a-checkable-tag>
+      </template>
     </standard-form-row>
     <a-card
       style="width:100%"
@@ -64,7 +74,7 @@
                           </a-tooltip>
                         </a>
                         <!-- <a v-else @click="handleAdd()">{{ web.name }}</a> -->
-                        <router-link v-else :to="{ name: 'manage' }">
+                        <router-link v-else :to="{ name: 'homeManageWebSite' }">
                           <a>{{ web.name }}</a>
                         </router-link>
                       </div>
@@ -113,10 +123,12 @@ export default {
       token: null,
       loading: true,
       inputText: '',
+      searchContent: '',
       webList: {},
       visible: false,
       confirmLoading: false,
-      mdl: null
+      mdl: null,
+      hotTags: []
     }
   },
   computed: {
@@ -125,6 +137,7 @@ export default {
   },
   mounted () {
     this.getToken()
+    this.getHotSearchTags()
     this.getMySites()
     this.getDefaultSites()
   },
@@ -136,6 +149,9 @@ export default {
     },
     handleAdd () {
       this.visible = true
+    },
+    changeTag (tag) {
+      this.webSearch(tag)
     },
     baiduSearch (value) {
       this.inputText = value
@@ -187,6 +203,25 @@ export default {
     //     this.inputText = this.text
     //   }
     // },
+    webSearch (value) {
+      this.searchContent = value
+      this.getSearchAllWeb()
+    },
+    getHotSearchTags () {
+      const params = {
+        out_url: 'hotSearchTags',
+        method: 'POST',
+        data: {}
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return false
+        }
+        this.hotTags = res.data
+        }).catch(err => {
+          console.log('err:', err)
+        })
+    },
     getMySites () {
       if (!this.token) {
         return false
@@ -217,6 +252,24 @@ export default {
         method: 'POST',
         data: {
           category: 1
+        }
+      }
+      outApi(params).then(res => {
+        this.loading = false
+        if (res.code !== 0) {
+          return false
+        }
+        this.webList = res.data
+        }).catch(err => {
+          console.log('err:', err)
+        })
+    },
+    getSearchAllWeb () {
+      const params = {
+        out_url: 'searchAllWeb',
+        method: 'POST',
+        data: {
+          desc: this.searchContent
         }
       }
       outApi(params).then(res => {

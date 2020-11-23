@@ -16,7 +16,13 @@
         <a-radio-button value="1">普通</a-radio-button>
         <a-radio-button value="2">隐私</a-radio-button>
       </a-radio-group>
-      <a-input-search type="password" v-if="category === '2' && !unlockFlag" placeholder="请输入密码" style="margin-left: 16px;width: 200px;" @search="handleUnlock">
+      <a-input-search
+        v-model="pwdText"
+        type="password"
+        v-if="category === '2' && !unlockFlag"
+        placeholder="请输入密码"
+        style="margin-right: 10px;width: 200px;"
+        @search="handleUnlock">
         <a-button slot="enterButton">
           解锁
         </a-button>
@@ -128,6 +134,7 @@ export default {
       confirmLoading: false,
       type2: 0,
       mdl: null,
+      pwdText: '',
       category: this.$route.params.category || '1',
       isShowData: true
     }
@@ -159,6 +166,7 @@ export default {
       this.isShowData = true
       this.getMyTypes()
       this.getManageUserSite()
+      this.pwdText = ''
     },
     handleLock () {
       // 设置过期时间

@@ -6,7 +6,7 @@
         <a-radio-button value="recommend">推荐</a-radio-button>
         <a-radio-button value="collection">收藏最多</a-radio-button>
       </a-radio-group>
-      <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch" placeholder="如：nodejs">
+      <a-input-search style="margin-left: 16px; width: 272px;" @search="handleSearch" placeholder="强大的搜索功能">
         <a-button slot="enterButton">
           搜索
         </a-button>
@@ -136,7 +136,7 @@ export default {
       this.module = module
       this.page = 1
       this.desc = ''
-      this.getWebFind()
+      this.getWebFind('reset')
     },
     handleEdit (record) {
       if (!this.token) {
@@ -281,6 +281,7 @@ export default {
               return
             }
               this.$message.info('添加成功')
+              this.handleChangeType('new')
             }).catch(err => {
               console.log('err:', err)
             }).finally(() => {

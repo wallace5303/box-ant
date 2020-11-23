@@ -6,7 +6,13 @@
           去登录
         </a-button>
       </router-link>
-      <a-input-search type="password" v-if="!unlockFlag" placeholder="请输入密码" style="width: 200px;" @search="handleUnlock">
+      <a-input-search
+        v-model="pwdText"
+        type="password"
+        v-if="!unlockFlag"
+        placeholder="请输入密码"
+        style="width: 200px;"
+        @search="handleUnlock">
         <a-button slot="enterButton">
           解锁
         </a-button>
@@ -15,7 +21,7 @@
         <a-button style="margin-right:10px;" @click="handleLock">
           立即上锁
         </a-button>
-        <router-link :to="{ name: 'manage', params: { category: '2' } }">
+        <router-link :to="{ name: 'homeManageWebSite', params: { category: '2' } }">
           <a-button type="default">
             自定义添加
           </a-button>
@@ -56,7 +62,7 @@
                             {{ web.name }}
                           </a-tooltip>
                         </a>
-                        <router-link v-else :to="{ name: 'manage', params: { category: '2' }}">
+                        <router-link v-else :to="{ name: 'homeManageWebSite', params: { category: '2' }}">
                           <a>{{ web.name }}</a>
                         </router-link>
                       </div>
@@ -108,6 +114,7 @@ export default {
       visible: false,
       confirmLoading: false,
       mdl: null,
+      pwdText: '',
       unlockFlag: 0,
       category: '2'
     }
@@ -142,6 +149,7 @@ export default {
       const expiresTime = new Date().getTime() + 1000 * 60 * 5
       storage.set(UNLOCK_FLAG, expiresTime)
       this.unlockFlag = 1
+      this.pwdText = ''
       // this.getMySites()
     },
     handleLock () {
