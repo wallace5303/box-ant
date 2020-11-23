@@ -17,7 +17,13 @@ const locale = {
   'menu.manage': '管理',
   'menu.managewebsite': '管理网址',
   'menu.managewebtype': '管理分类',
-  'menu.settings': '设置'
+  'menu.settings': '设置',
+  'menu.homeWeb': '我的',
+  'menu.homeFind': '发现',
+  'menu.homePrivateweb': '隐私',
+  'menu.homeManageWebSite': '编辑',
+  'menu.homeManageWebType': '分类',
+  'menu.homeFeed': '动态'
 }
 
 export default {

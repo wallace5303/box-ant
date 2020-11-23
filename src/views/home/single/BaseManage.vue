@@ -38,7 +38,7 @@ export default {
         { key: '2', tab: '发现' },
         { key: '3', tab: '隐私' },
         // { key: '6', tab: 'feed' },
-        { key: '4', tab: '添加' },
+        { key: '4', tab: '编辑' },
         { key: '5', tab: '分类' }
       ],
       tabActiveKey: '1',
