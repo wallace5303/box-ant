@@ -22,7 +22,7 @@
               </a-select>
             </a-col>
             <a-col :span="12">
-              <router-link :to="{ name: 'manageWebType', params: { category: this.category } }">
+              <router-link :to="{ name: 'homeManageWebType', params: { category: this.category } }">
                 <a-button>添加</a-button>
               </router-link>
             </a-col>
