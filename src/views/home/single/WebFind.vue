@@ -43,6 +43,7 @@
             </a-avatar>
             <a slot="title" :href="item.url" target="_blank">{{ item.name }}</a>
           </a-list-item-meta>
+          <a-tag :key="tindex" v-for="(tag, tindex) in item.tag">{{ tag }}</a-tag>
           <div class="list-times">
             <div class="list-content-item">
               <a-icon type="star-o" style="margin-right: 8px" />
