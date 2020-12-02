@@ -23,7 +23,7 @@ export default {
   menu: {
     locale: true
   },
-  title: '网址管理大师',
+  title: '网站助手',
   pwa: false,
   iconfontUrl: '', // http://wx1.sinaimg.cn/large/005WJhQlly1gia78eh73nj30kp0kpabd.jpg
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
