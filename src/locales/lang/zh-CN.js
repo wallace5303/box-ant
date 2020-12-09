@@ -20,6 +20,7 @@ const locale = {
   'menu.settings': '设置',
   'menu.homeWeb': '我的',
   'menu.homeFind': '发现',
+  'menu.homeAwesome': '精选',
   'menu.homePrivateweb': '隐私',
   'menu.homeManageWebSite': '编辑',
   'menu.homeManageWebType': '分类',

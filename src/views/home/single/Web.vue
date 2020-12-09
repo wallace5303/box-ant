@@ -45,6 +45,32 @@
       </template>
     </standard-form-row>
     <a-card
+      class="project-list"
+      :loading="loading"
+      style="margin-bottom: 24px;"
+      :bordered="false"
+      title="今日推荐"
+      :body-style="{ padding: 0 }">
+      <a slot="extra">更多</a>
+      <div>
+        <a-card-grid class="project-card-grid2" :key="i" v-for="(item, i) in projects">
+          <a-card :bordered="false" :body-style="{ padding: 0 }">
+            <a-card-meta>
+              <div slot="description" class="card-description2">
+                {{ item.title }}
+              </div>
+            </a-card-meta>
+            <div class="project-item">
+              <a href="/#/">读书</a>
+              <span class="collection-times">
+                <a-icon type="star-o"/> {{ item.col_times }}
+              </span>
+            </div>
+          </a-card>
+        </a-card-grid>
+      </div>
+    </a-card>
+    <a-card
       style="width:100%"
       :bordered="false"
     >
@@ -132,6 +158,44 @@ export default {
       visible: false,
       confirmLoading: false,
       mdl: null,
+      projects: [
+        {
+          title: '《不可替代的团队领袖培养计划》',
+          cover: '11',
+          col_times: 32,
+          description: '《不可替代的团队领袖培养计划》leetcode/lintcode题解/算法学习笔记'
+        },
+        {
+          title: 'LeetCode题解',
+          cover: '11',
+          col_times: 32,
+          description: 'LeetCode题解'
+        },
+        {
+          title: '前端开发笔记本',
+          cover: '11',
+          col_times: 32,
+          description: '前端开发笔记本'
+        },
+        {
+          title: 'leetcode/lintcode题解/算法学习笔记',
+          cover: '11',
+          col_times: 32,
+          description: 'leetcode/lintcode题解/算法学习笔记'
+        },
+        {
+          title: '借助开源项目，学习软件开发',
+          cover: '11',
+          col_times: 32,
+          description: 'miaoshu'
+        },
+        {
+          title: '老齐的技术资料',
+          cover: '11',
+          col_times: 32,
+          description: 'miaoshu'
+        }
+      ],
       hotTags: []
     }
   },
@@ -353,6 +417,10 @@ export default {
         width: 12.5%;
         padding: 15px;
       }
+    .project-card-grid2 {
+        width: 16.66666%;
+        padding: 15px;
+      }
     .card-title {
       font-size: 0;
       a {
@@ -375,12 +443,42 @@ export default {
       line-height: 22px;
       overflow: hidden;
     }
+    .card-description2 {
+      color: rgba(0, 0, 0, 0.75);
+      height: 44px;
+      line-height: 22px;
+      overflow: hidden;
+    }
     .overflow {
       display:block;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
       width: 100px;
+    }
+  }
+  .project-item {
+    display: flex;
+    margin-top: 8px;
+    overflow: hidden;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+
+    a {
+      color: rgba(0, 0, 0, 0.45);
+      display: inline-block;
+      flex: 1 1 0;
+
+      &:hover {
+        color: #1890ff;
+      }
+    }
+
+    .collection-times {
+      color: rgba(0, 0, 0, 0.45);
+      flex: 0 0 auto;
+      float: right;
     }
   }
 
