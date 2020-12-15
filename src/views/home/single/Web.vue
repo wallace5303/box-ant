@@ -62,7 +62,9 @@
           <a-card :bordered="false" :body-style="{ padding: 0 }">
             <a-card-meta>
               <div slot="description" class="card-description2">
-                {{ item.name }}
+                <a class="todayRecommend" :href="item.url" target="_blank">
+                  {{ item.name }}
+                </a>
               </div>
             </a-card-meta>
             <div class="project-item">
@@ -442,6 +444,15 @@ export default {
       overflow:hidden;
       text-overflow:ellipsis;
       width: 100px;
+    }
+    .todayRecommend {
+      color: rgba(0, 0, 0, 0.75);
+      display: inline-block;
+      flex: 1 1 0;
+
+      &:hover {
+        color:#52C41A;
+      }
     }
   }
   .project-item {
