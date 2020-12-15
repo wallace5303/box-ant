@@ -45,6 +45,37 @@
       </template>
     </standard-form-row>
     <a-card
+      v-if="todayRecommend.length !== 0"
+      class="project-list"
+      :loading="loading"
+      style="margin-bottom: 24px;"
+      :bordered="false"
+      title="今日推荐"
+      :body-style="{ padding: 0 }">
+      <a slot="extra">
+        <router-link :to="{ name: 'homeFind' }">
+          更多
+        </router-link>
+      </a>
+      <div>
+        <a-card-grid class="project-card-grid2" :key="i" v-for="(item, i) in todayRecommend">
+          <a-card :bordered="false" :body-style="{ padding: 0 }">
+            <a-card-meta>
+              <div slot="description" class="card-description2">
+                {{ item.name }}
+              </div>
+            </a-card-meta>
+            <div class="project-item">
+              <a href="/#/">{{ item.one_tag }}</a>
+              <span class="collection-times">
+                <a-icon type="star-o"/> {{ item.col_times }}
+              </span>
+            </div>
+          </a-card>
+        </a-card-grid>
+      </div>
+    </a-card>
+    <a-card
       style="width:100%"
       :bordered="false"
     >
@@ -132,6 +163,7 @@ export default {
       visible: false,
       confirmLoading: false,
       mdl: null,
+      todayRecommend: [],
       hotTags: []
     }
   },
@@ -142,6 +174,7 @@ export default {
   mounted () {
     this.getToken()
     this.getHotSearchTags()
+    this.getTodayRecommend()
     this.getMySites()
     this.getDefaultSites()
   },
@@ -239,6 +272,24 @@ export default {
         this.hotTags = res.data
         }).catch(err => {
           console.log('err:', err)
+        })
+    },
+    getTodayRecommend () {
+      const params = {
+        out_url: 'todayRecommend',
+        method: 'POST',
+        data: {}
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return false
+        }
+        this.todayRecommend = res.data.list
+        console.log('todayRecommend:', res.data.list)
+        }).catch(err => {
+          console.log('err:', err)
+        }).finally(() => {
+          // this.loading = false
         })
     },
     getMySites () {
@@ -353,6 +404,10 @@ export default {
         width: 12.5%;
         padding: 15px;
       }
+    .project-card-grid2 {
+        width: 16.66666%;
+        padding: 15px;
+      }
     .card-title {
       font-size: 0;
       a {
@@ -375,6 +430,12 @@ export default {
       line-height: 22px;
       overflow: hidden;
     }
+    .card-description2 {
+      color: rgba(0, 0, 0, 0.75);
+      height: 44px;
+      line-height: 22px;
+      overflow: hidden;
+    }
     .overflow {
       display:block;
       white-space:nowrap;
@@ -383,5 +444,38 @@ export default {
       width: 100px;
     }
   }
+  .project-item {
+    display: flex;
+    margin-top: 8px;
+    overflow: hidden;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
 
+    a {
+      color: rgba(0, 0, 0, 0.45);
+      display: inline-block;
+      flex: 1 1 0;
+
+      &:hover {
+        color: #1890ff;
+      }
+    }
+
+    .collection-times {
+      color: rgba(0, 0, 0, 0.45);
+      flex: 0 0 auto;
+      float: right;
+    }
+  }
+  /deep/ .ant-card-head {
+    min-height: 18px;
+    font-size: 14px;
+  }
+  /deep/ .ant-card-head-title {
+    padding: 8px 0;
+  }
+  /deep/ .ant-card-extra {
+    padding: 8px 0;
+  }
 </style>

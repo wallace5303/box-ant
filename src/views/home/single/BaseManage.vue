@@ -23,7 +23,7 @@ const getActiveKey = (path) => {
       return '4'
     case '/homeManageWebType':
       return '5'
-    case '/homeFeed':
+    case '/homeAwesome':
       return '6'
     default:
       return '1'
@@ -35,9 +35,9 @@ export default {
     return {
       tabList: [
         { key: '1', tab: '我的' },
+        // { key: '6', tab: '精选' },
         { key: '2', tab: '发现' },
         { key: '3', tab: '隐私' },
-        // { key: '6', tab: 'feed' },
         { key: '4', tab: '编辑' },
         { key: '5', tab: '分类' }
       ],
@@ -72,7 +72,7 @@ export default {
           this.$router.push('/homeManageWebType')
           break
         case '6':
-          this.$router.push('/homeFeed')
+          this.$router.push('/homeAwesome')
           break
         default:
           this.$router.push('/home')

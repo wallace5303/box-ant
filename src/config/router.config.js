@@ -38,6 +38,12 @@ export const asyncRouterMap = [
             meta: { title: 'menu.homeFind' }
           },
           {
+            path: '/homeAwesome',
+            name: 'homeAwesome',
+            component: () => import('@/views/home/single/Awesome'),
+            meta: { title: 'menu.homeAwesome' }
+          },
+          {
             path: '/homePrivateweb',
             name: 'homePrivateweb',
             component: () => import('@/views/home/single/PrivateWeb'),

@@ -2,9 +2,9 @@
   <div>
     <standard-form-row title="" block style="padding-bottom: 11px;">
       <a-radio-group v-model="module" @change="handleChangeType(module)" style="margin-right:10px;">
+        <a-radio-button value="collection">收藏最多</a-radio-button>
         <a-radio-button value="new">最新</a-radio-button>
         <a-radio-button value="recommend">推荐</a-radio-button>
-        <a-radio-button value="collection">收藏最多</a-radio-button>
       </a-radio-group>
       <a-input-search
         style="width: 272px;"
@@ -113,7 +113,7 @@ export default {
       // 查询参数
       page: 1,
       type2: 0,
-      module: 'new',
+      module: 'collection',
       desc: '',
       visible: false,
       confirmLoading: false,
@@ -136,7 +136,7 @@ export default {
     handleSearch (value) {
       this.page = 1
       this.desc = value
-      this.module = 'new'
+      this.module = 'collection'
       this.getWebFind('reset')
     },
     handleChangeType (module) {
@@ -172,7 +172,7 @@ export default {
     },
     resetDefault (value) {
       if (value === '') {
-        this.handleChangeType('new')
+        this.handleChangeType('collection')
       }
     },
     getWebFind (isReset) {
@@ -248,7 +248,7 @@ export default {
               type: values.type,
               name: values.name,
               url: values.url,
-              sort: 0
+              sort: values.sort
             }
           }
           outApi(saveMySiteParams).then(res => {
