@@ -248,7 +248,7 @@ export default {
               type: values.type,
               name: values.name,
               url: values.url,
-              sort: 0
+              sort: values.sort
             }
           }
           outApi(saveMySiteParams).then(res => {

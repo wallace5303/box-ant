@@ -45,23 +45,28 @@
       </template>
     </standard-form-row>
     <a-card
+      v-if="todayRecommend.length !== 0"
       class="project-list"
       :loading="loading"
       style="margin-bottom: 24px;"
       :bordered="false"
       title="今日推荐"
       :body-style="{ padding: 0 }">
-      <a slot="extra">更多</a>
+      <a slot="extra">
+        <router-link :to="{ name: 'homeFind' }">
+          更多
+        </router-link>
+      </a>
       <div>
-        <a-card-grid class="project-card-grid2" :key="i" v-for="(item, i) in projects">
+        <a-card-grid class="project-card-grid2" :key="i" v-for="(item, i) in todayRecommend">
           <a-card :bordered="false" :body-style="{ padding: 0 }">
             <a-card-meta>
               <div slot="description" class="card-description2">
-                {{ item.title }}
+                {{ item.name }}
               </div>
             </a-card-meta>
             <div class="project-item">
-              <a href="/#/">读书</a>
+              <a href="/#/">{{ item.one_tag }}</a>
               <span class="collection-times">
                 <a-icon type="star-o"/> {{ item.col_times }}
               </span>
@@ -158,44 +163,7 @@ export default {
       visible: false,
       confirmLoading: false,
       mdl: null,
-      projects: [
-        {
-          title: '《不可替代的团队领袖培养计划》',
-          cover: '11',
-          col_times: 32,
-          description: '《不可替代的团队领袖培养计划》leetcode/lintcode题解/算法学习笔记'
-        },
-        {
-          title: 'LeetCode题解',
-          cover: '11',
-          col_times: 32,
-          description: 'LeetCode题解'
-        },
-        {
-          title: '前端开发笔记本',
-          cover: '11',
-          col_times: 32,
-          description: '前端开发笔记本'
-        },
-        {
-          title: 'leetcode/lintcode题解/算法学习笔记',
-          cover: '11',
-          col_times: 32,
-          description: 'leetcode/lintcode题解/算法学习笔记'
-        },
-        {
-          title: '借助开源项目，学习软件开发',
-          cover: '11',
-          col_times: 32,
-          description: 'miaoshu'
-        },
-        {
-          title: '老齐的技术资料',
-          cover: '11',
-          col_times: 32,
-          description: 'miaoshu'
-        }
-      ],
+      todayRecommend: [],
       hotTags: []
     }
   },
@@ -206,6 +174,7 @@ export default {
   mounted () {
     this.getToken()
     this.getHotSearchTags()
+    this.getTodayRecommend()
     this.getMySites()
     this.getDefaultSites()
   },
@@ -303,6 +272,24 @@ export default {
         this.hotTags = res.data
         }).catch(err => {
           console.log('err:', err)
+        })
+    },
+    getTodayRecommend () {
+      const params = {
+        out_url: 'todayRecommend',
+        method: 'POST',
+        data: {}
+      }
+      outApi(params).then(res => {
+        if (res.code !== 0) {
+          return false
+        }
+        this.todayRecommend = res.data.list
+        console.log('todayRecommend:', res.data.list)
+        }).catch(err => {
+          console.log('err:', err)
+        }).finally(() => {
+          // this.loading = false
         })
     },
     getMySites () {
@@ -481,5 +468,14 @@ export default {
       float: right;
     }
   }
-
+  /deep/ .ant-card-head {
+    min-height: 18px;
+    font-size: 14px;
+  }
+  /deep/ .ant-card-head-title {
+    padding: 8px 0;
+  }
+  /deep/ .ant-card-extra {
+    padding: 8px 0;
+  }
 </style>

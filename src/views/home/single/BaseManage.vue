@@ -35,7 +35,7 @@ export default {
     return {
       tabList: [
         { key: '1', tab: '我的' },
-        { key: '6', tab: '精选' },
+        // { key: '6', tab: '精选' },
         { key: '2', tab: '发现' },
         { key: '3', tab: '隐私' },
         { key: '4', tab: '编辑' },
